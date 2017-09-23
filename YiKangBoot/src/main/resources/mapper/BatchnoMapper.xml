@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.BatchnoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Batchno">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="productcode_id" property="productcodeId" />
+		<result column="target" property="target" />
+		<result column="state" property="state" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+	</resultMap>
+	
+	<resultMap id="ViewResultMap" type="com.yikang.springboot.vo.BatchnoVO">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="productcode_id" property="productcodeId" />
+		<result column="target" property="target" />
+		<result column="state" property="state" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />	
+		<association property="workshop" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="workshop_id" property="key" />
+			<result column="workshop_name" property="value" />
+		</association>
+		<association property="productfamily" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="productfamily_id" property="key" />
+			<result column="productfamily_name" property="value" />
+		</association>
+		<association property="productcode" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="productcode_id" property="key" />
+			<result column="productcode_name" property="value" />
+		</association>
+	</resultMap>
+	
+	<select id="getBatchNoWithCondition" resultMap="ViewResultMap" parameterType="Map">
+		select 
+			 bn.*, 
+			 ws.id as workshop_id, ws.name as workshop_name,
+			 pf.id as productfamily_id, pf.name as productfamily_name,
+			 pc.productcode as productcode_name
+			 from batchno bn left join productcode pc on bn.productcode_id = pc.id
+			 left join productfamily pf on pc.productfamily_id = pf.id
+			 left join workshop ws on pc.workshop_id = ws.id
+		where bn.delflag = 0
+		<if test="workshopId != null and workshopId != 0">
+			and workshop_id = #{workshopId}
+		</if>
+		<if test="productfamilyId != null and productfamilyId != 0">
+			and productfamily_id = #{productfamilyId}
+		</if>
+		<if test="productcodeId != null and productcodeId != 0">
+			and productcode_id = #{productcodeId}
+		</if>
+		<if test="state != null">
+			and bn.state = #{state}
+		</if>
+	</select>
+
+</mapper>

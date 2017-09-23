@@ -1,0 +1,2 @@
+# YiKangBoot
+益康看板系统的SpringBoot服务端，与YiKangKanban的react前端代码配合使用

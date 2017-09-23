@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.LineseatMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Lineseat">
+		<id column="id" property="id" />
+		<result column="line_id" property="lineId" />
+		<result column="serise" property="serise" />
+		<result column="job_id" property="jobId" />
+		<result column="name" property="name" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+	</resultMap>
+	
+	<resultMap id="ViewResultMap" type="com.yikang.springboot.vo.LineseatVO">
+		<id column="id" property="id" />
+		<result column="line_id" property="lineId" />
+		<result column="serise" property="serise" />
+		<result column="job_id" property="jobId" />
+		<result column="name" property="name" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+		<association property="line" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="line_id" property="key" />
+			<result column="line_name" property="value" />
+		</association>
+		<association property="job" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="job_id" property="key" />
+			<result column="job_name" property="value" />
+		</association>
+	</resultMap>
+	
+	
+	<select id="getListViewList" resultMap="ViewResultMap">
+		select 
+		s.id, s.line_id, s.serise, s.job_id, s.name, s.comment, s.delflag,
+		l.name as line_name, j.name as job_name
+		from lineseat s left join line l on s.line_id = l.id
+		left join job j on s.job_id = j.id
+		where s.delflag = 0
+		order by s.serise;
+	</select>
+	
+</mapper>

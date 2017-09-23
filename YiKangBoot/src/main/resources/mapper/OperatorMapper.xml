@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.OperatorMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Operator">
+		<id column="id" property="id" />
+		<result column="workid" property="workid" />
+		<result column="name" property="name" />
+		<result column="avatar" property="avatar" />
+		<result column="shift_id" property="shiftId" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+	</resultMap>
+	
+	<resultMap id="OperatorLevelMap" type="com.yikang.springboot.vo.OperatorJoblevelVO">
+		<result column="job_id" property="jobId" />
+		<result column="id" property="operatorId" />
+		<result column="starlevel" property="starlevel" />
+		<result column="expired" property="expired" />
+		<result column="ol_state" property="state" />
+		<result column="ol_delflag" property="delflag" />
+		<association property="job" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="job_id" property="key" />
+			<result column="job_name" property="value" />
+		</association>
+	</resultMap>
+	
+	<resultMap id="OperatorMap" type="com.yikang.springboot.vo.OperatorVO">
+		<id column="id" property="id" />
+		<result column="workid" property="workid" />		
+		<result column="name" property="name" />
+		<result column="avatar" property="avatar" />
+		<result column="shift_id" property="shiftId" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+		<association property="shift" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="shift_id" property="key" />
+			<result column="shift_name" property="value" />
+		</association>
+		<collection property="levels"  ofType="com.yikang.springboot.vo.OperatorJoblevelVO" javaType="ArrayList" resultMap="OperatorLevelMap"/>
+	</resultMap>
+
+	<select id="getOperatorWithCondtion" resultMap="OperatorMap" parameterType="Map">
+		select op.id, op.workid, op.name as name , op.avatar as avatar, 
+			op.shift_id as shift_id, op.comment as comment,
+			op.delflag as delfag,
+			st.name as shift_name,
+			opjl.starlevel as starlevel,
+			opjl.expired as expired,
+			opjl.delflag as ol_delflag,
+			job.id as job_id,
+			job.name as job_name
+			from operator op
+			left join shift st on op.shift_id = st.id
+			left join operator_joblevel opjl on op.id = opjl.operator_id
+			left join job job on opjl.job_id = job.id
+		where op.delflag = 0 and job.delflag = 0 and opjl.delflag = 0
+		<if test="workid != null and workid != ''">
+			and op.name like '%${workid}%'
+		</if>
+		<if test="name != null and name != ''">
+			and op.name like '%${name}%'
+		</if>
+		<if test="shift != null and shift != 0">
+			and op.shift_id = #{shift}
+		</if>
+		<if test="comment != null and comment != ''">
+			and op.comment like '%${comment}%'
+		</if>
+	</select>
+
+</mapper>

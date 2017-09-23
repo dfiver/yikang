@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.StopreasonlogMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Stopreasonlog">
+		<id column="id" property="id" />
+		<result column="line_id" property="lineId" />
+		<result column="shift_id" property="shiftId" />
+		<result column="batchno_id" property="batchnoId" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="reason_id" property="reasonId" />
+		<result column="delflag" property="delflag" />
+	</resultMap>
+
+</mapper>

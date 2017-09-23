@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.SubsidyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Subsidy">
+		<id column="id" property="id" />
+		<result column="type" property="type" />
+		<result column="joblevel_id" property="joblevelId" />
+		<result column="startlevel" property="startlevel" />
+		<result column="subsidy" property="subsidy" />
+		<result column="comment" property="comment" />
+	</resultMap>
+
+</mapper>

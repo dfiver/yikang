@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.springboot.mapper.PorductlogMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Porductlog">
+		<id column="id" property="id" />
+		<result column="line_id" property="lineId" />
+		<result column="shift_id" property="shiftId" />
+		<result column="batchno_id" property="batchnoId" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="done" property="done" />
+		<result column="crap" property="crap" />
+		<result column="rework" property="rework" />
+		<result column="delflag" property="delflag" />
+	</resultMap>
+
+</mapper>
