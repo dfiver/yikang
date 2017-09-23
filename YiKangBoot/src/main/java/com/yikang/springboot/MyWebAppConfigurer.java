@@ -47,7 +47,7 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	    registry.addResourceHandler("/**")
-	    	.addResourceLocations("file:D:/workspace/YiKangKanban/");
+	    	.addResourceLocations("file:D:/workspace/yikang/YiKangKanban/");
 	    super.addResourceHandlers(registry);
 	}
 }
