@@ -1,0 +1,82 @@
+.operator_row{
+	margin: 10px auto; 
+	width: 90px; 
+	height:120px;
+	background-color: red;
+}
+
+.operator_header{
+	text-align: center;
+	font-size: 24px;
+}
+
+h2.tutheader {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #d4d4d4;
+    clear: both;
+}
+
+/*屏显看板*/
+.operator-info {
+	background-color: white;
+    width: 100px;
+    margin: 5px;
+    border: solid;
+    border-width: 1px;
+    border-color: lightgray;
+}
+.operator-info:hover {
+	background-color: lightgray;
+}
+.operator-info:active {
+	background-color: gray;
+}
+
+.operator-info_job{
+	margin-top: 10px;
+	text-align: center;
+	font-size: 18px;
+}
+.operator-info_image {
+	width: 72px; 
+	height:90px; 
+	margin: 10px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: gray;
+}
+
+.operator-info_name{
+	text-align: center;
+	font-size: 16px;
+	padding: 0 5px;
+	font-weight: bold;
+}
+.operator-info_name_default{
+	color: #337ab7;
+}
+.operator-info_name_none{
+	color: gray;
+}
+.operator-info_star{
+	text-align: center;			
+	padding: 0 5px;
+	color: orange;
+}
+
+.productionlist_panelbody{
+	overflow-x: hidden;
+	padding: 0px;	
+}
+.productionlist_body{
+	max-height: 460px;
+	overflow-y: scroll;
+	margin-right: -20px;
+}
+
+linelist_body{
+	max-height: 460px;
+	overflow-y: scroll;
+	margin-right: -20px;	
+}
