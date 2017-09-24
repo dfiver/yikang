@@ -2,6 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseSimpleDataTable from './BaseSimpleDataTable';
 import FetchList from './FetchList';
+import {
+    Avatar,
+} from './Avatar';
+import {
+    Modal,
+    ModalHeader,
+    ModalTitle,
+    ModalClose,
+    ModalBody,
+    ModalFooter
+} from 'react-modal-bootstrap';
 
 export default class OperatorDetail extends React.Component {
     constructor(props) {
@@ -18,17 +29,19 @@ export default class OperatorDetail extends React.Component {
             operatorId = '';
             isNew = true;
         }
+        this.tempImageUrl = null;
         this.state = {
             shiftselections: [],
             isNew: isNew,
             item: {
                 id: operatorId,
                 workid: '',
-                avatar: '',
+                avatar: '/images/none.png',
                 name: '',
                 shiftId: '',
                 comment: '',
             },
+            isModalOpen: false,
             // item: {
             //     workid: 'X4285',
             //     avatar: '/images/20170802020028.jpg',
@@ -89,7 +102,7 @@ export default class OperatorDetail extends React.Component {
         //如果是修改，则获取操作员基本信息
         if (!this.state.isNew) {
             console.log("修改人员:", this.state.item.id);
-            inter_refreshItem(this.state.item.id);
+            this.inter_refreshItem(this.state.item.id);
         }
     }
 
@@ -172,12 +185,43 @@ export default class OperatorDetail extends React.Component {
                         this.state.isNew = false;
                     };
                 });
-
         }
+    }
+
+    onBeginChangeAvatar() {
+        console.log("onBeginChangeAvatar");
+        this.onOpenAvatorModual();
+    }
+    onChangeTempAvatarUrl(url) {
+        console.log("上传了新照片：" + url);
+        this.tempImageUrl = url;
+    }
+
+    onOpenAvatorModual() {
+        this.setState({
+            isModalOpen: true
+        })
+    }
+
+    closeAvatorModual() {
+        this.setState({
+            isModalOpen: false
+        })
+    }
+
+    onChangeAvatar() {
+        console.log("人员照片由" + this.state.item.avatar + "更换为" + this.tempImageUrl);
+        let item = this.state.item;
+        item.avatar = this.tempImageUrl;
+        this.setState({
+            item: item
+        });
+        this.closeAvatorModual();
     }
 
     render() {
         return (
+            <div>
             <div class="container">
                 <div class="row">
                     <div class="page-header">
@@ -188,154 +232,142 @@ export default class OperatorDetail extends React.Component {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h4>基本信息</h4></div>
-                            <div class="panel-body">
-                                <form id="baseform" data-toggle="validator" role="form">                              
-                                    <div class="form-group">
-                                    <label for="workid">工号</label>
-                                        <input id="workid" type="text" class="form-control"
-                                        required
-                                        defaultValue={this.state.item.workid}
-                                        onChange={(event)=>this.onChangeWorkid(event.target.value)}>
-                                        </input>
-                                        
-                                    </div>                                
-                                    <div class="form-group">
-                                        <label for="name">姓名：</label>
-                                        <input id="name" type="text" class="form-control"
-                                            required
-                                            defaultValue={this.state.item.name}
-                                            onChange={(event)=>this.onChangeName(event.target.value)}>
-                                        </input>
-                                        <div class="help-block with-errors"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">班次：</label>
-                                        <select class="form-control" id="shift" 
-                                            value={this.state.item.shiftId}
-                                            onChange={(event)=>this.onChangeShift(event.target.value)}>
-                                            {
-                                                this.state.shiftselections.map((option, index)=>(
-                                                    <option key={index} value={option.key}>{option.value}</option>
-                                                    ))
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="comment">备注：</label>
-                                        <textarea class="form-control" id="comment" 
-                                        placeholder="请输入备注"
-                                        defaultValue={this.state.item.comment}
-                                        onChange={(event)=>this.onChangeComment(event.target.value)}/>
-                                    </div>
-                                    <button class="btn btn-success pull-right" >确定</button>                                        
-                                </form>
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="col-xs-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h4>头像</h4></div>
-                            <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4>基本信息</h4></div>
+                        <div class="panel-body">
+                            <form id="baseform" data-toggle="validator" role="form">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-xs-6">
-                                            <div class="avatar-container" 
-                                                style={{width:'200px',
-                                                        height: '250px',
-                                                        backgroundColor:'rebeccapurple'}}/>
+                                        <div class="form-group col-xs-4">
+                                            <p><label for="name">头像照片：(点击修改)</label></p>
+                                            <div style={{backgroudColor:'lightgray', padding: '10px, 10px'}}>                               
+                                                <a class="btn" onClick={(event)=>this.onBeginChangeAvatar()}>
+                                                    <img src={this.state.item.avatar} style={{width:'220px', height:'220px'}}/>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-6">
-                                            <form role="form">
-                                                <div class="form-group">
-                                                    <label for="inputimage">图片文件:</label>
-                                                    <input id="inputimage" 
-                                                        type="file" 
-                                                        onChange={this.handleNewImage}></input>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="scale">缩放:</label>
-                                                    <input id="scale" 
-                                                        type="range"
-                                                        min="0.1"
-                                                        max="2"
-                                                        step="0.01"
-                                                        defaultValue={1}/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="xpos">横坐标</label>
-                                                    <input id="xpos" 
-                                                        type="range"
-                                                        name="xpos"
-                                                        min="0"
-                                                        max="1"
-                                                        step="0.01"
-                                                        defaultValue={0}/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="ypos">纵坐标</label>
-                                                    <input id="ypos" 
-                                                        type="range"
-                                                        name="ypos"
-                                                        min="0"
-                                                        max="1"
-                                                        step="0.01"
-                                                        defaultValue={0}/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="scroll">旋转:</label>
-                                                    <div class="btn-group" role="group" id="scroll">
-                                                        <button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"/>左</button>
-                                                        <button class="btn btn-default">右<span class="glyphicon glyphicon-chevron-right"/></button>
+                                        <div class="col-xs-8">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="form-group col-xs-5">
+                                                        <label for="workid">工号</label>
+                                                        <input id="workid" type="text" class="form-control"
+                                                                required
+                                                                value={this.state.item.workid}
+                                                                onChange={(event)=>this.onChangeWorkid(event.target.value)}>
+                                                        </input>
+                                                        <div class="help-block with-errors"></div>    
+                                                    </div>
+                                                    <div class="form-group col-xs-5">
+                                                        <label for="name">姓名：</label>
+                                                        <input id="name" type="text" class="form-control"
+                                                            required
+                                                            value={this.state.item.name}
+                                                            onChange={(event)=>this.onChangeName(event.target.value)}>
+                                                        </input>
+                                                        <div class="help-block with-errors"></div>
                                                     </div>
                                                 </div>
-                                                <div class = "form-group">
-                                                    <button class="btn btn-primary pull-right">预览</button>
+                                                <div class="row">
+                                                    <div class="form-group col-xs-5">
+                                                        <label for="name">班次：</label>
+                                                        <select class="form-control" id="shift" 
+                                                            value={this.state.item.shiftId}
+                                                            onChange={(event)=>this.onChangeShift(event.target.value)}>
+                                                            {
+                                                                this.state.shiftselections.map((option, index)=>(
+                                                                    <option key={index} value={option.key}>{option.value}</option>
+                                                                    ))
+                                                            }
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </form>
+                                                <div class="row">
+                                                    <div class="form-group col-xs-10">
+                                                        <label for="comment">备注：</label>
+                                                        <textarea class="form-control" id="comment" 
+                                                            placeholder="请输入备注"
+                                                            value={this.state.item.comment}
+                                                            onChange={(event)=>this.onChangeComment(event.target.value)}/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-10">
+                                                        <button class="btn btn-success btn-bg pull-right">
+                                                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                                                            &nbsp;&nbsp;&nbsp;保存
+                                                        </button>  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </form>
+                        </div>
+                    </div>                                   
+                </div> {
+                /*                
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4>星级</h4>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
+                                                              headlist={this.state.levelheadlist}
+                                                              viewToEntity = {this.viewToEntity}
+                                                              entityToView = {this.entityToView}
+                                                              fetchURL ={fetchURL}
+                                                              refreshHandler = {this.onReciveRefreshHandler}
+                                                              unaddable = {unaddable}
+                                                              unaddableMessage = {"请先选定产品型号"}
+                                                              disaddable = {disaddable}
+                                                              diseditable = {diseditable}
+                                                              disdelable = {disdelable}
+                                                              editRelayout={true}/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>                   
-                </div>
-{/*                
-                <div class="row">
-                    <div class="col-xs-10">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4>星级</h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
-                                              headlist={this.state.levelheadlist}
-                                              viewToEntity = {this.viewToEntity}
-                                              entityToView = {this.entityToView}
-                                              fetchURL ={fetchURL}
-                                              refreshHandler = {this.onReciveRefreshHandler}
-                                              unaddable = {unaddable}
-                                              unaddableMessage = {"请先选定产品型号"}
-                                              disaddable = {disaddable}
-                                              diseditable = {diseditable}
-                                              disdelable = {disdelable}
-                                              editRelayout={true}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-*/}                
-                <div class="row">
-                    <div class="page-footer">
-                    </div>
-                </div>
+                */
+            }
+            <div class="row">
+                <div class="page-footer"></div>
             </div>
+        </div>
+        {/*模态窗口*/}
+        <Modal isOpen={this.state.isModalOpen} onRequestHide={this.closeAvatorModual.bind(this)}>
+            <ModalHeader>
+                <ModalClose onClick={this.closeAvatorModual.bind(this)}/>
+                <ModalTitle>更换照片</ModalTitle>
+            </ModalHeader> 
+            <ModalBody >
+                <Avatar image={this.state.item.avatar} 
+                    width={200} 
+                    height={200}
+                    uploadUrl={'/upload/avatar'}
+                    getImageUrl={'/upload/image'}
+                    onTempUrlChange={this.onChangeTempAvatarUrl.bind(this)}
+                    />
+            </ModalBody> 
+            <ModalFooter >
+                <button class='btn btn-default' onClick={this.closeAvatorModual.bind(this)}>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                    &nbsp;取消
+                </button> 
+                <button class='btn btn-primary' onClick={this.onChangeAvatar.bind(this)}>
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    &nbsp;保存
+                </button>
+            </ModalFooter>
+        </Modal>
+    </div>
         );
     }
 }

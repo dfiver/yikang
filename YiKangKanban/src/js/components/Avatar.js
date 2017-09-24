@@ -2,10 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactAvatarEditor from 'react-avatar-editor'
 
-export default class Avatar extends React.Component {
+/**
+ * image
+ * onSrcChange
+ * width
+ * height
+ * uploadUrl
+ * getImageUrl
+ * onTempUrlChange: 更换照片后，新照片的服务器地址回调通知函数
+ */
+export class Avatar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            image: null,
             allowZoomOut: false,
             position: {
                 x: 0.5,
@@ -14,11 +24,23 @@ export default class Avatar extends React.Component {
             scale: 1,
             rotate: 0,
             borderRadius: 0,
+            width: this.props.width,
+            height: this.props.height,
             preview: null,
-            width: 150,
-            height: 200
         }
     }
+
+    openEditorModal() {
+        this.setState({
+            isEditorOpen: true
+        });
+    }
+
+    hideEditorModal() {
+        this.setState({
+            isEditorOpen: false
+        });
+    };
 
     //上传新的图片文件
     handleNewImage(e) {
@@ -29,8 +51,31 @@ export default class Avatar extends React.Component {
 
     //预览修改后的头像
     handleSave(data) {
-        const img = this.editor.getImageScaledToCanvas().toDataURL()
-        const rect = this.editor.getCroppingRect()
+        const img = this.editor.getImageScaledToCanvas().toDataURL();
+        const rect = this.editor.getCroppingRect();
+
+        //Base64编码加号上传后变空格问题
+        const str = img.replace(/\+/g, "%2B");
+
+        fetch(this.props.uploadUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'base64Data=' + str,
+            })
+            .catch(error => {
+                console.log("delete item error", error);
+                this.onMessage("error", "保存" + this.props.dataTypeName + "记录失败");
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("保存成功, 返回地址", data.obj);
+                    this.props.onTempUrlChange(this.props.getImageUrl + "/" + data.obj);
+                }
+            })
 
         this.setState({
             preview: {
@@ -39,10 +84,10 @@ export default class Avatar extends React.Component {
                 scale: this.state.scale,
                 width: this.state.width,
                 height: this.state.height,
-                borderRadius: this.state.borderRadius
             }
-        })
+        });
     }
+
 
     //图片缩放
     handleScale(e) {
@@ -55,54 +100,6 @@ export default class Avatar extends React.Component {
     handleAllowZoomOut(e) {
         this.setState({
             allowZoomOut: e.target.checked
-        })
-    }
-
-    rotateLeft(e) {
-        e.preventDefault()
-        this.setState({
-            rotate: this.state.rotate - 90
-        })
-    }
-
-    rotateRight(e) {
-        e.preventDefault()
-        this.setState({
-            rotate: this.state.rotate + 90
-        })
-    }
-
-    handleXPosition(e) {
-        const x = parseFloat(e.target.value)
-        this.setState({
-            position: {
-                x: x,
-                y: this.state.position.y
-            }
-        })
-    }
-
-    handleYPosition(e) {
-        const y = parseFloat(e.target.value)
-        this.setState({
-            position: {
-                x: this.state.position.x,
-                y: y
-            }
-        })
-    }
-
-    handleWidth(e) {
-        const width = parseInt(e.target.value)
-        this.setState({
-            width
-        })
-    }
-
-    handleHeight(e) {
-        const height = parseInt(e.target.value)
-        this.setState({
-            height
         })
     }
 
@@ -120,115 +117,84 @@ export default class Avatar extends React.Component {
     setEditorRef(editor) {
         if (editor) this.editor = editor
     }
-
+    onChangeImageClick() {
+        this.refs.id_image.click();
+        console.log("onContainerClick");
+    }
 
     render() {
         return (
-            <div>
-        <ReactAvatarEditor
-          ref={this.setEditorRef.bind(this)}
-          scale={parseFloat(this.state.scale)}
-          width={this.state.width}
-          height={this.state.height}
-          position={this.state.position}
-          onPositionChange={this.handlePositionChange.bind(this)}
-          rotate={parseFloat(this.state.rotate)}
-          borderRadius={this.state.borderRadius}
-          onSave={this.handleSave.bind(this)}
-          onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-          onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-          onImageReady={this.logCallback.bind(this, 'onImageReady')}
-          onImageLoad={this.logCallback.bind(this, 'onImageLoad')}
-          onDropFile={this.logCallback.bind(this, 'onDropFile')}
-          image={this.state.image || 'images/20170802020028.jpg'}
-        />
-        <br />
-        New File:
-        <input name='newImage' type='file' onChange={this.handleNewImage} />
-        <br />
-        Zoom:
-        <input
-          name='scale'
-          type='range'
-          onChange={this.handleScale.bind(this)}
-          min={this.state.allowZoomOut ? '0.1' : '1'}
-          max='2'
-          step='0.01'
-          defaultValue='1'
-        />
-        <br />
-        {'Allow Scale < 1'}
-        <input
-          name='allowZoomOut'
-          type='checkbox'
-          onChange={this.handleAllowZoomOut.bind(this)}
-          checked={this.state.allowZoomOut}
-        />
-        <br />
-        X Position:
-        <input
-          name='scale'
-          type='range'
-          onChange={this.handleXPosition.bind(this)}
-          min='0'
-          max='1'
-          step='0.01'
-          value={this.state.position.x}
-        />
-        <br />
-        Y Position:
-        <input
-          name='scale'
-          type='range'
-          onChange={this.handleYPosition.bind(this)}
-          min='0'
-          max='1'
-          step='0.01'
-          value={this.state.position.y}
-        />
-        <br />
-        Rotate:
-        <button onClick={this.rotateLeft.bind(this)}>Left</button>
-        <button onClick={this.rotateRight.bind(this)}>Right</button>
-        <br />
-        <br />
-        <input type='button' onClick={this.handleSave.bind(this)} value='Preview' />
-        <br />
-        {!!this.state.preview &&
-          <img
-            src={this.state.preview.img}
-            style={{
-              borderRadius: `${(Math.min(
-                this.state.preview.height,
-                this.state.preview.width
-              ) +
-                10) *
-                (this.state.preview.borderRadius / 2 / 100)}px`
-            }}
-          />}
-        {!!this.state.preview &&
-          <ImageWithRect
-            width={
-              this.state.preview.scale < 1
-                ? this.state.preview.width
-                : this.state.preview.height * 478 / 270
-            }
-            height={this.state.preview.height}
-            image='avatar.jpg'
-            rect={this.state.preview.rect}
-            style={{
-              margin: '10px 24px 32px',
-              padding: 5,
-              border: '1px solid #CCC'
-            }}
-          />}
-      </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div style={{margin:'0 20px 10px'}}>          
+                            <button type="button" class="btn btn-primary" onClick={this.onChangeImageClick.bind(this)}>更改图片</button>
+                            <input name='newImage' ref="id_image" type='file' onChange={this.handleNewImage.bind(this)} style={{display:"none"}}/>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-default" onClick={this.handleSave.bind(this)}>&nbsp;预览 &nbsp;</button>                            
+                    </div>                        
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6">
+                        <ReactAvatarEditor
+                          ref={this.setEditorRef.bind(this)}
+                          scale={parseFloat(this.state.scale)}
+                          width={this.props.width}
+                          height={this.state.height}
+                          position={this.state.position}
+                          onPositionChange={this.handlePositionChange.bind(this)}
+                          rotate={parseFloat(this.state.rotate)}
+                          onSave={this.handleSave.bind(this)}
+                          onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                          onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                          onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                          onImageLoad={this.logCallback.bind(this, 'onImageLoad')}
+                          onDropFile={this.logCallback.bind(this, 'onDropFile')}
+                          image={this.state.image || this.state.tempImageUrl || '/images/none.png'}
+                          />
+                    </div>
+                    <div class="col-xs-6">
+                        <div style={{border:'1px solid #ccc', backgroudColor:'lightgray', padding:'10px', float:'left'}}>
+                        {!!this.state.preview ?
+                            <img src={this.state.preview.img} />
+                         :   
+                            <div style={{width:'200px', height:'200px'}}>
+                            </div>
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <input
+                          name='scale'
+                          type='range'
+                          onChange={this.handleScale.bind(this)}
+                          min={'0.1'}
+                          max='2'
+                          step='0.01'
+                          defaultValue='1'
+                        />                
+                </div>
+            </div>
         )
     }
 }
 
-// Used to display the cropping rect
-class ImageWithRect extends React.Component {
+export class ImageWithRect extends React.Component {
+    componentDidMount() {
+        this.redraw()
+    }
+
+    componentDidUpdate() {
+        this.redraw()
+    }
+
+    setCanvas(canvas) {
+        if (canvas) this.canvas = canvas
+    }
 
     handleImageLoad() {
         const ctx = this.canvas.getContext('2d')
@@ -268,23 +234,10 @@ class ImageWithRect extends React.Component {
         }
     }
 
-    setCanvas(canvas) {
-        if (canvas) this.canvas = canvas
-    }
-
-    componentDidMount() {
-        this.redraw()
-    }
-
-    componentDidUpdate() {
-        this.redraw()
-    }
-
     redraw() {
         const img = new Image()
-
         img.src = this.props.image
-        img.onload = this.handleImageLoad
+        img.onload = this.handleImageLoad.bind(this)
         this.imgElement = img
     }
 

@@ -49,4 +49,10 @@ mybatis-plus:
     cache-enabled: false
 #logging
 logging:
-  level: warn
+  level: debug
+  
+#yikang
+yikang:
+    upload:
+        path:
+            image: D:/workspace/yikang 
