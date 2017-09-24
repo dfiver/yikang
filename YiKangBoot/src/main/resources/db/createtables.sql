@@ -400,3 +400,31 @@
 		`reason_id` bigint(20) NOT NULL COMMENT '原因ID',
 		`delflag` TINYINT NOT NULL  DEFAULT 0 COMMENT '删除标记',	
 		PRIMARY KEY (`id`));
+
+  #用户表
+  DROP  TABLE IF EXISTS `yikang`.`user`;
+  CREATE TABLE `yikang`.`user`(
+    `id` bigint(20) NOT NULL COMMENT '用户表主键',
+    `username` varchar(20) NOT  NULL  COMMENT '用户名',
+    `name` VARCHAR(20) NOT NULL COMMENT '用户姓名',
+    `passwd` VARCHAR(12) NOT NULL COMMENT '密码',
+    `role_id` bigint(20) NOT NULL COMMENT '角色id',
+    PRIMARY KEY (`id`)
+  );
+
+  #角色名
+  DROP TABLE IF EXISTS `yikang`.`role`;
+  CREATE TABLE `yikang`.`role`(
+    `id` bigint(20) NOT  NULL COMMENT '角色表主键',
+    `name` VARCHAR(20) NOT NULL COMMENT '角色名称',
+    PRIMARY KEY (`id`)
+  );
+
+  #角色映射表
+  DROP TABLE IF EXISTS `yikang`.`role_permission`;
+  CREATE TABLE `yikang`.`role_permission`(
+    `id` bigint(20) NOT NULL COMMENT '角色映射表',
+    `role_id` bigint(20) NOT NULL COMMENT '角色id',
+    `permission` VARCHAR(20) NOT NULL COMMENT '权限串',
+    PRIMARY KEY (`id`)
+  );

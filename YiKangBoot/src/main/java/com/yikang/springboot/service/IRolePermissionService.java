@@ -1,7 +1,7 @@
 package com.yikang.springboot.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.yikang.springboot.entity.User;
+import com.yikang.springboot.entity.RolePermission;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.yikang.springboot.entity.User;
  * @author Yanghu
  * @since 2017-09-24
  */
-public interface IUserService extends IVOService<User> {
+public interface IRolePermissionService extends IVOService<RolePermission> {
 	
 }

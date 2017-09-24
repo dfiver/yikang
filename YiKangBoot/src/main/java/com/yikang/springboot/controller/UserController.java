@@ -1,29 +1,35 @@
 package com.yikang.springboot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.entity.User;
 import com.yikang.springboot.service.IUserService;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.stereotype.Controller;
+import com.yikang.springboot.controller.BaseController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Author: D.Yang
- * Email: koyangslash@gmail.com
- * Date: 16/10/9
- * Time: 上午11:58
- * Describe: 用户控制器
- * 
- * 代码生成器，参考源码测试用例：
- * 
- * /mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/generator/MysqlGenerator.java
+ * <p>
+ *  前端控制器
+ * </p>
  *
+ * @author Yanghu
+ * @since 2017-09-24
  */
 @Controller
-@RequestMapping("/user")
-public class UserController extends BaseController<User, IUserService> {
+@RequestMapping("/data/user")
+public class UserController extends BaseController<User,IUserService> {
 
+    @RequestMapping("login")
+    @ResponseBody
+    public JsonResult login(@RequestBody User entity){
+        EntityWrapper ew = new EntityWrapper<User>();
+        ew.setEntity(entity);
+        User u = service.selectOne(ew);
+        return (u!=null?renderSuccess(u):renderError());
+    }
 }

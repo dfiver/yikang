@@ -11,7 +11,8 @@ import {
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect
 } from 'react-router-dom'
 
 import NavHeader from './components/NavHeader';
@@ -37,6 +38,20 @@ import CommitStopReasonInfo from './components/CommitStopReasonInfo';
 import ProductAndStopReport from './components/ProductAndStopReport';
 import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
+import Login from './components/Login';
+
+const PrivateRoute = (p) => (
+    <Route {...p} render={props => (
+        !!sessionStorage.token ? (
+            <p.comp {...props}/>
+        ) : (
+            <Redirect to={{
+                pathname: '/login',
+                state: { from: props.location }
+            }}/>
+        )
+    )}/>
+);
 
 class YiKangRouter extends React.Component {
     constructor(props) {
@@ -47,35 +62,36 @@ class YiKangRouter extends React.Component {
         return (
             <Router>
                 <div>
-                    <Route path="/linescreen/:linid" component={LineScreen}></Route>{/*屏显看板*/}
-                    {/*<Route path="/" onEnter={requireAuth}></Route> 授权页面*/}
-                    <Route path="/backward" component={NavHeader}></Route> {/*首页：报表页面*/}                
-                    <Route path="/backward/workshop" component={WorkShop}></Route>{/*生产车间管理*/}
-                    <Route path="/backward/productfamily" component={ProductFamily}></Route>{/*产品家族管理*/}
-                    <Route path="/backward/line" component={Line}></Route>{/*生产线管理*/}
+                    <Route path="/login" component={Login} ></Route>{/*登陆页面*/}
+                    <PrivateRoute path="/linescreen/:linid" comp={LineScreen}></PrivateRoute>{/*屏显看板*/}
 
-                    <Route path="/backward/joblevelandskilllevel" component={JobLevelAndSkillLevel}></Route>{/*岗位级别及技能星级设置*/}
-                    <Route path="/backward/job" component={Job}></Route>{/*岗位管理*/}
+                    <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
+                    <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
+                    <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
+                    <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
 
-                    <Route path="/backward/productcode" component={ProductCode}></Route>{/*生产型号管理*/}
-                    <Route path="/backward/batchno" component={BatchNo}></Route>{/*批次号管理*/}
-                    <Route path="/backward/mode" component={Mode}></Route>{/*停机原因类别管理*/}
-                    <Route path="/backward/stopreason" component={StopReason}></Route>{/*停机原因管理*/}
+                    <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
+                    <PrivateRoute path="/backward/job" comp={Job}></PrivateRoute>{/*岗位管理*/}
 
-                    <Route path="/backward/user" component={User}></Route>{/*用户管理*/}
-                    <Route path="/backward/roleandpower" component={RoleAndPower}></Route>{/*角色权限管理*/}
+                    <PrivateRoute path="/backward/productcode" comp={ProductCode}></PrivateRoute>{/*生产型号管理*/}
+                    <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
+                    <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
+                    <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}
 
-                    <Route path="/backward/operator" component={Operator}></Route>{/*操作人员管理*/}
-                    <Route path="/backward/operatordetail/:id" component={OperatorDetail}></Route>{/*操作人员明细*/}
-                    <Route path="/backward/operationList" component={OperationList}></Route>{/*人员工作明细清单*/}
-                    <Route path="/backward/paymeta" component={PayMeta}></Route>{/*补贴基础数据设置*/}
-                    <Route path="/backward/pay" component={Pay}></Route>{/*薪资管理*/}
+                    <PrivateRoute path="/backward/user" comp={User}></PrivateRoute>{/*用户管理*/}
+                    <PrivateRoute path="/backward/roleandpower" comp={RoleAndPower}></PrivateRoute>{/*角色权限管理*/}
 
-                    <Route path="/backward/commitproductinfo" component={CommitProductInfo}></Route>{/*生产信息采集*/}
-                    <Route path="/backward/commitstopreasoninfo" component={CommitStopReasonInfo}></Route>{/*停机信息采集*/}
+                    <PrivateRoute path="/backward/operator" comp={Operator}></PrivateRoute>{/*操作人员管理*/}
+                    <PrivateRoute path="/backward/operatordetail/:id" comp={OperatorDetail}></PrivateRoute>{/*操作人员明细*/}
+                    <PrivateRoute path="/backward/operationList" comp={OperationList}></PrivateRoute>{/*人员工作明细清单*/}
+                    <PrivateRoute path="/backward/paymeta" comp={PayMeta}></PrivateRoute>{/*补贴基础数据设置*/}
+                    <PrivateRoute path="/backward/pay" comp={Pay}></PrivateRoute>{/*薪资管理*/}
 
-                    <Route path="/backward/productandstopreport" component={ProductAndStopReport}></Route>{/*生产和停机信息列表*/}
-                    <Route path="/backward/gapreoprt" component={GAPReport}></Route>{/*GAP图表*/}
+                    <PrivateRoute path="/backward/commitproductinfo" comp={CommitProductInfo}></PrivateRoute>{/*生产信息采集*/}
+                    <PrivateRoute path="/backward/commitstopreasoninfo" comp={CommitStopReasonInfo}></PrivateRoute>{/*停机信息采集*/}
+
+                    <PrivateRoute path="/backward/productandstopreport" comp={ProductAndStopReport}></PrivateRoute>{/*生产和停机信息列表*/}
+                    <PrivateRoute path="/backward/gapreoprt" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
                 </div>
             </Router>
         )
