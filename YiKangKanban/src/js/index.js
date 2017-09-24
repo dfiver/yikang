@@ -64,7 +64,7 @@ class YiKangRouter extends React.Component {
                 <div>
                     <Route path="/login" component={Login} ></Route>{/*登陆页面*/}
                     <PrivateRoute path="/linescreen/:linid" comp={LineScreen}></PrivateRoute>{/*屏显看板*/}
-                    {/*<Route path="/" onEnter={requireAuth}></Route> 授权页面*/}
+
                     <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
                     <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}

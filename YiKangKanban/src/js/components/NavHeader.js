@@ -11,7 +11,6 @@ export default class NavHeader extends React.Component {
 		this.handleLogout=this.handleLogout.bind(this);
 	}
 	handleLogout(){
-		console.log("1234");
         sessionStorage.removeItem('token');
 	}
 	render() {

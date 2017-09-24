@@ -162,11 +162,11 @@ export default class BaseEditableDataTable extends React.Component {
         Object.is(headeritem.type, 'select') ?
         headeritem.selectoptions[0] :
         ''
-      ))
+      ));
       this.setState({
         state: "add",
         tempItem: tempItem
-      })
+      });
       console.log("BaseDataTable onAdd");
     }
   };
