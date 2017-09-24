@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yikang.springboot.mapper.UserMapper">
+<mapper namespace="com.yikang.springboot.mapper.RolePermissionMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.User">
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.RolePermission">
 		<id column="id" property="id" />
-		<result column="username" property="username" />
-		<result column="name" property="name" />
-		<result column="passwd" property="passwd" />
 		<result column="role_id" property="roleId" />
+		<result column="permission" property="permission" />
 	</resultMap>
 
 </mapper>

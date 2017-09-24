@@ -343,7 +343,7 @@ export default class LineScreen extends React.Component {
                             ))
                         }
                         </div>
-                    </div> < /nav>  < div class = "modal fade"
+                    </div> </nav>  <div class = "modal fade"
             id = "myModal" >
             <div class="modal-dialog">
                         <div class="modal-content">
@@ -366,7 +366,7 @@ export default class LineScreen extends React.Component {
                                 </button>
                             </div>
                         </div>
-                    </div> < /div>   < /div >
+                    </div> </div>   </div >
         )
     }
 }

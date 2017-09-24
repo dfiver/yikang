@@ -1,7 +1,7 @@
 package com.yikang.springboot.mapper;
 
-import com.yikang.springboot.entity.User;
 import com.yikang.springboot.common.SuperMapper;
+import com.yikang.springboot.entity.RolePermission;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.yikang.springboot.common.SuperMapper;
  * @author Yanghu
  * @since 2017-09-24
  */
-public interface UserMapper extends SuperMapper<User> {
+public interface RolePermissionMapper extends SuperMapper<RolePermission> {
 
 }

@@ -1,22 +1,25 @@
 package com.yikang.springboot.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.yikang.springboot.entity.User;
 import com.yikang.springboot.mapper.UserMapper;
 import com.yikang.springboot.service.IUserService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
+ * <p>
+ *  服务实现类
+ * </p>
  *
- * User 表数据服务层接口实现类
- *
+ * @author Yanghu
+ * @since 2017-09-24
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-	@Override
-	public Object getListViewList() {
-		return this.baseMapper.selectList(new EntityWrapper<User>());
-	}
+
+    @Override
+    public Object getListViewList() {
+        return this.baseMapper.selectList(new EntityWrapper<User>());
+    }
 }

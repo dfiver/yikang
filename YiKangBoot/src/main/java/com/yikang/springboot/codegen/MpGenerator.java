@@ -25,7 +25,7 @@ public class MpGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D://");
+        gc.setOutputDir("D:\\01_ProjectRepository\\03_Tmp\\mapper_temp\\");
         gc.setFileOverride(true);
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
@@ -77,7 +77,7 @@ public class MpGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.yikang");
-        pc.setModuleName("manage");
+        pc.setModuleName("springboot");
         mpg.setPackageInfo(pc);
 
         // 执行生成
