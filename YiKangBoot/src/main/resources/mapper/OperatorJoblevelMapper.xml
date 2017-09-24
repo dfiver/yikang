@@ -4,12 +4,35 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.OperatorJoblevel">
-		<id column="operator_id" property="operatorId" />
+		<id column="id" property="id" />	
+		<result column="operator_id" property="operatorId" />
 		<result column="job_id" property="jobId" />
 		<result column="starlevel" property="starlevel" />
 		<result column="expired" property="expired" />
 		<result column="state" property="state" />
 		<result column="delflag" property="delflag" />
 	</resultMap>
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="OperatorLevelMap" type="com.yikang.springboot.vo.OperatorJoblevelVO">
+		<id column="id" property="id" />
+		<result column="operator_id" property="operatorId" />
+		<result column="job_id" property="jobId" />
+		<result column="starlevel" property="starlevel" />
+		<result column="expired" property="expired" />
+		<result column="state" property="state" />
+		<result column="delflag" property="delflag" />
+		<association property="job" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="job_id" property="key" />
+			<result column="job_name" property="value" />
+		</association>
+	</resultMap>
+
+	<select id="getListViewListByOperatorId" resultMap="OperatorLevelMap" parameterType="Long">
+		select oj.*, job.name as job_name
+		from operator_joblevel oj
+		left join job on oj.job_id = job.id
+		where oj.operator_id = #{operatorId}
+	</select>
 
 </mapper>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BaseSimpleDataTable from './BaseSimpleDataTable';
+import BaseEditableDataTable from './BaseEditableDataTable';
 import FetchList from './FetchList';
 import {
     Avatar,
@@ -30,8 +30,9 @@ export default class OperatorDetail extends React.Component {
             isNew = true;
         }
         this.tempImageUrl = null;
+
         this.state = {
-            shiftselections: [],
+            shiftselectoptions: [],
             isNew: isNew,
             item: {
                 id: operatorId,
@@ -42,17 +43,53 @@ export default class OperatorDetail extends React.Component {
                 comment: '',
             },
             isModalOpen: false,
-            // item: {
-            //     workid: 'X4285',
-            //     avatar: '/images/20170802020028.jpg',
-            //     name: '操作员A',
-            //     shiftId: 'A',
-            //     comment: '操作员A备注',
-            // },
-        }
+
+            levelheadlist: [{
+                name: 'job',
+                nickName: '岗位',
+                type: 'select',
+                selectoptions: [],
+                width: 3,
+            }, {
+                name: 'starlevel',
+                nickName: '星级',
+                type: 'select',
+                selectoptions: [],
+                width: 3,
+            }, {
+                name: 'expired',
+                nickName: '到期时间',
+                type: 'date',
+                addAttr: {
+                    required: true,
+                    "data-required-error": "需要填写生产线名称"
+                },
+                width: 4,
+            }],
+            levelemptyitem: {
+                job: null,
+                starlevel: null,
+                expired: null
+            }
+
+        };
     }
 
+
+
     componentWillMount() {
+        fetch("/data/utils/expired/date")
+            .catch(error => console.log("fetch list error", error))
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    this.state.levelemptyitem.expired = data.obj;
+                    this.setState({
+                        levelemptyitem: this.state.levelemptyitem
+                    });
+                }
+            });
+
         //刷新班次列表
         new FetchList().fetchList("/data/shift/options", (datalist) => {
             if (Object.is(this.state.item.shiftId, '')) {
@@ -60,50 +97,75 @@ export default class OperatorDetail extends React.Component {
             }
             this.setState({
                 item: this.state.item,
-                shiftselections: datalist
+                shiftselectoptions: datalist
             });
         });
 
         //刷新工作列表
-        // new FetchList().fetchList("/data/job/options", (datalist) => {
-        //     this.setState({
-        //         jobselections: datalist
-        //     });
-        // });
+        new FetchList().fetchList("/data/job/options", (datalist) => {
+            this.state.levelheadlist[0].selectoptions = datalist;
+            this.setState({
+                levelheadlist: this.state.levelheadlist
+            });
+            if (datalist.length && (!this.state.levelemptyitem.job)) {
+                this.state.levelemptyitem.job = datalist[0];
+                this.setState({
+                    levelemptyitem: this.state.levelemptyitem
+                });
+            }
+        });
 
         //刷新星级列表，由于星级显示的特殊性，option的value值设定为[1,0,0,0,0]代表5星等级中的1星.
-        // fetch("/data/dict/star")
-        //     .catch(error => {
-        //         console.log("changes starlevel error", error);
-        //     })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         if (data.success) {
-        //             let num = data.obj;
-        //             if (num > 0 && num < 10) {
-        //                 let starselections = [];
-        //                 for (let i = 0; i < num; ++i) {
-        //                     let starArray = new Array(num);
-        //                     for (let j = 0; j < num; ++j) {
-        //                         starArray[j] = j > i ? false : true;
-        //                     }
-        //                     starselections[i] = {
-        //                         key: i + 1,
-        //                         value: starArray,
-        //                     };
-        //                     this.setState({
-        //                         starselections: starselections
-        //                     })
-        //                 }
-        //             }
-        //         }
-        //     });
+        fetch("/data/dict/star")
+            .catch(error => {
+                console.log("changes starlevel error", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let num = data.obj;
+                    if (num > 0 && num < 10) {
+                        let starselectoptions = [];
+                        for (let i = 0; i < num; ++i) {
+                            let starArray = new Array(num);
+                            for (let j = 0; j < num; ++j) {
+                                starArray[j] = j > i ? '☆' : '★';
+                            }
+                            starselectoptions[i] = {
+                                key: i + 1,
+                                value: starArray.join(''),
+                            };
+                        }
+                        this.state.levelheadlist[1].selectoptions = starselectoptions;
+                        this.setState({
+                            levelheadlist: this.state.levelheadlist
+                        });
+                        if (starselectoptions.length && (!this.state.levelemptyitem.starlevel)) {
+                            this.state.levelemptyitem.starlevel = starselectoptions[0];
+                            this.setState({
+                                levelemptyitem: this.state.levelemptyitem
+                            });
+                        }
+                    }
+
+                }
+            });
 
         //如果是修改，则获取操作员基本信息
         if (!this.state.isNew) {
             console.log("修改人员:", this.state.item.id);
             this.inter_refreshItem(this.state.item.id);
         }
+    }
+
+    getStarLevelKeyValue(level) {
+        let rlt;
+        this.state.levelheadlist[1].selectoptions.map((item, index) => {
+            if (Object.is(item.key, level)) {
+                rlt = item;
+            }
+        });
+        return rlt;
     }
 
     componentDidMount() {
@@ -219,6 +281,33 @@ export default class OperatorDetail extends React.Component {
         this.closeAvatorModual();
     }
 
+    operatorJoblvel_viewToEntity(viewItem) {
+        return {
+            id: viewItem.id,
+            operatorId: this.state.item.id,
+            jobId: viewItem.job.key,
+            starlevel: viewItem.starlevel.key,
+            expired: viewItem.expired,
+        }
+    }
+    operatorJoblvel_entityToView(entity) {
+        return {
+            id: entity.id,
+            job: entity.job,
+            starlevel: this.getStarLevelKeyValue(entity.starlevel),
+            expired: entity.expired,
+        }
+
+    }
+
+    addAnother() {
+        window.location.href = "/backward/OperatorDetail/0";
+    }
+
+    returnOperatorList() {
+        window.location.href = "/backward/Operator/";
+    }
+
     render() {
         return (
             <div>
@@ -230,6 +319,10 @@ export default class OperatorDetail extends React.Component {
                         <h1>修改操作员</h1>
                         }
                     </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-success pull-right" onClick={this.addAnother}>继续新增</button>
+                    <button class="btn btn-default pull-right" onClick={this.returnOperatorList}>返回</button>
                 </div>
                 <div class="row">
                     <div class="panel panel-default">
@@ -275,7 +368,7 @@ export default class OperatorDetail extends React.Component {
                                                             value={this.state.item.shiftId}
                                                             onChange={(event)=>this.onChangeShift(event.target.value)}>
                                                             {
-                                                                this.state.shiftselections.map((option, index)=>(
+                                                                this.state.shiftselectoptions.map((option, index)=>(
                                                                     <option key={index} value={option.key}>{option.value}</option>
                                                                     ))
                                                             }
@@ -306,36 +399,36 @@ export default class OperatorDetail extends React.Component {
                             </form>
                         </div>
                     </div>                                   
-                </div> {
-                /*                
-                                <div class="row">
-                                    <div class="col-xs-10">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4>星级</h4>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
-                                                              headlist={this.state.levelheadlist}
-                                                              viewToEntity = {this.viewToEntity}
-                                                              entityToView = {this.entityToView}
-                                                              fetchURL ={fetchURL}
-                                                              refreshHandler = {this.onReciveRefreshHandler}
-                                                              unaddable = {unaddable}
-                                                              unaddableMessage = {"请先选定产品型号"}
-                                                              disaddable = {disaddable}
-                                                              diseditable = {diseditable}
-                                                              disdelable = {disdelable}
-                                                              editRelayout={true}/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                </div>
+                {!!this.state.isNew ||
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4>星级</h4>
                                 </div>
-                */
+                                <div class="panel-body">
+                                    <BaseEditableDataTable 
+                                          dataTypeName={this.state.dataTypeName}
+                                          headerlist={this.state.levelheadlist}
+                                          emptyitem={this.state.levelemptyitem}
+                                          viewToEntity = {this.operatorJoblvel_viewToEntity.bind(this)}
+                                          entityToView = {this.operatorJoblvel_entityToView.bind(this)}
+                                          fetchURL ={'/data/operatorJoblevel/'+this.state.item.id}
+                                          //refreshHandler = {this.onReciveRefreshHandler}
+                                          //unaddable = {unaddable}
+                                          //unaddableMessage = {"请先选定产品型号"}
+                                          //disaddable = {disaddable}
+                                          //diseditable = {diseditable}
+                                          disdelable = {true}
+                                          //editRelayout={true}
+                                          />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
             <div class="row">
                 <div class="page-footer"></div>

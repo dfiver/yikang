@@ -16,8 +16,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/yikang?useUnicode=true&characterEncoding=UTF-8
     username: yikang
     password: yikang
-    continue-on-error: true 
-
+    continue-on-error: true
 
 #mybatis
 mybatis-plus:
@@ -50,7 +49,7 @@ mybatis-plus:
 #logging
 logging:
   level: debug
-  
+
 #yikang
 yikang:
     upload:

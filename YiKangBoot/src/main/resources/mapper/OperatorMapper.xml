@@ -14,6 +14,7 @@
 	</resultMap>
 	
 	<resultMap id="OperatorLevelMap" type="com.yikang.springboot.vo.OperatorJoblevelVO">
+		<result column="opjl_id" property="id" />
 		<result column="job_id" property="jobId" />
 		<result column="id" property="operatorId" />
 		<result column="starlevel" property="starlevel" />
@@ -46,6 +47,7 @@
 			op.shift_id as shift_id, op.comment as comment,
 			op.delflag as delfag,
 			st.name as shift_name,
+			opjl.id as opjl_id,
 			opjl.starlevel as starlevel,
 			opjl.expired as expired,
 			opjl.delflag as ol_delflag,

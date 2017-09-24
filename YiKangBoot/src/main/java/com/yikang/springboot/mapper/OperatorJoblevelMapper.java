@@ -1,6 +1,10 @@
 package com.yikang.springboot.mapper;
 
 import com.yikang.springboot.entity.OperatorJoblevel;
+import com.yikang.springboot.vo.OperatorJoblevelVO;
+
+import java.util.List;
+
 import com.yikang.springboot.common.SuperMapper;
 
 /**
@@ -12,5 +16,7 @@ import com.yikang.springboot.common.SuperMapper;
  * @since 2017-09-17
  */
 public interface OperatorJoblevelMapper extends SuperMapper<OperatorJoblevel> {
+
+	List<OperatorJoblevelVO> getListViewListByOperatorId(Long operatorId);
 
 }

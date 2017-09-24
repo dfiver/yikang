@@ -43,7 +43,7 @@ export default class NavHeader extends React.Component {
 							<li><Link to="/backward/user">用户管理</Link></li>
 							<li><Link to="/backward/roleandpower">角色权限管理</Link></li>
 							<li><Link to="/backward/operator">操作人员管理</Link></li>
-                            <li><Link to="/backward/operatordetail/0">操作人员明细(临时的)</Link></li>
+                            <li><Link to="/backward/operatordetail/909087628027035659">操作人员明细(临时的)</Link></li>
 							<li class="divider"/>
 							<li><Link to="/backward/paymeta">补贴数据设置</Link></li>
 							<li><Link to="/backward/pay">薪资管理</Link></li>

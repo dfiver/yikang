@@ -456,6 +456,7 @@ addable
 */
 export class BaseDataTableHeader extends React.Component {
   render() {
+    console.log("BaseDataTableHeader.props.headerlist", this.props.headerlist);
     return (
       <tr>
       {

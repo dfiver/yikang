@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yikang.springboot.common.SuperEntity;
 
 /**
@@ -23,9 +24,15 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 操作员工位技能表主键
+     */
+    @TableId
+    private Long id;
+    
+    /**
      * 操作员ID
      */
-    @TableId("operator_id")
+    @TableField("operator_id")
 	private Long operatorId;
     /**
      * 岗位ID
@@ -39,6 +46,7 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
     /**
      * 星级评定到期时间
      */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
 	private Date expired;
     /**
      * 星级评定状态：0：失效，1：有效
@@ -101,12 +109,13 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.operatorId;
+		return this.id;
 	}
 
 	@Override
 	public String toString() {
 		return "OperatorJoblevel{" +
+			", id=" + id +				
 			", operatorId=" + operatorId +
 			", jobId=" + jobId +
 			", starlevel=" + starlevel +
@@ -114,5 +123,13 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
 			", state=" + state +
 			", delflag=" + delflag +
 			"}";
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
