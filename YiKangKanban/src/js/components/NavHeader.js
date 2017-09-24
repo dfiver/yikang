@@ -1,11 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-	Link
+	Link,
+    Redirect
 } from 'react-router-dom';
 
 export default class NavHeader extends React.Component {
+	constructor(props){
+		super(props);
+		this.handleLogout=this.handleLogout.bind(this);
+	}
+	handleLogout(){
+		console.log("1234");
+        sessionStorage.removeItem('token');
+	}
 	render() {
+		const logined = !!sessionStorage.token;
+		if(!logined){
+			return (
+				<Redirect to="/login"/>
+			);
+		}
 		return (
 			<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
@@ -14,11 +29,10 @@ export default class NavHeader extends React.Component {
 				</div>
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<button type="button" class="btn btn-primary btn-lg">
-	  						<span class="glyphicon glyphicon-user"></span> User
-						</button>
+						{/*<button type="button" class="btn btn-primary btn-sm"></button>*/}
+						<span class="glyphicon glyphicon-user"></span>用户
 					</li>
-					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+					<li><a href="#" onClick={this.handleLogout}><span class="glyphicon glyphicon-log-in"></span> 退出</a></li>
 			    </ul>
 				<ul class="nav navbar-nav">
 					<li class="dropdown" >
