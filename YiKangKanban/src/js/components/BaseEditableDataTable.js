@@ -154,7 +154,7 @@ export default class BaseEditableDataTable extends React.Component {
       this.onMessage("alert", this.props.unaddableMessage || "不能新增");
     } else {
       let tempItem = Object.assign({}, this.props.emptyitem);
-<<<<<<< HEAD
+
       console.log("新建的记录：", tempItem);
       // this.props.headerlist.map((headeritem, colIndex) => (
       //   tempItem[headeritem.name] =
@@ -165,17 +165,7 @@ export default class BaseEditableDataTable extends React.Component {
       //   headeritem.selectoptions[0] :
       //   ''
       //))
-=======
-      this.props.headerlist.map((headeritem, colIndex) => (
-        tempItem[headeritem.name] =
-        (Object.is(headeritem.type, 'star') ||
-          Object.is(headeritem.type, 'index')) ?
-        index.toString() :
-        Object.is(headeritem.type, 'select') ?
-        headeritem.selectoptions[0] :
-        ''
-      ));
->>>>>>> 2154a3cd0edb4f3fabd3ce25297baa2092e9e668
+
       this.setState({
         state: "add",
         tempItem: tempItem
