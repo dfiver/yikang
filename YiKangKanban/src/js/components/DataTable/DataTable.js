@@ -117,6 +117,7 @@ export class BaseDataTableEditableCell extends React.Component {
   }
 
   render() {
+    console.log("this.props:",this.props);
     let headerItem = this.props.headerlist[this.props.columIndex];
     let itemWidth = this.props.editRelayout ? headerItem.edit_width : headerItem.width;
     let selectoptions = [];
@@ -280,8 +281,8 @@ value
 */
 class MultiSelect extends React.Component {
   componentDidMount() {
-    console.log("MultiSelect did mount!");
-    $(this.refs.multiselect).selectpicker('val', this.props.value.split(","));
+    console.log("MultiSelect did mount!:"+this.props);
+    $(this.refs.multiselect).selectpicker('val', this.props.selectoptions);
     $(this.refs.multiselect).on('hidden.bs.select', function(e) {
       this.props.onComplete($(e.target).val());
     }.bind(this));
@@ -325,8 +326,8 @@ value
 */
 class MultiGroupSelect extends React.Component {
   componentDidMount() {
-    console.log("MultiGroupSelect did mount!");
-    $(this.refs.multigroupselect).selectpicker('val', this.props.value.split(","));
+    console.log("MultiGroupSelect did mount!",this.props);
+    $(this.refs.multigroupselect).selectpicker('val', this.props.selectoptions);
     $(this.refs.multigroupselect).on('hidden.bs.select', function(e) {
       this.props.onComplete($(e.target).val());
     }.bind(this));

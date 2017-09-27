@@ -94,20 +94,6 @@ export default class RoleAndPower extends React.Component {
                 nickName: '角色备注',
                 type: 'textarea',
                 width: 3
-            }, {
-                name: 'state',
-                nickName: '使用状态',
-                type: 'switch',
-                switchoptions: [{
-                    state: true,
-                    stateValue: '启用',
-                    enabled: true
-                }, {
-                    state: false,
-                    stateValue: '停用',
-                    enabled: true
-                }],
-                width: 1
             }],
             itemlist: [{
                 rolename: '管理员',
@@ -142,6 +128,21 @@ export default class RoleAndPower extends React.Component {
             }
         }
     }
+    viewToEntity(viewItem) {
+        return {
+            id:viewItem.id,
+            name: viewItem.rolename
+        }
+    }
+    entityToView(entity) {
+        return {
+            id:entity.id,
+            rolename: entity.name,
+            power:{
+                key:"1"
+            }
+        }
+    }
     render() {
         return (
             <div class="container">
@@ -154,6 +155,9 @@ export default class RoleAndPower extends React.Component {
                     <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       itemlist={this.state.itemlist}
+                      fetchURL={"/data/role"}
+                      viewToEntity = {this.viewToEntity}
+                      entityToView = {this.entityToView}
                       emptyitem={this.state.emptyitem}/>
                 </div>
             </div>

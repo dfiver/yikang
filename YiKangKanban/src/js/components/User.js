@@ -29,7 +29,7 @@ export default class User extends React.Component {
             }, {
                 name: 'role',
                 nickName: '用户角色',
-                type: 'multiselect',
+                type: 'select',
                 selectoptions: [{
                     key: '1',
                     value: '管理员'
@@ -101,6 +101,26 @@ export default class User extends React.Component {
             }
         }
     }
+    viewToEntity(viewItem) {
+        return {
+            id:viewItem.id,
+            username: viewItem.username,
+            name: viewItem.realname,
+            passwd: '',
+            roleId: viewItem.role.key,
+        }
+    }
+    entityToView(entity) {
+        return {
+            id:entity.id,
+            username: entity.username,
+            realname: entity.name,
+            passwd: '',
+            role:{
+                key: entity.roleId
+            }
+        }
+    }
     render() {
         return (
             <div class="container">
@@ -113,6 +133,9 @@ export default class User extends React.Component {
                     <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       itemlist={this.state.itemlist}
+                      fetchURL={"/data/user"}
+                      viewToEntity = {this.viewToEntity}
+                      entityToView = {this.entityToView}
                       emptyitem={this.state.emptyitem}/>
                 </div>
             </div>

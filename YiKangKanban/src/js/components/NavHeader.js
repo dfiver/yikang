@@ -40,37 +40,37 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/workshop">生产车间管理</Link></li>
-							<li><Link to="/backward/productfamily">产品家族管理</Link></li>
-							<li><Link to="/backward/line">生产线管理</Link></li>
+							<li><Link to="/backward/workshop">生产车间</Link></li>
+							<li><Link to="/backward/productfamily">产品家族</Link></li>
+							<li><Link to="/backward/line">生产线</Link></li>
 							<li class="divider"/>
-							<li><Link to="/backward/job">岗位类别管理</Link></li>
-							<li><Link to="/backward/joblevelandskilllevel">岗位级别及技能级别管理</Link></li>
+							<li><Link to="/backward/job">岗位类别</Link></li>
+							<li><Link to="/backward/joblevelandskilllevel">岗位级别及技能级别</Link></li>
 							<li class="divider"/>
-							<li><Link to="/backward/productcode">生产型号管理</Link></li>
-							<li><Link to="/backward/batchno">批次号管理</Link></li>
+							<li><Link to="/backward/productcode">生产型号</Link></li>
+							<li><Link to="/backward/batchno">批次号</Link></li>
 							<li class="divider"/>
-							<li><Link to="/backward/mode">停机原意类别管理</Link></li>
-							<li><Link to="/backward/stopreason">停机原因管理</Link></li>
+							<li><Link to="/backward/mode">停机原意类别</Link></li>
+							<li><Link to="/backward/stopreason">停机原因</Link></li>
 							<li class="divider"/>
-							<li><Link to="/backward/user">用户管理</Link></li>
-							<li><Link to="/backward/roleandpower">角色权限管理</Link></li>
-							<li><Link to="/backward/operator">操作人员管理</Link></li>
+							<li><Link to="/backward/user">用户</Link></li>
+							<li><Link to="/backward/roleandpower">角色权限</Link></li>
+							<li><Link to="/backward/operator">操作人员</Link></li>
                             <li><Link to="/backward/operatordetail/909087628027035659">操作人员明细(临时的)</Link></li>
 							<li class="divider"/>
 							<li><Link to="/backward/paymeta">补贴数据设置</Link></li>
-							<li><Link to="/backward/pay">薪资管理</Link></li>
+							<li><Link to="/backward/pay">薪资</Link></li>
 							<li><Link to="/backward/operationlist">人员工作明细清单</Link></li>							
 						</ul>
 					</li>
 					<li>
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							运营数据管理
+							运营数据
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/commitproductinfo">生产信息管理</Link></li>
-							<li><Link to="/backward/commitstopreasoninfo">停机信息管理</Link></li>
+							<li><Link to="/backward/commitproductinfo">生产信息</Link></li>
+							<li><Link to="/backward/commitstopreasoninfo">停机信息</Link></li>
 						</ul>
 					</li>
 					<li>
