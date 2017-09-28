@@ -131,7 +131,8 @@ export default class RoleAndPower extends React.Component {
     viewToEntity(viewItem) {
         return {
             id:viewItem.id,
-            name: viewItem.rolename
+            name: viewItem.rolename,
+            comment: viewItem.comment
         }
     }
     entityToView(entity) {
@@ -140,7 +141,8 @@ export default class RoleAndPower extends React.Component {
             rolename: entity.name,
             power:{
                 key:"1"
-            }
+            },
+            comment: entity.comment
         }
     }
     render() {

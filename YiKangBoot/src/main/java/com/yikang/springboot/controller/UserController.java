@@ -33,12 +33,10 @@ public class UserController extends BaseController<User,IUserService> {
         return (u!=null?renderSuccess(u):renderError());
     }
 
-
     @RequestMapping("save")
     @ResponseBody
     public JsonResult save(@RequestBody User entity){
         entity.setPasswd("123456");
         return super.save(entity);
     }
-
 }

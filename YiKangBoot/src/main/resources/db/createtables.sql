@@ -409,6 +409,7 @@
     `name` VARCHAR(20) NOT NULL COMMENT '用户姓名',
     `passwd` VARCHAR(12) NOT NULL COMMENT '密码',
     `role_id` bigint(20) NOT NULL COMMENT '角色id',
+		`comment` VARCHAR(64) NULL COMMENT '备注',
     PRIMARY KEY (`id`)
   );
 
@@ -417,6 +418,7 @@
   CREATE TABLE `yikang`.`role`(
     `id` bigint(20) NOT  NULL COMMENT '角色表主键',
     `name` VARCHAR(20) NOT NULL COMMENT '角色名称',
+		`comment` VARCHAR(64) NULL COMMENT '备注',
     PRIMARY KEY (`id`)
   );
 

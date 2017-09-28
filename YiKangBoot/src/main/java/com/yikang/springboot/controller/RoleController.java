@@ -18,6 +18,6 @@ import com.yikang.springboot.controller.BaseController;
  */
 @Controller
 @RequestMapping("/data/role")
-public class RoleController extends BaseController<Role,IRoleService> {
+public class RoleController extends OptionalDataController<Role,IRoleService> {
 	
 }

@@ -6,6 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.Role">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
+		<result column="comment" property="comment" />
 	</resultMap>
 
 </mapper>

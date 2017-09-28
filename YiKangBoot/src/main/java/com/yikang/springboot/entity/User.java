@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.yikang.springboot.common.OptionalEntity;
 import com.yikang.springboot.common.SuperEntity;
+import com.yikang.springboot.common.result.KeyValue;
+
+import javax.swing.text.html.Option;
 
 /**
  * <p>
@@ -12,9 +16,9 @@ import com.yikang.springboot.common.SuperEntity;
  * </p>
  *
  * @author Yanghu
- * @since 2017-09-24
+ * @since 2017-09-28
  */
-public class User extends SuperEntity<User> {
+public class User extends OptionalEntity<User> {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +43,10 @@ public class User extends SuperEntity<User> {
      */
 	@TableField("role_id")
 	private Long roleId;
+    /**
+     * 备注
+     */
+	private String comment;
 
 
 	public Long getId() {
@@ -81,6 +89,14 @@ public class User extends SuperEntity<User> {
 		this.roleId = roleId;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -94,6 +110,15 @@ public class User extends SuperEntity<User> {
 			", name=" + name +
 			", passwd=" + passwd +
 			", roleId=" + roleId +
+			", comment=" + comment +
 			"}";
+	}
+
+	@Override
+	public KeyValue option() {
+		KeyValue kv = new KeyValue();
+		kv.setKey(this.getId());
+		kv.setValue(this.getName());
+		return kv;
 	}
 }

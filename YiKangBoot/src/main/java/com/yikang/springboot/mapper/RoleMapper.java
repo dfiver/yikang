@@ -1,7 +1,7 @@
 package com.yikang.springboot.mapper;
 
-import com.yikang.springboot.common.SuperMapper;
 import com.yikang.springboot.entity.Role;
+import com.yikang.springboot.common.SuperMapper;
 
 /**
  * <p>

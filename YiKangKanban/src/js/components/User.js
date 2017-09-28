@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseEditableDataTable from './BaseEditableDataTable';
+import FetchList from './FetchList';
 
 
 export default class User extends React.Component {
@@ -101,6 +102,25 @@ export default class User extends React.Component {
             }
         }
     }
+    componentWillMount(){
+            console.log("User will mount!");
+            //更新生产车间选项
+            (new FetchList()).fetchList("/data/role/options", (datalist => {
+                console.log("role options:", datalist);
+                let headerItem = Object.assign({}, this.state.headerlist[2], {
+                    selectoptions: datalist
+                });
+                let newHeaderlist = [].concat(this.state.headerlist);
+                newHeaderlist.splice(2, 1, headerItem);
+                this.setState({
+                    headerlist: newHeaderlist,
+                    emptyitem: Object.assign({}, this.state.emptyitem, {
+                        role: datalist.length ? datalist[0] : null
+                    })
+                });
+            }));
+
+    }
     viewToEntity(viewItem) {
         return {
             id:viewItem.id,
@@ -108,6 +128,7 @@ export default class User extends React.Component {
             name: viewItem.realname,
             passwd: '',
             roleId: viewItem.role.key,
+            comment: viewItem.comment
         }
     }
     entityToView(entity) {
@@ -117,8 +138,14 @@ export default class User extends React.Component {
             realname: entity.name,
             passwd: '',
             role:{
-                key: entity.roleId
-            }
+                key: entity.roleId,
+                value: this.headerlist[2].selectoptions.find((e)=>{
+                    console.log("key:",e.key);
+                    console.log("roleId",entity.roleId);
+                    return e.key==entity.roleId;
+                }).value
+            },
+            comment: entity.comment
         }
     }
     render() {

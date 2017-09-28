@@ -117,7 +117,6 @@ export class BaseDataTableEditableCell extends React.Component {
   }
 
   render() {
-    console.log("this.props:",this.props);
     let headerItem = this.props.headerlist[this.props.columIndex];
     let itemWidth = this.props.editRelayout ? headerItem.edit_width : headerItem.width;
     let selectoptions = [];

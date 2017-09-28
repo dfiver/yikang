@@ -9,6 +9,7 @@
 		<result column="name" property="name" />
 		<result column="passwd" property="passwd" />
 		<result column="role_id" property="roleId" />
+		<result column="comment" property="comment" />
 	</resultMap>
 
 </mapper>
