@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.yikang.springboot.common.SuperMapper;
+import com.yikang.springboot.common.result.KeyValue;
 import com.yikang.springboot.entity.Batchno;
 import com.yikang.springboot.vo.BatchnoVO;
 
@@ -18,4 +19,6 @@ import com.yikang.springboot.vo.BatchnoVO;
 public interface BatchnoMapper extends SuperMapper<Batchno> {
 
 	List<BatchnoVO> getBatchNoWithCondition(Map<String,Object> conditions);
+
+	List<KeyValue> getOptionsByLineId(Map<String, Object> conditions);
 }

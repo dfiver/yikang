@@ -32,11 +32,11 @@ import OperatorDetail from './components/OperatorDetail';
 import OperationList from './components/OperationList';
 import PayMeta from './components/PayMeta';
 import Pay from './components/Pay';
-import CommitProductInfo from './components/CommitProductInfo';
-import CommitStopReasonInfo from './components/CommitStopReasonInfo';
+import CommitProductAndStopReason from './components/CommitProductAndStopReason';
 import ProductAndStopReport from './components/ProductAndStopReport';
 import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
+import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
 
 class YiKangRouter extends React.Component {
     constructor(props) {
@@ -52,7 +52,7 @@ class YiKangRouter extends React.Component {
                     <Route path="/backward" component={NavHeader}></Route> {/*首页：报表页面*/}                
                     <Route path="/backward/workshop" component={WorkShop}></Route>{/*生产车间管理*/}
                     <Route path="/backward/productfamily" component={ProductFamily}></Route>{/*产品家族管理*/}
-                    <Route path="/backward/line" component={Line}></Route>{/*生产线管理*/}
+                    <Route path="/backward/line/:lineId" component={Line}></Route>{/*生产线管理*/}
 
                     <Route path="/backward/joblevelandskilllevel" component={JobLevelAndSkillLevel}></Route>{/*岗位级别及技能星级设置*/}
                     <Route path="/backward/job" component={Job}></Route>{/*岗位管理*/}
@@ -71,9 +71,8 @@ class YiKangRouter extends React.Component {
                     <Route path="/backward/paymeta" component={PayMeta}></Route>{/*补贴基础数据设置*/}
                     <Route path="/backward/pay" component={Pay}></Route>{/*薪资管理*/}
 
-                    <Route path="/backward/commitproductinfo" component={CommitProductInfo}></Route>{/*生产信息采集*/}
-                    <Route path="/backward/commitstopreasoninfo" component={CommitStopReasonInfo}></Route>{/*停机信息采集*/}
-
+                    <Route path="/backward/commitproductandstopreaon/:lineId" component={CommitProductAndStopReason}></Route>{/*生产信息采集*/}
+                <Route path="/backward/commitProductandstopreasonlineselect" component={CommitProductAndStopReasonLineSelect}></Route>{/*生产信息采集*/}                    
                     <Route path="/backward/productandstopreport" component={ProductAndStopReport}></Route>{/*生产和停机信息列表*/}
                     <Route path="/backward/gapreoprt" component={GAPReport}></Route>{/*GAP图表*/}
                 </div>

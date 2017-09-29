@@ -464,12 +464,10 @@ export class BaseDataTableHeader extends React.Component {
           ))
       }
       <th class="col-md-2">
-        {this.props.disaddable?'':
-        <a href="#" class="btn btn-success btn-sm pull-right" onClick={this.props.onAdd} disabled={this.props.unaddable?true:false}>
+        <button class="btn btn-success btn-sm pull-right" onClick={this.props.onAdd} disabled={this.props.unaddable?true:false}>
             <span class="glyphicon glyphicon-plus"></span>
               &nbsp;新增
-          </a>
-        } 
+        </button> 
       </th>
     </tr>
     )

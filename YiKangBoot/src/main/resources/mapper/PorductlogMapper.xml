@@ -13,7 +13,93 @@
 		<result column="done" property="done" />
 		<result column="crap" property="crap" />
 		<result column="rework" property="rework" />
+		<result column="comment" property="comment" />
 		<result column="delflag" property="delflag" />
 	</resultMap>
+	
+	<resultMap id="ProductlogWithPCodeMap" type="com.yikang.springboot.vo.ProductlogWithProducecodeVO" >
+		<association property="productlog" javaType="com.yikang.springboot.entity.Porductlog">
+			<result column="pl_id" property="id" />
+			<result column="pl_line_id" property="lineId" />
+			<result column="pl_shift_id" property="shiftId" />
+			<result column="pl_batchno_id" property="batchnoId" />
+			<result column="pl_starttime" property="starttime" />
+			<result column="pl_endtime" property="endtime" />
+			<result column="pl_done" property="done" />
+			<result column="pl_crap" property="crap" />
+			<result column="pl_rework" property="rework" />
+			<result column="pl_comment" property="comment" />
+			<result column="pl_delflag" property="delflag" />
+		</association>
+		<association property="productcode" javaType="com.yikang.springboot.entity.Productcode">
+			<result column="pc_id" property="id" />
+			<result column="pc_workshop_id" property="workshopId" />
+			<result column="pc_productfamily_id" property="productfamilyId" />
+			<result column="pc_productcode" property="productcode" />
+			<result column="pc_target" property="target" />
+			<result column="pc_EU" property="eu" />
+			<result column="pc_comment" property="comment" />
+			<result column="pc_delflag" property="delflag" />
+		</association>
+		<association property="batchno" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="bn_id" property="key" />
+			<result column="bn_name" property="value" />
+		</association>
+		<association property="line" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="pl_line_id" property="key" />
+			<result column="l_name" property="value" />
+		</association>		
+	</resultMap>
 
+	<select id="queryProductlogByCondition" resultMap="ProductlogWithPCodeMap" parameterType="Map">
+		select 
+			pl.id as pl_id,
+			pl.line_id as pl_line_id,
+			l.name as l_name,
+			pl.shift_id as pl_shift_id,
+			pl.batchno_id as pl_batchno_id,
+			pl.starttime as pl_starttime,
+			pl.endtime as pl_endtime,
+			pl.done as pl_done,
+			pl.crap as pl_crap,
+			pl.rework as pl_rework,
+			pl.comment as pl_comment,
+			pl.delflag as pl_delflag,
+			pc.id as pc_id,
+			pc.workshop_id as pc_workshop_id,
+			pc.productfamily_id as pc_productfamily_id,
+			pc.productcode as pc_productcode,
+			pc.target as pc_target,
+			pc.EU as pc_EU,
+			pc.comment as pc_comment,
+			pc.delflag as pc_delflag,
+			bn.id as bn_id,
+			bn.name as bn_name
+		from porductlog as pl
+		left join batchno as bn on pl.batchno_id = bn.id
+		left join productcode pc on bn.productcode_id = pc.id
+		left join line l on l.id = pl.line_id
+		where pl.delflag = 0
+		<if test="shiftId!=null and shiftId != ''">
+			and pl.shift_id = #{shiftId}
+		</if>
+		<if test="lineId!=null and lineId != ''">
+			and pl.line_id = #{lineId}
+		</if>
+		<if test="beginTime!=null">
+			and pl.starttime &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and pl.starttime &lt;= #{endTime}
+		</if>
+		<if test="workshopId != null and workshopId != ''">
+			and pc.workshop_id = #{workshopId}
+		</if>
+		<if test="productfamilyId != null and productfamilyId != ''">
+			and pc.productfamily_id = #{productfamilyId}
+		</if>
+		<if test="batchnoId != null and batchnoId !=''">
+			and pl.batchno_id = #{batchnoId}
+		</if>
+	</select>
 </mapper>

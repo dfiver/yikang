@@ -376,13 +376,14 @@
 	CREATE TABLE `yikang`.`porductlog` (
 		`id` bigint(20) NOT NULL COMMENT '生产信息日志表主键',
 		`line_id` bigint(20) NOT NULL COMMENT '生产线ID',
-		`shift_id` TINYINT NOT NULL COMMENT '班次ID',
+		`shift_id` bigint(20) NOT NULL COMMENT '班次ID',
 		`batchno_id` bigint(20) NOT NULL COMMENT '批次号ID',
     	`starttime` DATETIME NOT NULL COMMENT '开始时间',
     	`endtime` DATETIME NOT NULL COMMENT '截止时间',		
 		`done` INT NOT NULL COMMENT '已完成数量',
 		`crap` INT NOT NULL COMMENT '废品数量',
 		`rework` INT NOT NULL COMMENT '返工数量',
+        `comment` VARCHAR(200) NULL COMMENT '备注',	
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '删除标记',		
 		PRIMARY KEY (`id`));
 
@@ -391,10 +392,10 @@
 	CREATE TABLE `yikang`.`stopreasonlog` (
 		`id` bigint(20) NOT NULL COMMENT '故障信息日志表主键',
 		`line_id` bigint(20) NOT NULL COMMENT '班次ID',
-		`shift_id` TINYINT NOT NULL COMMENT '停机原因表主键',
-		`batchno_id` bigint(20) NOT NULL COMMENT '批次号ID',
+		`shift_id` bigint(20) NOT NULL COMMENT '停机原因表主键',
     	`starttime` DATETIME NOT NULL COMMENT '开始时间',
     	`endtime` DATETIME NOT NULL COMMENT '结束时间',			
 		`reason_id` bigint(20) NOT NULL COMMENT '原因ID',
+        `comment` VARCHAR(200) NULL COMMENT '备注',	
 		`delflag` TINYINT NOT NULL  DEFAULT 0 COMMENT '删除标记',	
 		PRIMARY KEY (`id`));

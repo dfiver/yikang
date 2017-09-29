@@ -1,278 +1,398 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SimpleSelect from './SimpleSelect/SimpleSelect';
+import FetchList from './FetchList';
+import dateformater from 'dateformater';
+import {
+    ListTable,
+    TableHeader,
+    CommonRow,
+    CommonCell
+} from './DataTable/ListTable';
 
 export default class ProductAndStopReport extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             dataTypeName: '生产停机信息报表',
-            shift:{
-                selected: 'A',
-                items:[
-                    {
-                        key:'A',
-                        value: 'A'
-                    },
-                    {
-                        key:'B',
-                        value: 'B'
-                    },
-                    {
-                        key:'C',
-                        value: 'C'
-                    }                    
-                ]
+
+            currentDate: '',
+            currentTime: '',
+
+            shiftSelection: [],
+            lineSelection: [],
+            workshopSelection: [],
+            productfamilySelection: [],
+            productCodeSelection: [],
+            batchNoSelection: [],
+
+            selectConditions: {
+                beginDate: '',
+                beginTime: '',
+                endDate: '',
+                endTime: '',
+                shiftId: '',
+                lineId: '',
+                workshopId: '',
+                productfamilyId: '',
+                productcodeId: '',
+                batchnoId: '',
             },
-            line:{
-                selected: '002',
-                items:[
-                    {
-                        key: '001',
-                        value: '生产线1'
-                    },
-                    {
-                        key: '002',
-                        value: '生产线2'
-                    },
-                    {
-                        key: '003',
-                        value: '生产线3'
-                    },
-                    {
-                        key: '004',
-                        value: '生产线4'
-                    }
-                ]
-            },
-            workshop:{
-                selected: '002',
-                items:[
-                    {
-                        key: '001',
-                        value: '生产车间1'
-                    },
-                    {
-                        key: '002',
-                        value: '生产车间2'
-                    },
-                    {
-                        key: '003',
-                        value: '生产车间3'
-                    },
-                    {
-                        key: '004',
-                        value: '生产车间4'
-                    }
-                ]                
-            },
-            time:{
-                selected: 0,
-                items:[
-                    {
-                        key:0,
-                        value:'00:00'
-                    },{
-                        key:1,
-                        value:'01:00'
-                    },{
-                        key:2,
-                        value:'02:00'
-                    },{
-                        key:3,
-                        value:'03:00'
-                    },{
-                        key:4,
-                        value:'04:00'
-                    },{
-                        key:5,
-                        value:'05:00'
-                    },{
-                        key:6,
-                        value:'06:00'
-                    },{
-                        key:7,
-                        value:'07:00'
-                    },{
-                        key:8,
-                        value:'08:00'
-                    },{
-                        key:9,
-                        value:'09:00'
-                    },{
-                        key:10,
-                        value:'10:00'
-                    },{
-                        key:11,
-                        value:'11:00'
-                    },{
-                        key:12,
-                        value:'12:00'
-                    },{
-                        key:13,
-                        value:'13:00'
-                    },{
-                        key:14,
-                        value:'14:00'
-                    },{
-                        key:15,
-                        value:'15:00'
-                    },{
-                        key:16,
-                        value:'16:00'
-                    },{
-                        key:17,
-                        value:'17:00'
-                    },{
-                        key:18,
-                        value:'18:00'
-                    },{
-                        key:19,
-                        value:'19:00'
-                    },{
-                        key:20,
-                        value:'20:00'
-                    },{
-                        key:21,
-                        value:'21:00'
-                    },{
-                        key:22,
-                        value:'22:00'
-                    },{
-                        key:23,
-                        value:'23:00'
-                    }
-                ]                
-            },
-            productFamily:{
-                selected: '002',
-                items:[
-                    {
-                        key: '001',
-                        value: '产品家族1'
-                    },
-                    {
-                        key: '002',
-                        value: '产品家族2'
-                    },
-                    {
-                        key: '003',
-                        value: '产品家族3'
-                    },
-                    {
-                        key: '004',
-                        value: '产品家族4'
-                    }
-                ]
-            },
-            productType:{
-                selected: '002',
-                items:[
-                    {
-                        key: '001',
-                        value: '2001'
-                    },
-                    {
-                        key: '002',
-                        value: '2002'
-                    },
-                    {
-                        key: '003',
-                        value: '2003'
-                    },
-                    {
-                        key: '004',
-                        value: '2004'
-                    }
-                ]
-            },
-            batchNo:{
-                selected: '002',
-                items:[
-                    {
-                        key: '001',
-                        value: '01'
-                    },
-                    {
-                        key: '002',
-                        value: '02'
-                    },
-                    {
-                        key: '003',
-                        value: '03'
-                    },
-                    {
-                        key: '004',
-                        value: '04'
-                    }
-                ]
-            },
-            productInfoList:{
-                items:[{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    done: '103',
-                    crap: '3',
-                    rework: '4'
-                },{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    done: '103',
-                    crap: '3',
-                    rework: '4'
-                },{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    done: '103',
-                    crap: '3',
-                    rework: '4'                    
-                }]
-            },
-            stopInfoList:{
-                items:[{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    stopReason: '停电',
-                    describe: '突然断电了'
-                },{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    stopReason: '停电',
-                    describe: '突然断电了'
-                },{
-                    date: '2017-09-25',
-                    beginHour: '05:00',
-                    endHour: '06:00',
-                    productCode: '2001',
-                    batchNo: '200101',
-                    target: '100',
-                    stopReason: '停电',
-                    describe: '突然断电了'
-                }]                
-            }
+
+            product_headerlist: [{
+                name: 'starttime',
+                nickName: '开始时间',
+                width: '180px',
+            }, {
+                name: 'endtime',
+                nickName: '结束时间',
+                width: '180px',
+            }, {
+                name: 'line',
+                nickName: '生产线'
+            }, {
+                name: 'productcode',
+                nickName: 'productcode',
+            }, {
+                name: 'batchno',
+                nickName: 'batchNo',
+                width: '180px',
+            }, {
+                name: 'target',
+                nickName: 'target',
+            }, {
+                name: 'done',
+                nickName: 'done',
+            }, {
+                name: 'crap',
+                nickName: 'crap',
+            }, {
+                name: 'rework',
+                nickName: 'rework',
+            }],
+
+            stop_headerlist: [{
+                name: 'starttime',
+                nickName: '开始时间',
+            }, {
+                name: 'endtime',
+                nickName: '结束时间',
+            }, {
+                name: 'line',
+                nickName: '生产线'
+            }, {
+                name: 'reason',
+                nickName: '停机原因'
+            }, {
+                name: 'mode',
+                nickName: '原因类别'
+            }],
+            product_itemlist: [],
+            stop_itemlist: [],
+
 
         }
     }
+
+    clearUpCondition(con) {
+        let beginTime;
+        let endTime;
+        if (con.beginDate && con.beginDate != '' && con.beginTime && con.begintTime != '') {
+            beginTime = con.beginDate + ' ' + con.beginTime;
+        } else {
+            beginTime = this.state.currentDate + '00:00';
+        }
+        if (con.endDate && con.endDate != '' && con.endTime && con.endTime != '') {
+            endTime = con.endDate + ' ' + con.endTime;
+        } else {
+            endTime = this.state.currentDate + ' ' + this.state.currentTime;
+        }
+        return {
+            beginTime: beginTime,
+            endTime: endTime,
+            shiftId: con.shiftId,
+            lineId: con.lineId,
+            workshopId: con.workshopId,
+            productfamilyId: con.productfamilyId,
+            productcodeId: con.productcodeId,
+            batchnoId: con.batchnoId,
+        }
+    }
+
+    product_EntityToView(entity) {
+        return {
+            starttime: entity.productlog.starttime,
+            endtime: entity.productlog.endtime,
+            line: entity.line.value,
+            productcode: entity.productcode.productcode,
+            batchno: entity.batchno.value,
+            target: entity.productcode.target,
+            done: entity.productlog.done,
+            crap: entity.productlog.crap,
+            rework: entity.productlog.rework
+        }
+    }
+
+    stop_EntityToView(entity) {
+        return {
+            starttime: entity.stopreasonlog.starttime,
+            endtime: entity.stopreasonlog.endtime,
+            line: entity.line.value,
+            reason: entity.reason.name,
+            mode: entity.mode.name,
+        }
+    }
+
+
+    init_currentDateTime() {
+        let date = new Date();
+        console.log(dateformater.format(date));
+        let currentDate = dateformater.format(date, 'YYYY-MM-DD');
+        let currentTime = dateformater.format(date, 'HHH:mmm');
+        this.state.currentDate = currentDate;
+        this.state.currentTime = currentTime;
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            beginDate: currentDate,
+            endDate: currentDate,
+            beginTime: '00:00',
+            endTime: currentTime
+        });
+        this.state.selectConditions = selectConditions;
+        this.setState({
+            selectConditions: selectConditions
+        })
+        console.log("当前时间：", currentDate + ' ' + currentTime);
+    }
+
+    inter_refresh_shift() {
+        new FetchList().fetchList("/data/shift/options", (datalist) => {
+            this.setState({
+                shiftSelection: datalist
+            })
+        })
+    }
+
+    inter_refresh_line() {
+        new FetchList().fetchList("/data/line/options", (datalist) => {
+            this.setState({
+                lineSelection: datalist
+            })
+        })
+    }
+
+    inter_refresh_workshop() {
+        new FetchList().fetchList("/data/workshop/options", (datalist) => {
+            this.setState({
+                workshopSelection: datalist
+            })
+        })
+    }
+
+    inter_refresh_productfamily() {
+        new FetchList().fetchList("/data/productfamily/options", (datalist) => {
+            this.setState({
+                productfamilySelection: datalist
+            })
+        })
+    }
+
+    inter_refresh_productcode() {
+        new FetchList().fetchList("/data/productcode/options", (datalist) => {
+            this.setState({
+                productCodeSelection: datalist
+            })
+        })
+    }
+
+    inter_refresh_batchno() {
+        new FetchList().fetchList("/data/batchno/options", (datalist) => {
+            this.setState({
+                batchNoSelection: datalist
+            })
+        })
+    }
+
+    query_productlist() {
+        let _fetchUrl = '/data/porductlog/query';
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.clearUpCondition(this.state.selectConditions))
+            })
+            .catch(error => {
+                console.log("query productInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let rltlist = data.obj;
+                    this.setState({
+                        product_itemlist: rltlist.map((item, index) => this.product_EntityToView(item))
+                    })
+                }
+            })
+    }
+
+    query_stoplist() {
+        let _fetchUrl = '/data/stopreasonlog/query';
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.clearUpCondition(this.state.selectConditions))
+            })
+            .catch(error => {
+                console.log("query stopreasonInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let rltlist = data.obj;
+                    this.setState({
+                        stop_itemlist: rltlist.map((item, index) => this.stop_EntityToView(item))
+                    })
+                }
+            })
+    }
+
+    componentWillMount() {
+        this.init_currentDateTime();
+        this.inter_refresh_shift();
+        this.inter_refresh_line();
+        this.inter_refresh_workshop();
+        this.inter_refresh_productfamily();
+        this.inter_refresh_productcode();
+        this.inter_refresh_batchno();
+        this.query_productlist();
+        this.query_stoplist();
+    }
+
+    onShiftChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            shiftId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onLineChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            lineId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onWorkShopChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            workshopId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onProductFamilyChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            productfamilyId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onProductCodeChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            productcodeId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onBatchNoChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            batchnoId: value
+        });
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onBeginDateChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            beginDate: value
+        });
+        console.log("beginDateChage", selectConditions);
+        if (selectConditions.endDate <= selectConditions.beginDate) {
+            selectConditions.endDate = selectConditions.beginDate;
+            if (selectConditions.endTime <= selectConditions.beginTime) {
+                selectConditions.endTime = selectConditions.beginTime;
+            }
+        }
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onBeginTimeChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            beginTime: value
+        });
+        if (selectConditions.endDate <= selectConditions.beginDate) {
+            selectConditions.endDate = selectConditions.beginDate;
+            if (selectConditions.endTime <= selectConditions.beginTime) {
+                selectConditions.endTime = selectConditions.beginTime;
+            }
+        }
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onEndDateChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            endDate: value
+        });
+        if (selectConditions.endDate <= selectConditions.beginDate) {
+            selectConditions.beginDate = selectConditions.endDate;
+            if (selectConditions.endTime <= selectConditions.beginTime) {
+                selectConditions.beginTime = selectConditions.endTime;
+            }
+        }
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onEndTimeChange(value) {
+        let selectConditions = Object.assign({}, this.state.selectConditions, {
+            endTime: value
+        });
+        if (selectConditions.endDate <= selectConditions.beginDate) {
+            selectConditions.beginDate = selectConditions.endDate;
+            if (selectConditions.endTime <= selectConditions.beginTime) {
+                selectConditions.beginTime = selectConditions.endTime;
+            }
+        }
+        this.setState({
+            selectConditions: selectConditions
+        })
+    }
+
+    onQueryClick(event) {
+        event.preventDefault();
+        this.query_productlist();
+        this.query_stoplist();
+    }
+
     render() {
         return (
             <div class="container">
@@ -291,145 +411,123 @@ export default class ProductAndStopReport extends React.Component {
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">班次选择:</label>
                                     <div class="col-md-2">
-                                        <SimpleSelect options={this.state.shift}/>
+                                        <SimpleSelect options={this.state.shiftSelection} 
+                                            value={this.state.selectConditions.shiftId}
+                                            onChange={(event)=>this.onShiftChange(event.target.value)}/>
                                     </div>
                                     <label class="col-md-1 control-label">生产线:</label>
                                     <div class="col-md-5">
-                                        <SimpleSelect options={this.state.line}/>
+                                        <SimpleSelect options={this.state.lineSelection}
+                                            value={this.state.selectConditions.lineId}
+                                            onChange={(event)=>this.onLineChange(event.target.value)}/>
                                     </div>                              
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">生产车间:</label>
                                     <div class="col-md-2">
-                                        <SimpleSelect options={this.state.workshop}/>
+                                        <SimpleSelect options={this.state.workshopSelection}
+                                            value={this.state.selectConditions.workshopId}
+                                            onChange={(event)=>this.onWorkShopChange(event.target.value)}/>
                                     </div>
                                     <label class="col-md-1 control-label">产品家族:</label>
                                     <div class="col-sm-2">
-                                        <SimpleSelect options={this.state.productFamily}/>
+                                        <SimpleSelect options={this.state.productfamilySelection}
+                                            value={this.state.selectConditions.productfamilyId}
+                                            onChange={(event)=>this.onProductFamilyChange(event.target.value)}/>
                                     </div>
                                     <label for="name" class="col-md-1 control-label">产品型号:</label>
                                     <div class="col-md-2">
-                                        <SimpleSelect options={this.state.productType}/>
+                                        <SimpleSelect options={this.state.productCodeSelection}
+                                            value={this.state.selectConditions.productcodeId}
+                                            onChange={(event)=>this.onProductCodeChange(event.target.value)}/>
                                     </div>
                                     <label for="name" class="col-md-1 control-label">批次号:</label>
                                     <div class="col-md-2">
-                                        <SimpleSelect options={this.state.batchNo}/>
+                                        <SimpleSelect options={this.state.batchNoSelection}
+                                            value={this.state.selectConditions.batchnoId}
+                                            onChange={(event)=>this.onBatchNoChange(event.target.value)}/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">开始日期:</label>
                                     <div class="col-md-2">
-                                        <input type="date" class="form-control"/>
+                                        <input type="date" class="form-control" 
+                                            value={this.state.selectConditions.beginDate}
+                                            onChange={(event)=>this.onBeginDateChange(event.target.value)}/>
                                     </div>
                                     <label class="col-md-1 control-label">开始时间:</label>
-                                    <div class="col-md-2">
-                                        <SimpleSelect options={this.state.time}/>
-                                    </div>
+                                        <div class="col-md-2">
+                                            <input type="time" class="form-control" 
+                                                value={this.state.selectConditions.beginTime}
+                                                onChange={(event)=>this.onBeginTimeChange(event.target.value)}/>
+                                        </div>
                                     <label class="col-md-1 control-label">结束日期:</label>
                                     <div class="col-md-2">
-                                        <input type="date" class="form-control"/>
+                                        <input type="date" class="form-control"
+                                            value={this.state.selectConditions.endDate}
+                                            onChange={(event)=>this.onEndDateChange(event.target.value)}/>
                                     </div>
                                     <label class="col-md-1 control-label">结束时间:</label>
                                     <div class="col-md-2">
-                                        <SimpleSelect options={this.state.time}/>
+                                        <input type="time" class="form-control"
+                                            value={this.state.selectConditions.endTime}
+                                            onChange={(event)=>this.onEndTimeChange(event.target.value)}/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <button class="btn btn-primary pull-right">查询</button>
+                                        <button class="btn btn-primary pull-right"
+                                            onClick={this.onQueryClick.bind(this)}>
+                                            查询
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>    
+                </div>                
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>生产信息报表</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <ListTable headerlist={this.state.product_headerlist}
+                                            itemlist={this.state.product_itemlist} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
-                <div class="panel panel-default">
-                    <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4>生产信息报表</h4>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>日期</th>
-                                        <th>开始时间</th>
-                                        <th>结束时间</th>
-                                        <th>ProductCode</th>
-                                        <th>BatchNo</th>
-                                        <th>Target</th>
-                                        <th>Done</th>
-                                        <th>Crap</th>
-                                        <th>Rework</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {this.state.productInfoList.items.map((item, index)=>(
-                                    <tr key={index}>
-                                        <td>{item.date}</td>
-                                        <td>{item.beginHour}</td>
-                                        <td>{item.endHour}</td>
-                                        <td>{item.productCode}</td>
-                                        <td>{item.batchNo}</td>                         
-                                        <td>{item.target}</td>
-                                        <td>{item.done}</td>
-                                        <td>{item.crap}</td>
-                                        <td>{item.rework}</td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             <h4>停机信息报表</h4>
-                            <table class="table table-striped">
-                               <thead>
-                                  <tr>
-                                     <th>日期</th>
-                                     <th>开始时间</th>
-                                     <th>结束时间</th>
-                                     <th>ProductCode</th>
-                                     <th>BatchNo</th>
-                                     <th>Target</th>
-                                     <th>停机原因</th>
-                                     <th>备注</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                                {this.state.stopInfoList.items.map((item, index)=>(
-                                    <tr key={index}>
-                                        <td>{item.date}</td>
-                                        <td>{item.beginHour}</td>
-                                        <td>{item.endHour}</td>
-                                        <td>{item.productCode}</td>
-                                        <td>{item.batchNo}</td>                         
-                                        <td>{item.target}</td>
-                                        <td>{item.stopReason}</td>
-                                        <td>{item.describe}</td>
-                                    </tr>
-                                ))}
-                               </tbody>
-                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <ListTable headerlist={this.state.stop_headerlist}
+                                            itemlist={this.state.stop_itemlist} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <button class="btn btn-success pull-right">导出全部</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="page-footer">
-                <p style={{textAlign:'center'}}>
-                    Copyright ©2017 益康生产线管理系统 Powered By [] Version 1.0.0 
-                </p>
-            </div>
-        </div>
-    </div>
-        );
+
+
+                <div class = "row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-success pull-right">导出全部</button>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "page-footer">
+                        <p style = {{textAlign: 'center'}}>Copyright© 2017 益康生产线管理系统 Powered By[] Version 1.0 .0 </p>
+                    </div> 
+                </div> 
+            </div>);
     }
 }

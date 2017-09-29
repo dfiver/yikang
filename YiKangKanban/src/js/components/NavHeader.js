@@ -56,8 +56,7 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/commitproductinfo">生产信息管理</Link></li>
-							<li><Link to="/backward/commitstopreasoninfo">停机信息管理</Link></li>
+							<li><Link to="/backward/commitProductandstopreasonlineselect">生产信息管理</Link></li>
 						</ul>
 					</li>
 					<li>

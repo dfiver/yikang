@@ -16,4 +16,6 @@ import com.yikang.springboot.vo.LineVO;
  */
 public interface ILineService extends IVOService<Line> {
 
+	LineVO getLineVOById(Long id);
+
 }

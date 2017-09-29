@@ -1,5 +1,6 @@
 package com.yikang.springboot.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.yikang.springboot.common.result.KeyValue;
 import com.yikang.springboot.entity.Batchno;
 import com.yikang.springboot.mapper.BatchnoMapper;
 import com.yikang.springboot.service.IBatchnoService;
@@ -31,5 +33,12 @@ public class BatchnoServiceImpl extends ServiceImpl<BatchnoMapper, Batchno> impl
 	@Override
 	public Object getBatchNoWithCondition(Map<String, Object> conditions) {
 		return this.baseMapper.getBatchNoWithCondition(conditions);
+	}
+
+	@Override
+	public List<KeyValue> getOptionsByLineId(Long lineId) {
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("lineId", lineId);
+		return this.baseMapper.getOptionsByLineId(conditions);
 	}
 }
