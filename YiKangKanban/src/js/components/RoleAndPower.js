@@ -74,10 +74,7 @@ export default class RoleAndPower extends React.Component {
                     options: [{
                         key: '16',
                         value: '生产信息管理'
-                    }, {
-                        key: '17',
-                        value: '停机信息管理'
-                    }, ]
+                    } ]
                 }, {
                     name: '报表展示',
                     options: [{

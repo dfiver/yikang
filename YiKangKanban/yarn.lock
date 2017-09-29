@@ -1457,6 +1457,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "http://r.cnpmjs.org/date-now/download/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+dateformater@^0.1.1:
+  version "0.1.1"
+  resolved "http://r.cnpmjs.org/dateformater/download/dateformater-0.1.1.tgz#4c429c6427d90652fe722750d1451d94cf1a9944"
+
 debug@2.6.8:
   version "2.6.8"
   resolved "http://r.cnpmjs.org/debug/download/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
@@ -3026,7 +3030,7 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@2.x, moment@^2.18.1:
+moment@2.x, moment@^2.17.1, moment@^2.18.1:
   version "2.18.1"
   resolved "http://r.cnpmjs.org/moment/download/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -3397,6 +3401,10 @@ pkg-dir@^2.0.0:
   resolved "http://r.cnpmjs.org/pkg-dir/download/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
   dependencies:
     find-up "^2.1.0"
+
+popper.js@^1.12.5:
+  version "1.12.5"
+  resolved "http://r.cnpmjs.org/popper.js/download/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
 
 portfinder@^1.0.9:
   version "1.0.13"
@@ -4153,6 +4161,16 @@ react-bootstrap@^0.31.1:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
+react-datepicker@^0.55.0:
+  version "0.55.0"
+  resolved "http://r.cnpmjs.org/react-datepicker/download/react-datepicker-0.55.0.tgz#5ab8be35b1ee3e512fadf97d4e96c9d14ae06594"
+  dependencies:
+    classnames "^2.2.5"
+    moment "^2.17.1"
+    prop-types "^15.5.8"
+    react-onclickoutside "^6.1.1"
+    react-popper "^0.7.2"
+
 react-dom@^15.6.1:
   version "15.6.1"
   resolved "http://r.cnpmjs.org/react-dom/download/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
@@ -4188,6 +4206,10 @@ react-modal-bootstrap@^1.1.1:
     lodash.assign "^4.0.7"
     radium "0.18.0"
 
+react-onclickoutside@^6.1.1:
+  version "6.6.0"
+  resolved "http://r.cnpmjs.org/react-onclickoutside/download/react-onclickoutside-6.6.0.tgz#8526d0675fad26558e9f0a400c983b813c99ef3c"
+
 react-overlays@^0.7.0:
   version "0.7.0"
   resolved "http://r.cnpmjs.org/react-overlays/download/react-overlays-0.7.0.tgz#531898ff566c7e5c7226ead2863b8cf9fbb5a981"
@@ -4197,6 +4219,13 @@ react-overlays@^0.7.0:
     prop-types "^15.5.8"
     react-prop-types "^0.4.0"
     warning "^3.0.0"
+
+react-popper@^0.7.2:
+  version "0.7.3"
+  resolved "http://r.cnpmjs.org/react-popper/download/react-popper-0.7.3.tgz#fa2809a80fbe7ec516e9bac01d81bc47a8b5cd3b"
+  dependencies:
+    popper.js "^1.12.5"
+    prop-types "^15.5.10"
 
 react-prop-types@^0.4.0:
   version "0.4.0"

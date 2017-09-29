@@ -78,9 +78,7 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/commitProductandstopreasonlineselect">生产信息管理</Link></li>
-							<PermLink to="/backward/commitproductinfo" id="16">生产信息</PermLink>
-							<PermLink to="/backward/commitstopreasoninfo" id="17">停机信息</PermLink>
+							<PermLink to="/backward/commitProductandstopreasonlineselect" id="16">生产信息</PermLink>
 						</ul>
 					</li>
 					<li>
