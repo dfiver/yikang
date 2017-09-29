@@ -31,6 +31,10 @@ public class Role extends OptionalEntity<Role> {
      * 备注
      */
 	private String comment;
+    /**
+     * 权限串
+     */
+	private String permission;
 
 
 	public Long getId() {
@@ -57,6 +61,14 @@ public class Role extends OptionalEntity<Role> {
 		this.comment = comment;
 	}
 
+	public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -68,14 +80,15 @@ public class Role extends OptionalEntity<Role> {
 			"id=" + id +
 			", name=" + name +
 			", comment=" + comment +
+			", permission=" + permission +
 			"}";
 	}
 
 	@Override
 	public KeyValue option() {
-		KeyValue rlt = new KeyValue();
-		rlt.setKey(this.getId());
-		rlt.setValue(this.getName());
-		return rlt;
+		KeyValue kv = new KeyValue();
+		kv.setValue(this.getName());
+		kv.setKey(this.getId());
+		return kv;
 	}
 }

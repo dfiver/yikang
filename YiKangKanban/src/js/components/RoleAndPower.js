@@ -92,7 +92,7 @@ export default class RoleAndPower extends React.Component {
             }, {
                 name: 'comment',
                 nickName: '角色备注',
-                type: 'textarea',
+                type: 'text',
                 width: 3
             }],
             itemlist: [{
@@ -125,22 +125,30 @@ export default class RoleAndPower extends React.Component {
                 power: '',
                 comment: '',
                 state: true,
+                power:{
+                    key: '',
+                    value: ''
+                }
             }
         }
     }
     viewToEntity(viewItem) {
+        console.log("viewItem====",viewItem);
         return {
             id:viewItem.id,
             name: viewItem.rolename,
-            comment: viewItem.comment
+            comment: viewItem.comment,
+            permission:viewItem.power.key
         }
     }
     entityToView(entity) {
+        console.log("entity====",entity);
         return {
             id:entity.id,
             rolename: entity.name,
             power:{
-                key:"1"
+                key: entity.permission,
+                value: entity.permission
             },
             comment: entity.comment
         }

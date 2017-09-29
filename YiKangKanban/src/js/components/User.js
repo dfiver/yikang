@@ -46,7 +46,7 @@ export default class User extends React.Component {
             }, {
                 name: 'comment',
                 nickName: '用户备注',
-                type: 'textarea',
+                type: 'text',
                 width: 2
             }, {
                 name: 'passwordState',
@@ -140,8 +140,6 @@ export default class User extends React.Component {
             role:{
                 key: entity.roleId,
                 value: this.headerlist[2].selectoptions.find((e)=>{
-                    console.log("key:",e.key);
-                    console.log("roleId",entity.roleId);
                     return e.key==entity.roleId;
                 }).value
             },

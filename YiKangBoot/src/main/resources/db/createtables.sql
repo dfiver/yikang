@@ -419,6 +419,7 @@
     `id` bigint(20) NOT  NULL COMMENT '角色表主键',
     `name` VARCHAR(20) NOT NULL COMMENT '角色名称',
 		`comment` VARCHAR(64) NULL COMMENT '备注',
+		`permission` VARCHAR(100) NULL COMMENT '权限串',
     PRIMARY KEY (`id`)
   );
 
@@ -427,6 +428,6 @@
   CREATE TABLE `yikang`.`role_permission`(
     `id` bigint(20) NOT NULL COMMENT '角色映射表',
     `role_id` bigint(20) NOT NULL COMMENT '角色id',
-    `permission` VARCHAR(20) NOT NULL COMMENT '权限串',
+    `permission` VARCHAR(100) NOT NULL COMMENT '权限串',
     PRIMARY KEY (`id`)
   );

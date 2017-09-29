@@ -304,7 +304,6 @@ export default class BaseEditableDataTable extends React.Component {
 
   render() {
     const itemlist = this.state.itemlist;
-    console.log("itemlist", itemlist);
     const htmlitemlist = itemlist.map((item, index) => (
       Object.is(this.state.state, "change") && this.state.currentIndex == index ?
       <BaseDataTableEditableRow key={index} headerlist={this.props.headerlist} item={this.state.tempItem} 
@@ -354,7 +353,6 @@ export default class BaseEditableDataTable extends React.Component {
         </div>
     }
 
-    console.log("BaseEditableDataTable.props.headerlist", this.props.headerlist);
 
     return (
       <div>

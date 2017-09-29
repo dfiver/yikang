@@ -117,6 +117,7 @@ export class BaseDataTableEditableCell extends React.Component {
   }
 
   render() {
+    console.log("this.props:",this.props);
     let headerItem = this.props.headerlist[this.props.columIndex];
     let itemWidth = this.props.editRelayout ? headerItem.edit_width : headerItem.width;
     let selectoptions = [];
@@ -191,7 +192,7 @@ export class BaseDataTableEditableCell extends React.Component {
                 Object.is(headerItem.type, "multigroupselect") ?
                 <div class="form-group">
                   <label class="control-label">{headerItem.nickName+':'}</label>
-                  <MultiGroupSelect headerItem={headerItem} value={this.props.item[headerItem.name].key}
+                  <MultiGroupSelect headerItem={headerItem} value={this.props.item[headerItem.name].key.split(",")}
                         onComplete = {(value)=>(
                           this.props.onSelectItemChange(this.props.columIndex, selectoptions, value)
                           )}
@@ -326,14 +327,13 @@ value
 class MultiGroupSelect extends React.Component {
   componentDidMount() {
     console.log("MultiGroupSelect did mount!",this.props);
-    $(this.refs.multigroupselect).selectpicker('val', this.props.selectoptions);
+    $(this.refs.multigroupselect).selectpicker('val', this.props.value);
     $(this.refs.multigroupselect).on('hidden.bs.select', function(e) {
       this.props.onComplete($(e.target).val());
     }.bind(this));
   };
 
   render() {
-    console.log("multigroupselect headerItem", this.props.headerItem);
     return (
       <select ref="multigroupselect" class="selectpicker form-control" multiple title={"请选择"+this.props.headerItem.nickName}
             name={this.props.headerItem.name}>
