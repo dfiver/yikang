@@ -8,10 +8,8 @@ import {getStringForUnicode,getUnicode} from './Unicode';
 
 
 const PermLink = function (props) {
-	console.log("Props ==========",props);
 	const sessionPerm =JSON.parse(sessionStorage.perm);
 	const perm = getStringForUnicode(sessionPerm)?getStringForUnicode(sessionPerm).split(","):"";
-	console.log("perm string is :",perm);
     return perm.indexOf(""+props.id)>-1?(<li><Link to={props.to}>{props.children}</Link></li>): null;
 };
 export default class NavHeader extends React.Component {
