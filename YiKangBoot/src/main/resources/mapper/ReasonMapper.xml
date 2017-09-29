@@ -11,4 +11,21 @@
 		<result column="delflag" property="delflag" />
 	</resultMap>
 
+	<resultMap id="ViewResultMap" type="com.yikang.springboot.entity.Reason">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="mode_id" property="modeId" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+		<association property="mode" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="mode_id" property="key" />
+			<result column="mode_name" property="value" />
+		</association>
+	</resultMap>
+	
+	<select id="getListViewList" resultMap="ViewResultMap">
+		select * , m.name as mode_name
+		from reason r left join mode m on r.mode_id = m.id
+		where r.delflag = 0;
+	</select>
 </mapper>

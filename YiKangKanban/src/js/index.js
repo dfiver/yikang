@@ -33,24 +33,30 @@ import OperatorDetail from './components/OperatorDetail';
 import OperationList from './components/OperationList';
 import PayMeta from './components/PayMeta';
 import Pay from './components/Pay';
-import CommitProductInfo from './components/CommitProductInfo';
-import CommitStopReasonInfo from './components/CommitStopReasonInfo';
+import CommitProductAndStopReason from './components/CommitProductAndStopReason';
 import ProductAndStopReport from './components/ProductAndStopReport';
 import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
 import Login from './components/Login';
+import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
 
-const PrivateRoute = (p) => (
-    <Route {...p} render={props => (
-        !!sessionStorage.token ? (
+const PrivateRoute = (p) => ( < Route {...p
+    }
+    render = {
+        props => (!!sessionStorage.token ? (
             <p.comp {...props}/>
-        ) : (
-            <Redirect to={{
-                pathname: '/login',
-                state: { from: props.location }
-            }}/>
-        )
-    )}/>
+        ) : ( < Redirect to = {
+                {
+                    pathname: '/login',
+                    state: {
+                        from: props.location
+                    }
+                }
+            }
+            />
+        ))
+    }
+    />
 );
 
 class YiKangRouter extends React.Component {
@@ -68,7 +74,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
                     <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
-                    <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
+                    <PrivateRoute path="/backward/line/:lineId" comp={Line}></PrivateRoute>{/*生产线管理*/}
 
                     <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
                     <PrivateRoute path="/backward/job" comp={Job}></PrivateRoute>{/*岗位管理*/}
@@ -87,9 +93,8 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/paymeta" comp={PayMeta}></PrivateRoute>{/*补贴基础数据设置*/}
                     <PrivateRoute path="/backward/pay" comp={Pay}></PrivateRoute>{/*薪资管理*/}
 
-                    <PrivateRoute path="/backward/commitproductinfo" comp={CommitProductInfo}></PrivateRoute>{/*生产信息采集*/}
-                    <PrivateRoute path="/backward/commitstopreasoninfo" comp={CommitStopReasonInfo}></PrivateRoute>{/*停机信息采集*/}
-
+                    <PrivateRoute path="/backward/commitproductandstopreaon/:lineId" comp={CommitProductAndStopReason}></PrivateRoute>{/*生产信息采集*/}
+                    <PrivateRoute path="/backward/commitProductandstopreasonlineselect" comp={CommitProductAndStopReasonLineSelect}></PrivateRoute>{/*生产信息采集*/}                    
                     <PrivateRoute path="/backward/productandstopreport" comp={ProductAndStopReport}></PrivateRoute>{/*生产和停机信息列表*/}
                     <PrivateRoute path="/backward/gapreoprt" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
                 </div>

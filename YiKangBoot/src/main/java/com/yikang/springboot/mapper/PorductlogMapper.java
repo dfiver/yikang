@@ -1,7 +1,11 @@
 package com.yikang.springboot.mapper;
 
-import com.yikang.springboot.entity.Porductlog;
+import java.util.List;
+import java.util.Map;
+
 import com.yikang.springboot.common.SuperMapper;
+import com.yikang.springboot.entity.Porductlog;
+import com.yikang.springboot.vo.ProductlogWithProducecodeVO;
 
 /**
  * <p>
@@ -12,5 +16,7 @@ import com.yikang.springboot.common.SuperMapper;
  * @since 2017-09-17
  */
 public interface PorductlogMapper extends SuperMapper<Porductlog> {
+
+	List<ProductlogWithProducecodeVO> queryProductlogByCondition(Map<String, Object> conditionMap);
 
 }

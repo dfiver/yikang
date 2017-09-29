@@ -15,12 +15,13 @@ options={
         }]    
 }
 */
-export default class SimpleSelect extends React.Component{
-    render(){
-        return(
-            <select class="form-control" defaultValue={this.props.options.selected}>
+export default class SimpleSelect extends React.Component {
+    render() {
+        return (
+            <select class="form-control" value={this.props.value} onChange={this.props.onChange}>
+                <option value=''></option>
             {
-                this.props.options.items.map((item, index)=> (
+                this.props.options.map((item, index)=> (
                     <option key={index} value={item.key}>{item.value}</option>
                     ))
             }
