@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router';
 import FetchList from './FetchList';
 import {Redirect} from 'react-router-dom';
+import {getStringForUnicode,getUnicode} from './Unicode';
 
 class Login extends React.Component {
     constructor(props){
@@ -31,6 +32,7 @@ class Login extends React.Component {
         }).then(res => res.json()).then(data => {
             if (data.success) {
                 sessionStorage.token = true;
+                sessionStorage.perm = JSON.stringify(getUnicode(data.obj.role.permission));
                 this.setState({ redirectToReferrer: true })
             }
         });

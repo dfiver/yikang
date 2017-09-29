@@ -4,7 +4,16 @@ import {
 	Link,
     Redirect
 } from 'react-router-dom';
+import {getStringForUnicode,getUnicode} from './Unicode';
 
+
+const PermLink = function (props) {
+	console.log("Props ==========",props);
+	const sessionPerm =JSON.parse(sessionStorage.perm);
+	const perm = getStringForUnicode(sessionPerm)?getStringForUnicode(sessionPerm).split(","):"";
+	console.log("perm string is :",perm);
+    return perm.indexOf(""+props.id)>-1?(<li><Link to={props.to}>{props.children}</Link></li>): null;
+};
 export default class NavHeader extends React.Component {
 	constructor(props){
 		super(props);
@@ -40,27 +49,27 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/workshop">生产车间</Link></li>
-							<li><Link to="/backward/productfamily">产品家族</Link></li>
-							<li><Link to="/backward/line">生产线</Link></li>
+							<PermLink to="/backward/workshop" id="1">生产车间</PermLink>
+							<PermLink to="/backward/productfamily" id="2">产品家族</PermLink>
+							<PermLink to="/backward/line" id="3">生产线</PermLink>
 							<li class="divider"/>
-							<li><Link to="/backward/job">岗位类别</Link></li>
-							<li><Link to="/backward/joblevelandskilllevel">岗位级别及技能级别</Link></li>
+							<PermLink to="/backward/job" id="4">岗位类别</PermLink>
+							<PermLink to="/backward/joblevelandskilllevel" id="5">岗位级别及技能级别</PermLink>
 							<li class="divider"/>
-							<li><Link to="/backward/productcode">生产型号</Link></li>
-							<li><Link to="/backward/batchno">批次号</Link></li>
+							<PermLink to="/backward/productcode" id="6">生产型号</PermLink>
+							<PermLink to="/backward/batchno" id="7">批次号</PermLink>
 							<li class="divider"/>
-							<li><Link to="/backward/mode">停机原意类别</Link></li>
-							<li><Link to="/backward/stopreason">停机原因</Link></li>
+							<PermLink to="/backward/mode" id="8">停机原因类别</PermLink>
+							<PermLink to="/backward/stopreason" id="9">停机原因</PermLink>
 							<li class="divider"/>
-							<li><Link to="/backward/user">用户</Link></li>
-							<li><Link to="/backward/roleandpower">角色权限</Link></li>
-							<li><Link to="/backward/operator">操作人员</Link></li>
-                            <li><Link to="/backward/operatordetail/909087628027035659">操作人员明细(临时的)</Link></li>
+							<PermLink to="/backward/user" id="10">用户</PermLink>
+							<PermLink to="/backward/roleandpower" id="11">角色权限</PermLink>
+							<PermLink to="/backward/operator" id="12">操作人员</PermLink>
+                            <PermLink to="/backward/operatordetail/909087628027035659">操作人员明细(临时的)</PermLink>
 							<li class="divider"/>
-							<li><Link to="/backward/paymeta">补贴数据设置</Link></li>
-							<li><Link to="/backward/pay">薪资</Link></li>
-							<li><Link to="/backward/operationlist">人员工作明细清单</Link></li>							
+							<PermLink to="/backward/paymeta" id="13">补贴数据设置</PermLink>
+							<PermLink to="/backward/pay" id="14">薪资</PermLink>
+							<PermLink to="/backward/operationlist" id="15">人员工作明细清单</PermLink>
 						</ul>
 					</li>
 					<li>
@@ -69,8 +78,8 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/commitproductinfo">生产信息</Link></li>
-							<li><Link to="/backward/commitstopreasoninfo">停机信息</Link></li>
+							<PermLink to="/backward/commitproductinfo" id="16">生产信息</PermLink>
+							<PermLink to="/backward/commitstopreasoninfo" id="17">停机信息</PermLink>
 						</ul>
 					</li>
 					<li>
@@ -82,8 +91,8 @@ export default class NavHeader extends React.Component {
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><Link to="/backward/productandstopreport">生产和停机信息列表</Link></li>
-							<li><Link to="/backward/gapreport">GAP图表</Link></li>
+							<PermLink to="/backward/productandstopreport" id="18">生产和停机信息列表</PermLink>
+							<PermLink to="/backward/gapreport" id="19">GAP图表</PermLink>
 						</ul>
 					</li>
 				</ul>
