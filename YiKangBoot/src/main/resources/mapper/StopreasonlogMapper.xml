@@ -7,11 +7,83 @@
 		<id column="id" property="id" />
 		<result column="line_id" property="lineId" />
 		<result column="shift_id" property="shiftId" />
-		<result column="batchno_id" property="batchnoId" />
 		<result column="starttime" property="starttime" />
 		<result column="endtime" property="endtime" />
 		<result column="reason_id" property="reasonId" />
+		<result column="comment" property="comment" />		
 		<result column="delflag" property="delflag" />
 	</resultMap>
+	
+	<resultMap id="ReasonlogWithModeMap" type="com.yikang.springboot.vo.StopreaonlogWithModeVO">
+		<association property="stopreasonlog" javaType="com.yikang.springboot.entity.Stopreasonlog">
+			<result column="sl_id" property="id" />
+			<result column="sl_line_id" property="lineId" />
+			<result column="sl_shift_id" property="shiftId" />
+			<result column="sl_starttime" property="starttime" />
+			<result column="sl_endtime" property="endtime" />
+			<result column="sl_reason_id" property="reasonId" />
+			<result column="sl_comment" property="comment" />		
+			<result column="sl_delflag" property="delflag" />
+		</association>
+		<association property="reason" javaType="com.yikang.springboot.entity.Reason">
+	 		<result column="r_id" property="id" />
+			<result column="r_name" property="name" />
+			<result column="r_mode_id" property="modeId" />
+			<result column="r_comment" property="comment" />
+			<result column="r_delflag" property="delflag" />
+		</association>
+		<association property="mode" javaType="com.yikang.springboot.entity.Mode">
+			<result column="m_id" property="id" />
+			<result column="m_name" property="name" />
+			<result column="m_comment" property="comment" />
+			<result column="m_delflag" property="delflag" />
+		</association>
+		<association property="line" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="sl_line_id" property="key" />
+			<result column="l_name" property="value" />
+		</association>	
+	</resultMap>
+	
+	
+	<select id="queryByCondition" resultMap="ReasonlogWithModeMap" parameterType="Map">
+		select
+			sl.id as sl_id,
+			sl.line_id as sl_line_id,
+			l.name as l_name,
+			sl.shift_id as sl_shift_id,
+			sl.starttime as sl_starttime,
+			sl.endtime as sl_endtime,
+			sl.reason_id as sl_reason_id,
+			sl.comment as sl_comment,
+			sl.delflag as sl_delflag,
+			r.id as r_id,
+			r.name as r_name,
+			r.mode_id as r_mode_id,
+			r.comment as r_comment,
+			r.delflag as r_delflag,
+			m.id as m_id,
+			m.name as m_name,
+			m.comment as m_comment,
+			m.delflag as m_delflag
+		from stopreasonlog sl left join reason r on sl.reason_id = r.id
+		left join mode m on r.mode_id = m.id
+		left join line l on l.id = sl.line_id
+		where sl.delflag = 0
+		<if test="shiftId!=null and shiftId!=0">
+			and sl.shift_id = #{shiftId}
+		</if>
+		<if test="lineId!=null and lineId!=0">
+			and sl.line_id = #{lineId}
+		</if>
+		<if test="workshopId != null and workshopId != 0">
+			and l.workshop_id = #{workshop_id}
+		</if>
+		<if test="beginTime!=null">
+			and sl.starttime &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and sl.starttime &lt;= #{endTime}
+		</if>
+	</select>	
 
 </mapper>

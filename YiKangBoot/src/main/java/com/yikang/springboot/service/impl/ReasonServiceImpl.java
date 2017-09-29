@@ -2,7 +2,6 @@ package com.yikang.springboot.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.yikang.springboot.entity.Reason;
 import com.yikang.springboot.mapper.ReasonMapper;
@@ -20,6 +19,6 @@ import com.yikang.springboot.service.IReasonService;
 public class ReasonServiceImpl extends ServiceImpl<ReasonMapper, Reason> implements IReasonService {
 	@Override
 	public Object getListViewList() {
-		return this.baseMapper.selectList(new EntityWrapper<Reason>());
+		return this.baseMapper.getListViewList();
 	}
 }

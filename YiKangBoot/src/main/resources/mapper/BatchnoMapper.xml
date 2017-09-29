@@ -35,6 +35,11 @@
 		</association>
 	</resultMap>
 	
+	<resultMap id="KeyValueMap" type="com.yikang.springboot.common.result.KeyValue">
+		<result column="id" property="key" />
+		<result column="name" property="value" />
+	</resultMap>
+	
 	<select id="getBatchNoWithCondition" resultMap="ViewResultMap" parameterType="Map">
 		select 
 			 bn.*, 
@@ -56,6 +61,18 @@
 		</if>
 		<if test="state != null">
 			and bn.state = #{state}
+		</if>
+	</select>
+	
+	<select id="getOptionsByLineId" resultMap="KeyValueMap" parameterType="Map">
+		select distinct bn.id, bn.name
+			from batchno bn 
+			left join productcode pc on bn.productcode_id = pc.id
+			left join workshop ws on pc.workshop_id = ws.id
+			left join line l on l.workshop_id = ws.id
+		where bn.state != 2
+		<if test="lineId != null and lineId != 0">
+			and l.id = #{lineId}
 		</if>
 	</select>
 

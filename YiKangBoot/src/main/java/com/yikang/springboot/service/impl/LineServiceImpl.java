@@ -25,5 +25,10 @@ public class LineServiceImpl extends ServiceImpl<LineMapper, Line> implements IL
 	public List<LineVO> getListViewList() {
 		return this.baseMapper.getListViewList();
 	}
+
+	@Override
+	public LineVO getLineVOById(Long id) {
+		return this.baseMapper.getLineVOById(id);
+	}
 	
 }

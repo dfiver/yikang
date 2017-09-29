@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yikang.springboot.common.SuperEntity;
 
 /**
@@ -32,7 +33,7 @@ public class Porductlog extends SuperEntity<Porductlog> {
      * 班次ID
      */
 	@TableField("shift_id")
-	private Integer shiftId;
+	private Long shiftId;
     /**
      * 批次号ID
      */
@@ -41,10 +42,12 @@ public class Porductlog extends SuperEntity<Porductlog> {
     /**
      * 开始时间
      */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date starttime;
     /**
      * 截止时间
      */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")	
 	private Date endtime;
     /**
      * 已完成数量
@@ -58,6 +61,12 @@ public class Porductlog extends SuperEntity<Porductlog> {
      * 返工数量
      */
 	private Integer rework;
+	
+	/**
+	 * 备注
+	 */
+	private String comment;
+	
     /**
      * 删除标记
      */
@@ -81,11 +90,11 @@ public class Porductlog extends SuperEntity<Porductlog> {
 		this.lineId = lineId;
 	}
 
-	public Integer getShiftId() {
+	public Long getShiftId() {
 		return shiftId;
 	}
 
-	public void setShiftId(Integer shiftId) {
+	public void setShiftId(Long shiftId) {
 		this.shiftId = shiftId;
 	}
 
@@ -145,6 +154,7 @@ public class Porductlog extends SuperEntity<Porductlog> {
 		this.delflag = delflag;
 	}
 
+	
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -164,5 +174,13 @@ public class Porductlog extends SuperEntity<Porductlog> {
 			", rework=" + rework +
 			", delflag=" + delflag +
 			"}";
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

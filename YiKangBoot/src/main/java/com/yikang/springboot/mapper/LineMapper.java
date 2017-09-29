@@ -16,4 +16,5 @@ import com.yikang.springboot.vo.LineVO;
  */
 public interface LineMapper extends SuperMapper<Line> {
 	List<LineVO> getListViewList();
+	LineVO getLineVOById(Long id);
 }

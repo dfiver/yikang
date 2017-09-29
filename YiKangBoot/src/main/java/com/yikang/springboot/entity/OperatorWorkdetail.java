@@ -3,6 +3,7 @@ package com.yikang.springboot.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.yikang.springboot.common.SuperEntity;
@@ -68,18 +69,22 @@ public class OperatorWorkdetail extends SuperEntity<OperatorWorkdetail> {
 		this.seatId = seatId;
 	}
 
+	@JSONField(name = "starttime", format = "yyyy-MM-dd HH:mm:ss")	
 	public Date getStarttime() {
 		return starttime;
 	}
 
+	@JSONField(name = "starttime", format = "yyyy-MM-dd HH:mm:ss")		
 	public void setStarttime(Date starttime) {
 		this.starttime = starttime;
 	}
 
+	@JSONField(name = "endtime", format = "yyyy-MM-dd HH:mm:ss")		
 	public Date getEndtime() {
 		return endtime;
 	}
 
+	@JSONField(name = "endtime", format = "yyyy-MM-dd HH:mm:ss")	
 	public void setEndtime(Date endtime) {
 		this.endtime = endtime;
 	}

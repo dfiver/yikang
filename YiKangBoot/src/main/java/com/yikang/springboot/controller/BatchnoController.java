@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +18,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.common.result.KeyValue;
 import com.yikang.springboot.entity.Batchno;
+import com.yikang.springboot.entity.Productcode;
 import com.yikang.springboot.service.IBatchnoService;
-import com.yikang.springboot.vo.BatchnoVO;
+import com.yikang.springboot.service.IProductcodeService;
+import com.yikang.springboot.vo.BatchnoWithProductCodeVO;
 
 /**
  * <p>
@@ -31,15 +34,26 @@ import com.yikang.springboot.vo.BatchnoVO;
 @Controller
 @RequestMapping("/data/batchno")
 public class BatchnoController extends OptionalDataController<Batchno, IBatchnoService> {
-
-	@Override
-	public JsonResult getOptions(){
-		List<Batchno> entitys = service.selectList((new EntityWrapper<Batchno>()).where("state=0 OR state=1"));
-		List<KeyValue> rlt = new ArrayList<KeyValue>();
-		for(Batchno entity: entitys){
-			rlt.add(entity.option());
-		}
-		return renderSuccess().setObj(rlt);
+	
+	@Autowired
+	IProductcodeService productcodeService;
+	
+	@RequestMapping("/options/list")
+	@ResponseBody
+	public JsonResult getOptionsByLineId(@RequestParam Long lineId){
+		return renderSuccess().setObj(service.getOptionsByLineId(lineId));
+	}
+	
+	@RequestMapping("/getwithpcode")
+	@ResponseBody
+	public JsonResult getBatchnoWithProductCode(@RequestParam Long id){
+		Batchno bn = service.selectById(id);
+		Productcode pc = productcodeService.selectById(bn.getProductcodeId());
+		BatchnoWithProductCodeVO bpVO = new BatchnoWithProductCodeVO();
+		bpVO.setBatchno(bn);
+		bpVO.setProductcode(pc);
+		return renderSuccess().setObj(bpVO);
+		
 	}
 	
 	@RequestMapping("/{state}/workshop/{workshopId}/productfamily/{familyId}/list")
