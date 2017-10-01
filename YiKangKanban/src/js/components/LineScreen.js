@@ -104,92 +104,6 @@ export default class LineScreen extends React.Component {
                     crap: '0'
                 }],
             },
-            lineJobList: [{
-                jobId: 'LineA-001-1',
-                jobNickName: '点胶1',
-                jobLevel: 'C Level',
-                operator: {
-                    id: '001',
-                    avatar: '/images/1.jpg',
-                    name: '斯蒂芬库里',
-                    jobStar: [1, 1, 1, 1, 1],
-                },
-            }, {
-                jobId: 'LineA-001-2',
-                jobNickName: '点胶2',
-                jobLevel: 'B Level',
-                operator: {
-                    id: '002',
-                    avatar: '/images/2.jpg',
-                    name: '斯蒂芬库里',
-                    jobStar: [1, 1, 1, 1, 1],
-                },
-            }, {
-                jobId: 'LineA-001-3',
-                jobNickName: '点胶3',
-                jobLevel: 'C Level',
-                operator: {
-                    id: '001',
-                    avatar: '/images/2.jpg',
-                    name: '斯蒂芬库里',
-                    jobStar: [1, 1, 1, 1, 1],
-                },
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }, {
-                jobId: 'LineA-001-4',
-                jobNickName: '点胶4',
-                jobLevel: 'C Level',
-                operator: null,
-            }],
             chartOption: {
                 title: {
                     text: '故障类别比例表'
@@ -309,41 +223,7 @@ export default class LineScreen extends React.Component {
                         </div>
                     </div>
                 </div> < nav class = "navbar navbar-default navbar-fixed-bottom" >
-            <div class="container-fluid">
-                        <div class="row">
-                        {this.state.lineJobList.map((item, index)=>(
-                            <div  key={index} class="pull-left operator-info">
-                                <div class="operator-info_job">
-                                    <span class="label label-primary">C</span>
-                                    <span>{item.jobNickName}</span>
-                                </div>
-                                {item.operator?
-                                <div>
-                                    <img class="operator-info_image" src={item.operator.avatar||'/images/none.png'}/>
-                                    <div class="operator-info_name operator-info_name_default">{item.operator.name}</div>
-                                    <div class="operator-info_star">
-                                    {item.operator.jobStar.map((item, index)=>(
-                                            item?
-                                            <span key={index} class="glyphicon glyphicon-star"></span>:
-                                            <span key={index} class="glyphicon glyphicon-star-empty"></span>
-                                        ))
-                                    }
-                                    </div>
-                                </div>
-                                :
-                                <div>
-                                    <img class="operator-info_image" src={"/images/none.png"}/>
-                                    <div class="operator-info_name operator-info_name_none">未上岗</div>
-                                    <div class="operator-info_star">
-                                        <span class="glyphicon"></span>
-                                    </div>
-                                </div>
-                                }
-                            </div>
-                            ))
-                        }
-                        </div>
-                    </div> < /nav>  < div class = "modal fade"
+            < /nav>  < div class = "modal fade"
             id = "myModal" >
             <div class="modal-dialog">
                         <div class="modal-content">

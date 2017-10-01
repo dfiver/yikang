@@ -1,7 +1,5 @@
-import '../../../asset/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Switch from 'rc-switch';
 
 /**
 headerlist
@@ -239,21 +237,6 @@ export class BaseDataTableEditableCell extends React.Component {
                     }
                   </div> 
                 :
-                Object.is(headerItem.type, "switch")?
-                <div>
-                    <label class="control-label">{headerItem.nickName+':'}</label>
-                    <span>{this.props.item[headerItem.name]? 
-                          headerItem.switchoptions[0].stateValue:
-                          headerItem.switchoptions[1].stateValue}
-                    </span>
-                    <Switch 
-                        checked={this.props.item[headerItem.name]}
-                        onChange={()=>this.props.onItemChange(this.props.columIndex, !this.props.item[headerItem.name])}
-                        disabled={this.props.item[headerItem.name]? 
-                          (!headerItem.switchoptions[0].enabled):
-                          (!headerItem.switchoptions[1].enabled)}/>
-                </div>
-                :
                 Object.is(headerItem.type, "star") ?
                 <StarTableCell starNum={this.props.item[headerItem.name]}/>:
                 <div class="form-group">
@@ -385,7 +368,7 @@ export class BaseDataTableRow extends React.Component {
               headerItem.switchoptions[0].stateValue:headerItem.switchoptions[1].stateValue):
             Object.is(headerItem.type, 'switch')?
             (this.props.item[headerItem.name]?
-              headerItem.switchoptions[0].stateValue:headerItem.switchoptions[1].stateValue):
+        headerItem.switchoptions[0].stateValue: headerItem.switchoptions[1].stateValue):
             Object.is(headerItem.type, 'star')?
             <StarTableCell key={columIndex} starNum={this.props.item[headerItem.name]}/>:
             Object.is(headerItem.type, 'starlist')?

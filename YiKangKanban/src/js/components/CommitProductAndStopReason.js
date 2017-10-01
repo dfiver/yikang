@@ -80,28 +80,19 @@ export default class CommitProductAndStopReason extends React.Component {
         return (
             <div class="container-fluid">
                 <div class="row">
-                    <div class="page-header">
-                        <h1>{this.state.dataTypeName}</h1>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-xs-8">
-                        <h2>生产车间:{this.state.line? this.state.line.workshop.value: ''} 
-                            &nbsp;&nbsp; 生产线:{this.state.line?this.state.line.name:''}</h2>
-                    </div>
-                    <div class="col-xs-1">
-                        <h2>班次：</h2>
+                        <h4>生产车间:{this.state.line? this.state.line.workshop.value: ''} 
+                            &nbsp;&nbsp; 生产线:{this.state.line?this.state.line.name:''}
+                        </h4>
                     </div>
                     <div class="col-xs-2">
-                        <h2>
-                            <select class="form-control" 
+                            <select class="form-control" style={{display:'inline'}}
                                 value={this.state.shift?this.state.shift.key:''}
                                 onChange={(event)=>this.onShiftSelectChange(event.target.value)}>
                             {this.state.shiftSelection.map((item,index)=>(
                                 <option key={index} value={item.key}>{item.value}</option>
                                 ))}
                             </select>
-                        </h2>
                     </div>
                 </div>
                 <div class="row" style={{marginTop:"10px"}}>

@@ -98,6 +98,17 @@
 	(909087628018647061, 909087628014452749, 3, 909087628018647047, 'Al2s4岗位4', '产线2第4号工位（岗位4：A类）', 0),
 	(909087628018647062, 909087628014452749, 4, 909087628018647048, 'Bl2s5岗位5', '产线2第5号工位（岗位5：B类）', 0);
 	COMMIT;	
+    
+    #生产线工位上工表
+    DROP TABLE IF EXISTS `yikang`.`lineseat_oprator_log`;
+    CREATE TABLE `yikang`.`lineseat_operator`(
+		`id` bigint(20) NOT NULL COMMENT '上工状态表主键',
+        `lineseat_id` bigint(20) NOT NULL COMMENT '工位表主键',
+        `operator_id` bigint(20) NOT NULL COMMENT '员工表主键',
+        `state` bigint(20) NOT NULL COMMENT '上工状态；0:上工, 1:下工',
+        `starttime` datetime NOT NULL comment '上工时间',
+        `endtime` datetime NULL comment '下工时间，未下工时为null',
+        PRIMARY KEY (`id`));
 
     #岗位
     DROP TABLE IF EXISTS `yikang`.`job`;

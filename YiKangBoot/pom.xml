@@ -16,7 +16,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<mybatisplus-spring-boot-starter.version>1.0.4</mybatisplus-spring-boot-starter.version>
-		<mybatisplus.version>2.1.1</mybatisplus.version>
+		<mybatisplus.version>2.1.2</mybatisplus.version>
 		<fastjson.version>1.2.38</fastjson.version>
 	</properties>
 
@@ -86,7 +86,12 @@
 		    <artifactId>commons-beanutils</artifactId>
 		    <version>1.9.3</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
+		<dependency>
+		    <groupId>org.apache.velocity</groupId>
+		    <artifactId>velocity</artifactId>
+		    <version>1.7</version>
+		</dependency>		
 				
 	</dependencies>
 

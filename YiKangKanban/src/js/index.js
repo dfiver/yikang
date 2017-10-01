@@ -37,6 +37,7 @@ import ProductAndStopReport from './components/ProductAndStopReport';
 import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
 import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
+import LineSeatOperator from './components/LineSeatOperator';
 
 class YiKangRouter extends React.Component {
     constructor(props) {
@@ -72,9 +73,11 @@ class YiKangRouter extends React.Component {
                     <Route path="/backward/pay" component={Pay}></Route>{/*薪资管理*/}
 
                     <Route path="/backward/commitproductandstopreaon/:lineId" component={CommitProductAndStopReason}></Route>{/*生产信息采集*/}
-                <Route path="/backward/commitProductandstopreasonlineselect" component={CommitProductAndStopReasonLineSelect}></Route>{/*生产信息采集*/}                    
+                    <Route path="/backward/commitProductandstopreasonlineselect" component={CommitProductAndStopReasonLineSelect}></Route>{/*生产信息采集*/}                    
                     <Route path="/backward/productandstopreport" component={ProductAndStopReport}></Route>{/*生产和停机信息列表*/}
                     <Route path="/backward/gapreoprt" component={GAPReport}></Route>{/*GAP图表*/}
+
+                    <Route path="/backward/lineseatoperator" component={LineSeatOperator}></Route>{/*坐席列表*/}
                 </div>
             </Router>
         )

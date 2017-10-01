@@ -40,7 +40,7 @@ h2.tutheader {
 }
 .operator-info_image {
 	width: 72px; 
-	height:90px; 
+	height:72px; 
 	margin: 10px;
 	border-width: 1px;
 	border-style: solid;
@@ -75,8 +75,27 @@ h2.tutheader {
 	margin-right: -20px;
 }
 
-linelist_body{
+.linelist_body{
 	max-height: 460px;
 	overflow-y: scroll;
 	margin-right: -20px;	
+}
+
+._committable .form-control{
+	padding: 5px 5px;
+}
+
+/**---------用来移除数字的上下箭头--------*/
+input[type="number"]::-webkit-inner-spin-button {
+   display: none;
+}
+
+/*----------用来移除日期上下箭头----------*/
+input[type="date"]::-webkit-inner-spin-button {
+   display: none;
+}
+
+/*----------用来移除叉叉按钮----------*/
+input[type="date"]::-webkit-clear-button{
+   display:none;
 }

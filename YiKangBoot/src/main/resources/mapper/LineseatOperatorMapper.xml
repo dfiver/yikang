@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yikang.manage.mapper.LineseatOperatorMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.yikang.manage.entity.LineseatOperator">
+		<id column="id" property="id" />
+		<result column="lineseat_id" property="lineseatId" />
+		<result column="operator_id" property="operatorId" />
+		<result column="state" property="state" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+	</resultMap>
+
+	<resultMap id="ViewResultMap" type="com.yikang.manage.entity.LineseatOperator">
+		<id column="id" property="id" />
+		<result column="lineseat_id" property="lineseatId" />
+		<result column="operator_id" property="operatorId" />
+		<result column="state" property="state" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<!-- 通用查询映射结果 -->
+		<association id="job" type="com.yikang.springboot.entity.Job">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="joblevel_id" property="joblevelId" />
+			<result column="comment" property="comment" />
+			<result column="delflag" property="delflag" />
+		</association>
+		<association property="operator" type="com.yikang.springboot.entity.Operator">
+			<id column="id" property="id" />
+			<result column="workid" property="workid" />
+			<result column="name" property="name" />
+			<result column="avatar" property="avatar" />
+			<result column="shift_id" property="shiftId" />
+			<result column="comment" property="comment" />
+			<result column="delflag" property="delflag" />
+		</association>		
+	</resultMap>
+
+	<select id="getLineseatOperaterByLineId" resultMap="ViewResultMap">
+		select 
+		order by s.serise;
+	</select>
+</mapper>
