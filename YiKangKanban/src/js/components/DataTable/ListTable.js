@@ -38,7 +38,6 @@ addable
 export class TableHeader extends React.Component {
     getStyle(headerItem) {
         let style = {
-            fontSize: "larger",
             verticalAlign: "middle",
             textAlign: "center"
         };
@@ -94,7 +93,6 @@ export class CommonRow extends React.Component {
 export class CommonCell extends React.Component {
     render() {
         let style = {
-            fontSize: "larger",
             verticalAlign: "middle",
             textAlign: "center"
         };

@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import LineSeatOperator from './LineSeatOperator';
+import FetchList from './FetchList';
+import dateformater from 'dateformater';
+import {
+    ListTable,
+    TableHeader,
+    CommonRow,
+    CommonCell
+} from './DataTable/ListTable';
 //import IECharts from 'react-echarts-v3';
 
 
@@ -9,19 +17,83 @@ export default class LineScreen extends React.Component {
         super(props);
         this.state = {
             lineId: props.match.params.lineId ? props.match.params.lineId : null,
-            lineName: '生产线_Line1',
-            currentDate: '2017-09-14',
-            currentShift: 'Shift A',
-            productInfoList: {
-                items: [{
-                    period: '9/14 05:00-06:00',
-                    productCode: '701235',
-                    batchNo: '3311',
-                    target: '225',
-                    done: '150',
-                    crap: '0'
-                }],
-            },
+            line:null,
+            currentDate: '', //当前日期
+            shift: null,
+
+/*
+            period: date+' '+starttime+'-'+endtime,
+            productcode: entity.productcode.productcode,
+            batchno: entity.batchno.value,
+            target: entity.productcode.target,
+            done: entity.productlog.done,
+            crap: entity.productlog.crap,
+            rework: entity.productlog.rework
+*/
+            shiftSelection:[],
+            
+            product_headerlist:[{
+                name:'period',
+                nickName:'时段',
+                width:'180px',
+            },{
+                name:'productcode',
+                nickName:'料号',
+                width:'120px',
+            },{
+                name:'batchno',
+                nickName:'批次号',
+                width:'100px',
+            },{
+                name:'target',
+                nickName:'目标',
+                width:'80px',
+            },{
+                name:'done',
+                nickName:'完成',
+                width:'80px',
+            },{
+                name:'crap',
+                nickName:'损坏',
+                width:'80px',
+            },{
+                name:'rework',
+                nickName:'返工',
+                width:'80px',
+            }],
+
+            product_feakheaderlist:[{
+                name:'period',
+                nickName: ".",
+                width:'180px',
+            },{
+                name:'productcode',
+                nickName:' ',
+                width:'120px',
+            },{
+                name:'batchno',
+                nickName:' ',
+                width:'100px',
+            },{
+                name:'target',
+                nickName:' ',
+                width:'80px',
+            },{
+                name:'done',
+                nickName:' ',
+                width:'80px',
+            },{
+                name:'crap',
+                nickName:' ',
+                width:'80px',
+            },{
+                name:'rework',
+                nickName:' ',
+                width:'80px',
+            }],
+
+            product_itemlist:[],
+
             chartOption: {
                 title: {
                     text: '故障类别比例表'
@@ -58,81 +130,199 @@ export default class LineScreen extends React.Component {
         };
     }
 
+
+//不用的是时候将其解绑
+    componentWillUnmount() {
+        this.interval && clearInterval(this.interval);
+    }
+
+    componentWillMount() {
+        console.log("CommitProductAndStopReason will mount!");
+        this.init_currentDateTime();
+        this.inter_refresh_line();
+        this.inter_refresh_shift();
+
+        if(!this.timer) {
+            this.interval = setInterval(
+                () => {
+                    this.query_productlist();
+                    console.log('隔了秒执行了这个提示！');
+                },
+                10000
+            );
+        }
+    };
+
+
+    init_currentDateTime() {
+        let date = new Date();
+        console.log(dateformater.format(date));
+        let currentDate = dateformater.format(date, 'YYYY-MM-DD');
+        this.state.currentDate = currentDate;
+        console.log("当前日期：", currentDate);
+    }
+
+    inter_refresh_shift() {
+        //刷新班次列表
+        new FetchList().fetchList("/data/shift/options", (datalist) => {
+            if (datalist && datalist.length) {
+                this.setState({
+                    shiftSelection: datalist
+                });
+                if (!this.state.shift) {
+                    this.setState({
+                        shift: this.state.shiftSelection[0]
+                    })
+                }
+            }
+        });
+    }
+
+    inter_refresh_line() {
+        if (!!this.state.lineId) {
+            let _fetchUrl = "/data/line/get?id=" + this.state.lineId;
+            console.log(_fetchUrl);
+            fetch(_fetchUrl)
+                .catch(error => {
+                    console.log("get line error!", error);
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        this.state.line = data.obj;
+                        this.setState({
+                            line: this.state.line
+                        })
+                    }
+                });
+        }
+    }
+
+    getCondition() {
+        return {
+            beginTime: this.state.currentDate + ' 00:00',
+            endTime: '',
+            shiftId: '',
+            lineId: this.state.lineId,
+            workshopId: '',
+            productfamilyId: '',
+            productcodeId: '',
+            batchnoId: '',
+        }
+    }
+
+    product_EntityToView(entity) {
+        let date = entity.productlog.starttime.split(' ')[0];
+        let starttime= entity.productlog.starttime.split(' ')[1];
+        let endtime= entity.productlog.endtime.split(' ')[1];
+
+        return {
+            period: date+' '+starttime+'-'+endtime,
+            productcode: entity.productcode.productcode,
+            batchno: entity.batchno.value,
+            target: entity.productcode.target,
+            done: entity.productlog.done,
+            crap: entity.productlog.crap,
+            rework: entity.productlog.rework
+        }
+    }
+
+    query_productlist() {
+        let _fetchUrl = '/data/porductlog/query';
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.getCondition())
+            })
+            .catch(error => {
+                console.log("query productInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let rltlist = data.obj;
+                    this.setState({
+                        product_itemlist: rltlist.map((item, index) => this.product_EntityToView(item))
+                    })
+                }
+            })
+    }
+
+
+    onShiftSelectChange(value) {
+        let selectValue;
+        this.state.shiftSelection.map((item, index) => {
+            if (Object.is(item.key, value)) {
+                selectValue = item;
+            }
+        });
+        console.log(selectValue);
+        this.setState({
+            shift: selectValue
+        })
+    }
+
     render() {
         return (
-            <div>
+        <div>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xs-4">
-                        <h1>{this.state.lineName}</h1>
-                    </div>
                     <div class="col-xs-3">
-                        <h3>日期:<span>{this.state.currentDate}</span></h3>
+                        <h3>{this.state.line?this.state.line.name:''}</h3>
                     </div>
                     <div class="col-xs-2">
-                        <h3>班次:<span>{this.state.currentShift}</span></h3>
+                        <h3>日期:<span>{this.state.currentDate}</span></h3>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-1">
+                        <h3 style={{textAlign:'right'}}>班次:</h3>
+                    </div>
+                    <div class="col-xs-1">
+                        <h3>
+                            <select class="form-control" style={{fontSize:'large'}}
+                                value={this.state.shift?this.state.shift.key:''}
+                                onChange={(event)=>this.onShiftSelectChange(event.target.value)}>
+                            {this.state.shiftSelection.map((item,index)=>(
+                                <option key={index} value={item.key}>{item.value}</option>
+                                ))}
+                            </select>
+                        </h3>
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-3">
                         <h3>生产编号：<span>{this.state.currentProductCode}</span></h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                    <div style={{width:'100%'}}>
+                        <div style={{width:'730px', float:'left', marginRight:"-730px"}}>
+                            <div class="panel panel-default">
                                 <h5>生产情况报表</h5>
-                            </div>
-                            <div class="panel-body productionlist_panelbody">
-                                <div style={{overflow:'hidden',
-                                            height:'38px',
-                                            textAlign:'center',
-                                            fontSize: '16px',
-                                            fontWeight:'bold'}}>
-                                    <div style={{width:'134px',float:'left'}}>Period</div>
-                                    <div style={{width:'114px',float:'left'}}>ProductCode</div>
-                                    <div style={{width:'82px',float:'left'}}>BatchNo</div>
-                                    <div style={{width:'64px',float:'left'}}>Target</div>
-                                    <div style={{width:'56px',float:'left'}}>Done</div>
-                                    <div style={{width:'53px',float:'left'}}>Crap</div>
-                                </div> 
-                                <div class = "productionlist_body" >
-                                    <table class="table table-striped" style={{marginTop:'-40px'}}>
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>ProductCode</th>
-                                                <th>BatchNo</th>
-                                                <th>Target</th>
-                                                <th>Done</th>
-                                                <th>Crap</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {this.state.productInfoList.items.map((item, index)=>(
-                                            <tr key={index}>
-                                                <td>{item.period}</td>
-                                                <td>{item.productCode}</td>
-                                                <td>{item.batchNo}</td>
-                                                <td>{item.target}</td>
-                                                <td>{item.done}</td>
-                                                <td>{item.crap}</td>
-                                            </tr>
-                                            ))
-                                        }
-                                        </tbody>
-                                    </table>
-                                </div>    
+                                <div class="panel-body productionlist_panelbody">
+                                    <div style={{overflow:'hidden',
+                                                height:'38px'}}>
+                                        <ListTable headerlist={this.state.product_feakheaderlist}
+                                                itemlist={[]}/>
+                                    </div> 
+                                    <div class = "productionlist_body" >
+                                        <ListTable headerlist={this.state.product_headerlist}
+                                                itemlist={this.state.product_itemlist}/>
+                                    </div>    
+                                </div>
                             </div>
                         </div>
-                    </div>                    
-                    <div class="col-xs-8">
-                        <div class="container-fluid">
-                            <div class="row" style={{height:'620px'}}>
+                        <div style={{float:'left', width:'100%'}}>
+                            <div style={{ marginLeft:'740px'}}>
+                                <div class="container-fluid">
+                                    <div class="row" style={{height:'620px', backgroundColor:'red'}}>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div> 
+                </div>                    
+            </div>
             {this.state.lineId?
             <nav class="navbar navbar-default navbar-fixed-bottom">
                 <LineSeatOperator lineId={this.state.lineId}/>

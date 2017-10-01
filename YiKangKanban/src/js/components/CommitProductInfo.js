@@ -201,7 +201,7 @@ export default class CommitProductInfo extends React.Component {
             });
             endtimeOptions.push({
                 key: i,
-                value: i + 1 >= 0 ? (i + 1) + ':00' : '0' + (i + 1) + ':00',
+                value: i + 1 >= 10 ? (i + 1) + ':00' : '0' + (i + 1) + ':00',
             })
 
         }
