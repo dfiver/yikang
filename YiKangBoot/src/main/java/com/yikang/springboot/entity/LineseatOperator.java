@@ -36,17 +36,9 @@ public class LineseatOperator extends SuperEntity<LineseatOperator> {
 	@TableField("operator_id")
 	private Long operatorId;
     /**
-     * 上工状态；0:上工, 1:下工
-     */
-	private Long state;
-    /**
      * 上工时间
      */
 	private Date starttime;
-    /**
-     * 下工时间，未下工时为null
-     */
-	private Date endtime;
 
 
 	public Long getId() {
@@ -73,13 +65,6 @@ public class LineseatOperator extends SuperEntity<LineseatOperator> {
 		this.operatorId = operatorId;
 	}
 
-	public Long getState() {
-		return state;
-	}
-
-	public void setState(Long state) {
-		this.state = state;
-	}
 
 	public Date getStarttime() {
 		return starttime;
@@ -87,14 +72,6 @@ public class LineseatOperator extends SuperEntity<LineseatOperator> {
 
 	public void setStarttime(Date starttime) {
 		this.starttime = starttime;
-	}
-
-	public Date getEndtime() {
-		return endtime;
-	}
-
-	public void setEndtime(Date endtime) {
-		this.endtime = endtime;
 	}
 
 	@Override
@@ -108,9 +85,7 @@ public class LineseatOperator extends SuperEntity<LineseatOperator> {
 			"id=" + id +
 			", lineseatId=" + lineseatId +
 			", operatorId=" + operatorId +
-			", state=" + state +
 			", starttime=" + starttime +
-			", endtime=" + endtime +
 			"}";
 	}
 }

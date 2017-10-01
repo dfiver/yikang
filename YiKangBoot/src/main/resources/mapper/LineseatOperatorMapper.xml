@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yikang.manage.mapper.LineseatOperatorMapper">
+<mapper namespace="com.yikang.springboot.mapper.LineseatOperatorMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.yikang.manage.entity.LineseatOperator">
+	<resultMap id="BaseResultMap" type="com.yikang.springboot.entity.LineseatOperator">
 		<id column="id" property="id" />
 		<result column="lineseat_id" property="lineseatId" />
 		<result column="operator_id" property="operatorId" />
-		<result column="state" property="state" />
 		<result column="starttime" property="starttime" />
-		<result column="endtime" property="endtime" />
 	</resultMap>
 
-	<resultMap id="ViewResultMap" type="com.yikang.manage.entity.LineseatOperator">
-		<id column="id" property="id" />
+	<resultMap id="ViewResultMap" type="com.yikang.springboot.vo.LineseatOperatorVO">
+		<result column="id" property="id" />
 		<result column="lineseat_id" property="lineseatId" />
+		<result column="lineseat_name" property="seatName" />
 		<result column="operator_id" property="operatorId" />
-		<result column="state" property="state" />
-		<result column="starttime" property="starttime" />
-		<result column="endtime" property="endtime" />
-		<!-- 通用查询映射结果 -->
-		<association id="job" type="com.yikang.springboot.entity.Job">
-			<id column="id" property="id" />
-			<result column="name" property="name" />
-			<result column="joblevel_id" property="joblevelId" />
-			<result column="comment" property="comment" />
-			<result column="delflag" property="delflag" />
-		</association>
-		<association property="operator" type="com.yikang.springboot.entity.Operator">
-			<id column="id" property="id" />
-			<result column="workid" property="workid" />
-			<result column="name" property="name" />
-			<result column="avatar" property="avatar" />
-			<result column="shift_id" property="shiftId" />
-			<result column="comment" property="comment" />
-			<result column="delflag" property="delflag" />
-		</association>		
+		<result column="operator_workid" property="operatorWorkid" />
+		<result column="operator_name" property="operatorName" />		
+		<result column="operator_avatar" property="operatorAvatar" />
+		<result column="joblevel" property="joblevel" />
+		<result column="job_starlevel" property="jobStarlevel" />
+		<result column="operatorjob_starlevel" property="operatorjobStarlevel" />
 	</resultMap>
 
-	<select id="getLineseatOperaterByLineId" resultMap="ViewResultMap">
-		select 
-		order by s.serise;
+	<select id="getLineseatOperatorByLineId" resultMap="ViewResultMap">
+		SELECT 
+			ls.`line_id`,
+			lo_id AS id,
+			ls.`id` AS lineseat_id, 
+			ls.`name` AS lineseat_name,
+			operator_id AS operator_id,
+			operator_name AS operator_name, 
+			operator_workid AS operator_workid,
+			operator_avatar AS operator_avatar, 
+			jl.`name` AS joblevel,
+			j.`starlevel` AS job_starlevel,
+			operatorjob_starlevel AS operatorjob_starlevel
+		FROM lineseat ls 
+		LEFT JOIN job j ON ls.`job_id` = j.`id`
+		LEFT JOIN joblevel jl ON j.`joblevel_id` = jl.`id`
+		LEFT JOIN 
+		(
+		    SELECT 
+			lo.id AS lo_id, 
+			lo.`lineseat_id` AS lineseat_id,
+			o.id AS operator_id, 
+			o.workid AS operator_workid, 
+			o.name AS operator_name,
+			o.avatar AS operator_avatar,
+			oj.starlevel AS operatorjob_starlevel,
+			oj.`job_id` AS job_id
+		    FROM
+			lineseat_operator lo 
+			LEFT JOIN operator o ON lo.`operator_id` = o.`id`
+			LEFT JOIN operator_joblevel oj ON oj.`operator_id` = lo.`operator_id`
+		) loj ON (loj.lineseat_id = ls.`id` AND loj.`job_id` = j.`id`)
+		WHERE ls.`line_id` = #{0}
+		ORDER BY ls.`serise`	
 	</select>
 </mapper>

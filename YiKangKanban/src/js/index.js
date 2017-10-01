@@ -37,7 +37,7 @@ import ProductAndStopReport from './components/ProductAndStopReport';
 import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
 import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
-import LineSeatOperator from './components/LineSeatOperator';
+import LineScreenLineSelect from './components/LineScreenLineSelect';
 
 class YiKangRouter extends React.Component {
     constructor(props) {
@@ -48,7 +48,8 @@ class YiKangRouter extends React.Component {
         return (
             <Router>
                 <div>
-                    <Route path="/linescreen/:linid" component={LineScreen}></Route>{/*屏显看板*/}
+                    <Route path="/linescreen/select/linescreen" component={LineScreenLineSelect}></Route>{/*生产线选择*/}                
+                    <Route path="/linescreen/line/:lineId" component={LineScreen}></Route>{/*屏显看板*/}
                     {/*<Route path="/" onEnter={requireAuth}></Route> 授权页面*/}
                     <Route path="/backward" component={NavHeader}></Route> {/*首页：报表页面*/}                
                     <Route path="/backward/workshop" component={WorkShop}></Route>{/*生产车间管理*/}
@@ -77,7 +78,6 @@ class YiKangRouter extends React.Component {
                     <Route path="/backward/productandstopreport" component={ProductAndStopReport}></Route>{/*生产和停机信息列表*/}
                     <Route path="/backward/gapreoprt" component={GAPReport}></Route>{/*GAP图表*/}
 
-                    <Route path="/backward/lineseatoperator" component={LineSeatOperator}></Route>{/*坐席列表*/}
                 </div>
             </Router>
         )

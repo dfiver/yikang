@@ -32,7 +32,12 @@ public class Job extends OptionalEntity<Job> {
      */
 	@TableField("joblevel_id")
 	private Long joblevelId;
-    /**
+
+	/**
+	 * 岗位星级要求
+	 */
+	private Integer starlevel;
+	/**
      * 岗位注释
      */
 	private String comment;
@@ -67,6 +72,14 @@ public class Job extends OptionalEntity<Job> {
 		this.joblevelId = joblevelId;
 	}
 
+	public Integer getStarlevel() {
+		return starlevel;
+	}
+
+	public void setStarlevel(Integer starlevel) {
+		this.starlevel = starlevel;
+	}	
+	
 	public String getComment() {
 		return comment;
 	}
@@ -106,4 +119,5 @@ public class Job extends OptionalEntity<Job> {
 		rlt.setValue(name);
 		return rlt;
 	}
+
 }
