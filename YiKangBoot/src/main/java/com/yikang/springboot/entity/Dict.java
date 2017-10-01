@@ -22,11 +22,11 @@ public class Dict extends SuperEntity<Dict> {
      */
 	private Long id;
     /**
-     * 字典值分类: 1 manage
+     * 字典值分类: 1 manage  2: 补贴字典
      */
 	private Integer catagery;
     /**
-     * 字典key值
+     * 字典key值 month:按月的补贴数. hour:按小时的补贴  star:岗位星级补贴
      */
 	private String key;
     /**

@@ -2,6 +2,7 @@ package com.yikang.springboot.controller;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,20 @@ import com.yikang.springboot.service.IDictService;
 @Controller
 @RequestMapping("/data/dict")
 public class DictController extends BaseController<Dict, IDictService> {
+
+	@RequestMapping("queryjobbonus")
+	@ResponseBody
+	public JsonResult queryJobBonus(@RequestBody Dict entity){
+		Dict bonus = service.selectOne(new EntityWrapper<Dict>(entity));
+		return renderSuccess(bonus);
+	}
+
+	@RequestMapping("savejobbonus")
+	@ResponseBody
+	public JsonResult saveJobBonus(@RequestBody Dict entity){
+		return (entity.insertOrUpdate()?renderSuccess():renderError())
+				.setObj(entity);
+	}
 
 	@RequestMapping("/star")
 	@ResponseBody

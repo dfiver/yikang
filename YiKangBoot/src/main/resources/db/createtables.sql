@@ -4,7 +4,7 @@
 		`id` bigint(20) NOT NULL COMMENT '字典表主键',
 		`catagery` INT NOT NULL COMMENT '字典值分类: 1 manage',
 		`key` VARCHAR(50) NOT NULL COMMENT '字典key值',
-		`value` VARCHAR(50) NOT NULL COMMENT '字典value值',
+		`value` VARCHAR(10240) NOT NULL COMMENT '字典value值',
 		`comment` VARCHAR(200) NULL COMMENT '字典项注释',
 		PRIMARY KEY (`id`));
 	
