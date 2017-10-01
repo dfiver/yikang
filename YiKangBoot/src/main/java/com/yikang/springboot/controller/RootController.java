@@ -14,7 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class RootController {
 
 	@RequestMapping("/backward/**")
-	public ModelAndView redirect() {
+	public ModelAndView redirectBackwardRequest() {
+		return new ModelAndView("index");
+	}
+	
+	@RequestMapping("/linescreen/**")
+	public ModelAndView redirectLinescreenRequest() {
 		return new ModelAndView("index");
 	}
 }

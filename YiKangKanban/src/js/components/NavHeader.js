@@ -71,16 +71,10 @@ export default class NavHeader extends React.Component {
 						</ul>
 					</li>
 					<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							运营数据
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<PermLink to="/backward/commitProductandstopreasonlineselect" id="16">生产信息</PermLink>
-						</ul>
+						<Link to="/backward/commitProductandstopreasonlineselect">生产停机信息采集</Link>
 					</li>
 					<li>
-						<Link to="/linescreen/001">屏显看板</Link>
+						<Link to="/linescreen/select/linescreen">屏显看板</Link>						
 					</li>
 					<li>
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">

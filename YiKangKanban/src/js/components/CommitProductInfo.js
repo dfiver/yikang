@@ -48,64 +48,63 @@ export default class CommitProductInfo extends React.Component {
                 nickName: 'batchNo',
                 type: "select",
                 selectoptions: [],
-                width: 1,
+                width: '120px',
             }, {
                 name: 'planQuantity',
                 nickName: '计划产量',
                 type: "number",
                 disabled: true,
-                width: 1
+                width: '80px'
             }, {
                 name: 'productCode',
                 nickName: '产品编号',
                 type: 'text',
                 disabled: true,
-                width: 1,
+                width: '100px',
             }, {
                 name: 'date',
                 nickName: '日期',
                 type: "date",
-                width: 1,
+                width: '120px',
             }, {
                 name: 'beginTime',
                 nickName: '开始时间',
                 type: "select",
                 selected: 0,
                 selectoptions: [],
-                width: 1,
+                width: '90px',
             }, {
                 name: 'endTime',
                 nickName: '结束时间',
                 type: "select",
                 selected: 1,
                 selectoptions: [],
-                width: 1,
+                width: '90px',
             }, {
                 name: 'planQuantity',
                 nickName: 'Quntity',
                 type: "number",
                 disabled: true,
-                width: 1,
+                width: '65px',
             }, {
                 name: 'realQuntity',
-                nickName: 'RealQuntity',
+                nickName: 'Real Quntity',
                 type: "number",
-                width: 1,
+                width: '65px',
             }, {
                 name: 'crap',
                 nickName: 'Crap',
                 type: 'number',
-                width: 1,
+                width: '65px',
             }, {
                 name: 'rework',
                 nickName: 'Rework',
                 type: 'number',
-                width: 1,
+                width: '65px',
             }, {
                 name: 'comment',
                 nickName: 'Comment',
                 type: 'textarea',
-                width: 1,
             }],
 
             itemlist: [],
@@ -198,11 +197,11 @@ export default class CommitProductInfo extends React.Component {
         for (let i = 0; i < 24; ++i) {
             timeOptions.push({
                 key: i,
-                value: i >= 10 ? i + ':00:00' : '0' + i + ':00:00',
+                value: i >= 10 ? i + ':00' : '0' + i + ':00',
             });
             endtimeOptions.push({
                 key: i,
-                value: i + 1 >= 0 ? (i + 1) + ':00:00' : '0' + (i + 1) + ':00:00',
+                value: i + 1 >= 0 ? (i + 1) + ':00' : '0' + (i + 1) + ':00',
             })
 
         }
@@ -401,6 +400,37 @@ export default class CommitProductInfo extends React.Component {
         console.log("entity:", entity);
     }
 
+    onSaveAll() {
+        let entityArray = [];
+        this.state.itemlist.map((item, index) => {
+            if (this.validateItem(item) && !item.saved) {
+                let entity = this.productInfo_ViewToEntity(item);
+                entity.lineId = this.props.lineId;
+                entityArray.push(entity);
+            }
+        })
+        console.log("batch save");
+        let _fetchUrl = "/data/porductlog/batchsave";
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(entityArray)
+            })
+            .catch(error => {
+                console.log("save productInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    //保存成功
+                }
+            })
+            .then(() => this.inter_refresh_itemlist(this.props.shiftId));
+    }
+
     onItemChange(index, columIndex, value) {
         console.log("item value:" + value);
         let tempItem = Object.assign({}, this.state.itemlist[index]);
@@ -452,22 +482,27 @@ export default class CommitProductInfo extends React.Component {
 
     render() {
         return (
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>生产信息</h4>
-                </div>
-                <div class="panel-body">
-                    <CommitTable headerlist={this.state.headerlist} 
-                        itemlist={this.state.itemlist}
-                        onAdd={this.onAdd.bind(this)} 
-                        onChange={this.onChange.bind(this)}
-                        onRemove={this.onRemove.bind(this)}
-                        onCancel={this.onCancel.bind(this)}
-                        onSave={this.onSave.bind(this)}
-                        onItemChange = {(index,columIndex, value) => this.onItemChange(index, columIndex, value)}
-                        onSelectItemChange = {(index, columIndex, value) => this.onSelectItemChange(index, columIndex, value)}
-                        validateItem = {this.validateItem}
-                        />
+            <div>
+                <div class = "container-fluid">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <h5>生产信息</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <CommitTable headerlist={this.state.headerlist} 
+                            itemlist={this.state.itemlist}
+                            onAdd={this.onAdd.bind(this)} 
+                            onChange={this.onChange.bind(this)}
+                            onRemove={this.onRemove.bind(this)}
+                            onCancel={this.onCancel.bind(this)}
+                            onSave={this.onSave.bind(this)}
+                            onSaveAll={this.onSaveAll.bind(this)}
+                            onItemChange = {(index,columIndex, value) => this.onItemChange(index, columIndex, value)}
+                            onSelectItemChange = {(index, columIndex, value) => this.onSelectItemChange(index, columIndex, value)}
+                            validateItem = {this.validateItem}
+                            />                    
+                    </div>
                 </div>
             </div>
         );

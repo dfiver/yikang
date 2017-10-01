@@ -47,14 +47,7 @@ public class PorductlogController extends BaseController<Porductlog, IPorductlog
 	
 	@Override
 	public JsonResult save(@RequestBody Porductlog entity){
-		Porductlog condition = new Porductlog();
-		condition.setLineId(entity.getLineId());
-		condition.setStarttime(entity.getStarttime());
-		condition.setEndtime(entity.getEndtime());
-		condition.setDelflag(0);
-		EntityWrapper<Porductlog> wrapper = new EntityWrapper<Porductlog>(condition);
-		Porductlog productlog = service.selectOne(wrapper);
-		if(productlog != null){
+		if(checkUnique(entity)){
 			return renderError().setMsg("该时段数据已存在");
 		}
 		
@@ -71,6 +64,44 @@ public class PorductlogController extends BaseController<Porductlog, IPorductlog
 			return renderSuccess().setObj(rltVO);
 		}
 		return renderError();
+	}
+
+	private boolean checkUnique(Porductlog entity) {
+		Porductlog condition = new Porductlog();
+		condition.setLineId(entity.getLineId());
+		condition.setStarttime(entity.getStarttime());
+		condition.setEndtime(entity.getEndtime());
+		condition.setDelflag(0);
+		EntityWrapper<Porductlog> wrapper = new EntityWrapper<Porductlog>(condition);
+		Porductlog productlog = service.selectOne(wrapper);
+		if(productlog != null){
+			if(productlog.getId().equals(entity.getId())){
+				return true;
+			}
+			else
+				return false;
+		}
+		return true;
+	}
+	
+	@RequestMapping("/batchsave")
+	@ResponseBody
+	public JsonResult batchSave(@RequestBody Porductlog[] entityArray){
+		int success=0, error=0;
+		for(Porductlog entity: entityArray){
+			if(checkUnique(entity) && entity.insertOrUpdate())
+				++success;
+			else
+				++error;
+		}
+		final int total = entityArray.length;
+		final int successNum = success;
+		final int errorNum = error;
+		return renderSuccess("批量保存完成").setObj(new HashMap<String, Integer>(){{
+			put("total", total);
+			put("success", successNum);
+			put("error", errorNum);
+		}});
 	}
 	
 	@RequestMapping("/get")

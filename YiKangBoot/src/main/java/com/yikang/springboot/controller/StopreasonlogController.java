@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.common.utils.BeanToMapUtil;
 import com.yikang.springboot.entity.Mode;
+import com.yikang.springboot.entity.Porductlog;
 import com.yikang.springboot.entity.Reason;
 import com.yikang.springboot.entity.Stopreasonlog;
 import com.yikang.springboot.qo.ProductAndStopQueryQO;
@@ -57,6 +58,25 @@ public class StopreasonlogController extends BaseController<Stopreasonlog, IStop
 		return renderError();
 	}
 	
+	@RequestMapping("/batchsave")
+	@ResponseBody
+	public JsonResult batchSave(@RequestBody Stopreasonlog[] entityArray){
+		int success=0, error=0;
+		for(Stopreasonlog entity: entityArray){
+			if(entity.insertOrUpdate())
+				++success;
+			else
+				++error;
+		}
+		final int total = entityArray.length;
+		final int successNum = success;
+		final int errorNum = error;
+		return renderSuccess("批量保存完成").setObj(new HashMap<String, Integer>(){{
+			put("total", total);
+			put("success", successNum);
+			put("error", errorNum);
+		}});
+	}
 	
 	@RequestMapping("/list/query")
 	@ResponseBody

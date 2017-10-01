@@ -44,34 +44,33 @@ export default class CommitStopReasonInfo extends React.Component {
                 nickName: '停机原因',
                 type: "select",
                 selectoptions: [],
-                width: 2,
+                width: '200px',
             }, {
                 name: 'mode',
                 nickName: '原因类别',
                 type: "select",
                 disabled: true,
                 selectoptions: [],
-                width: 2
+                width: '200px'
             }, {
                 name: 'date',
                 nickName: '日期',
                 type: "date",
-                width: 2
+                width: '150px'
             }, {
                 name: 'beginTime',
                 nickName: '开始时间',
                 type: "time",
-                width: 2,
+                width: '100px',
             }, {
                 name: 'endTime',
                 nickName: '结束时间',
                 type: "time",
-                width: 2,
+                width: '100px',
             }, {
                 name: 'comment',
                 nickName: 'Comment',
                 type: 'textarea',
-                width: 2,
             }],
 
             itemlist: [],
@@ -304,6 +303,37 @@ export default class CommitStopReasonInfo extends React.Component {
         console.log("entity:", entity);
     }
 
+    onSaveAll() {
+        let entityArray = [];
+        this.state.itemlist.map((item, index) => {
+            if (this.validateItem(item) && !item.saved) {
+                let entity = this.stopreason_ViewToEntity(item);
+                entity.lineId = this.props.lineId;
+                entityArray.push(entity);
+            }
+        })
+        console.log("batch save");
+        let _fetchUrl = "/data/stopreasonlog/batchsave";
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(entityArray)
+            })
+            .catch(error => {
+                console.log("save productInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    //保存成功
+                }
+            })
+            .then(() => this.inter_refresh_itemlist(this.props.shiftId));
+    }
+
     onItemChange(index, columIndex, value) {
         console.log("item value:" + value);
         let tempItem = Object.assign({}, this.state.itemlist[index]);
@@ -369,11 +399,13 @@ export default class CommitStopReasonInfo extends React.Component {
 
     render() {
         return (
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>停机信息</h4>
+            <div class = "container-fluid">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <h5>停机信息</h5>
+                    </div>
                 </div>
-                <div class="panel-body">
+                <div class="row">
                     <CommitTable headerlist={this.state.headerlist} 
                         itemlist={this.state.itemlist}
                         onAdd={this.onAdd.bind(this)} 
@@ -381,6 +413,7 @@ export default class CommitStopReasonInfo extends React.Component {
                         onRemove={this.onRemove.bind(this)}
                         onCancel={this.onCancel.bind(this)}
                         onSave={this.onSave.bind(this)}
+                        onSaveAll={this.onSaveAll.bind(this)}
                         onItemChange = {(index,columIndex, value) => this.onItemChange(index, columIndex, value)}
                         onSelectItemChange = {(index, columIndex, value) => this.onSelectItemChange(index, columIndex, value)}
                         validateItem = {this.validateItem}

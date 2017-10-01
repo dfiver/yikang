@@ -13,10 +13,11 @@ export class CommitTable extends React.Component {
     render() {
         console.log("itemlist", this.props.itemlist)
         return (
-            <table class="table table-bordered" style={{tableLayout:'fixed'}}> 
+            <table class="table table-condensed _committable"> 
             <thead>
                 <TableHeader headerlist={this.props.headerlist}
-                    onAdd={this.props.onAdd}/>
+                    onAdd={this.props.onAdd}
+                    onSaveAll={this.props.onSaveAll}/>
             </thead>
             <tbody>
                 {this.props.itemlist.map((item, index)=> (
@@ -44,20 +45,17 @@ export class CommitTable extends React.Component {
 
 /**
 headerlist
-addable
+function() onAdd
+function() onSave
 */
 export class TableHeader extends React.Component {
     getStyle(headerItem) {
         let style = {
-            fontSize: "larger",
             verticalAlign: "middle",
             textAlign: "center"
         };
-        if (Object.is(headerItem.type, 'date')) {
-            style.width = '180px'
-        }
-        if (Object.is(headerItem.name, 'batchNo')) {
-            style.width = '180px'
+        if (headerItem.width) {
+            style.width = headerItem.width
         }
         return style;
     }
@@ -70,10 +68,12 @@ export class TableHeader extends React.Component {
                   ))
               }
               <th style={{width:'150px'}}>
-                <button class="btn btn-success btn-sm pull-right" onClick={this.props.onAdd} disabled={this.props.unaddable?true:false}>
-                    <span class="glyphicon glyphicon-plus"></span>
-                      &nbsp;新增
+                <button class="btn btn-success btn-sm pull-right" onClick={this.props.onAdd}>
+                      新增
                 </button> 
+                <button class="btn btn-primary btn-sm pull-right" onClick={this.props.onSaveAll}>
+                      全存
+                </button>                 
               </th>
             </tr>
         )
@@ -101,12 +101,10 @@ export class CommonRow extends React.Component {
                 }
                 <td>
                   <button class="btn btn-sm btn-default pull-right" onClick={this.props.onChange}>
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                    &nbsp; 编辑
+                    编辑
                   </button> 
                   <button class = "btn btn-sm btn-success pull-right" onClick={this.props.onRemove}>
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                    &nbsp; 删除
+                    删除
                   </button>
                 </td>
             </tr>
@@ -154,14 +152,12 @@ export class EditableRow extends React.Component {
                 }
                 <td>
                   <button class="btn btn-sm btn-default pull-right" onClick={this.props.onCancel}>
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                    &nbsp;取消
+                    取消
                   </button> 
                   <button class = "btn btn-sm btn-success pull-right" 
                         disabled = {!this.props.validateItem()}
                         onClick={()=>this.props.onSave(this.props.item)}>
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                    &nbsp;保存
+                    保存
                   </button>
                 </td>
             </tr>
@@ -182,19 +178,18 @@ export class EditableCell extends React.Component {
             <td>
             {          
                 Object.is(headerItem.type, "textarea") ?
-                <textarea ref="inputItem"
+                <textarea
+                    class="form-control"
                     name = {headerItem.name}
-                    class="form-control" 
                     rows = "1"
                     value={this.props.item[headerItem.name]} 
                     onChange={(event)=>(this.props.onItemChange(this.props.columIndex, event.target.value))}>
                 </textarea>
                 :
                 Object.is(headerItem.type, "select") ?
-                <select 
+                <select
+                    class="form-control"                 
                     name={headerItem.name}
-                    class="form-control" 
-                    ref="inputItem"
                     value={this.props.item[headerItem.name].key}
                     onChange={(event)=>(this.props.onSelectItemChange(this.props.columIndex, event.target.value))}
                     disabled = {headerItem.disabled?true:false}>
@@ -206,8 +201,8 @@ export class EditableCell extends React.Component {
                     }
                 </select>
                 :
-                <input class="form-control" 
-                    ref="inputItem"
+                <input
+                    class="form-control"                
                     name={headerItem.name}
                     type={headerItem.type}
                     value={this.props.item[headerItem.name]} 

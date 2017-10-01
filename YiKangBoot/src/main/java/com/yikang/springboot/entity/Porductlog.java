@@ -42,12 +42,12 @@ public class Porductlog extends SuperEntity<Porductlog> {
     /**
      * 开始时间
      */
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
 	private Date starttime;
     /**
      * 截止时间
      */
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")	
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")	
 	private Date endtime;
     /**
      * 已完成数量

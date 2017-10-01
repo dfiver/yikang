@@ -27,7 +27,7 @@
     "react": "^15.6.1",
     "react-avatar": "^2.4.0",
     "react-avatar-editor": "^10.2.1",
-    "react-bootstrap": "^0.31.1",
+    "react-bootstrap": "^0.31.3",
     "react-datepicker": "^0.55.0",
     "react-dom": "^15.6.1",
     "react-echarts-v3": "^1.0.7",

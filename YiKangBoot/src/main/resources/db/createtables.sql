@@ -1,7 +1,7 @@
     #字典表
 	DROP TABLE IF EXISTS `yikang`.`dict`;
 	CREATE TABLE `yikang`.`dict` (
-		`id` bigint(20) NOT NULL COMMENT '字典表主键',
+		`id` BIGINT(20) NOT NULL COMMENT '字典表主键',
 		`catagery` INT NOT NULL COMMENT '字典值分类: 1 manage',
 		`key` VARCHAR(50) NOT NULL COMMENT '字典key值',
 		`value` VARCHAR(10240) NOT NULL COMMENT '字典value值',
@@ -18,7 +18,7 @@
 	#生产车间
 	DROP TABLE IF EXISTS `yikang`.`workshop`;
 	CREATE TABLE `yikang`.`workshop` (
-		`id` bigint(20) NOT NULL  COMMENT '生产车间表主键',
+		`id` BIGINT(20) NOT NULL  COMMENT '生产车间表主键',
 		`name` VARCHAR(50) NOT NULL COMMENT '生产车间名称',
 		`comment` VARCHAR(200) NULL COMMENT '生产车间注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '生产车间表删除标记 0：未删除,1:已删除',
@@ -36,7 +36,7 @@
     #产品家族
 	DROP TABLE IF EXISTS `yikang`.`productfamily`;
     CREATE TABLE `yikang`.`productfamily`(
-    	`id` bigint(20) NOT NULL COMMENT '生产家族表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '生产家族表主键',
     	`name` VARCHAR(50) NOT NULL COMMENT '生产家族名称',
 		`comment` VARCHAR(200) NULL COMMENT '生产家族注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '生产家族表删除标记',
@@ -55,9 +55,9 @@
     #生产线
     DROP TABLE IF EXISTS `yikang`.`line`;
     CREATE TABLE `yikang`.`line`(
-    	`id` bigint(20) NOT NULL COMMENT '生产线表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '生产线表主键',
     	`name` VARCHAR(50) NOT NULL COMMENT '生产家线名称',
-        `workshop_id` bigint(20) NOT NULL COMMENT '生产车间ID',    	
+        `workshop_id` BIGINT(20) NOT NULL COMMENT '生产车间ID',    	
 		`comment` VARCHAR(200) NULL COMMENT '生产线注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '生产线删除标记',		
 		PRIMARY KEY (`id`));
@@ -75,10 +75,10 @@
     #生产线工位
     DROP TABLE IF EXISTS `yikang`.`lineseat`;
     CREATE TABLE `yikang`.`lineseat`(
-    	`id` bigint(20) NOT NULL COMMENT '坐席表主键',
-    	`line_id` bigint(20) NOT NULL COMMENT '生产线ID',
+    	`id` BIGINT(20) NOT NULL COMMENT '坐席表主键',
+    	`line_id` BIGINT(20) NOT NULL COMMENT '生产线ID',
     	`serise` INT NOT NULL COMMENT '坐席再生产线中的位置',
-    	`job_id` bigint(20) NOT NULL COMMENT '岗位ID',
+    	`job_id` BIGINT(20) NOT NULL COMMENT '岗位ID',
     	`name` VARCHAR(50) NOT NULL COMMENT '坐席名称',
 		`comment` VARCHAR(200) NULL COMMENT '备注信息',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '坐席删除标记',		
@@ -98,35 +98,45 @@
 	(909087628018647061, 909087628014452749, 3, 909087628018647047, 'Al2s4岗位4', '产线2第4号工位（岗位4：A类）', 0),
 	(909087628018647062, 909087628014452749, 4, 909087628018647048, 'Bl2s5岗位5', '产线2第5号工位（岗位5：B类）', 0);
 	COMMIT;	
+    
+    #生产线工位上工表
+    DROP TABLE IF EXISTS `yikang`.`lineseat_operator`;
+    CREATE TABLE `yikang`.`lineseat_operator`(
+		`id` BIGINT(20) NOT NULL COMMENT '上工状态表主键',
+        `lineseat_id` BIGINT(20) NOT NULL COMMENT '工位表主键',
+        `operator_id` BIGINT(20) NOT NULL COMMENT '员工表主键',
+        `starttime` DATETIME NOT NULL COMMENT '上工时间',
+        PRIMARY KEY (`id`));
 
     #岗位
     DROP TABLE IF EXISTS `yikang`.`job`;
     CREATE TABLE `yikang`.`job`(
-    	`id` bigint(20) NOT NULL COMMENT '岗位表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '岗位表主键',
     	`name` VARCHAR(50) NOT NULL  COMMENT '岗位名称',
-        `joblevel_id` bigint(20) NOT NULL COMMENT '岗位级别',    	
-		`comment` VARCHAR(200) NULL COMMENT '岗位注释',
-		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '岗位删除标记',
-		PRIMARY KEY (`id`));
+        `joblevel_id` BIGINT(20) NOT NULL COMMENT '岗位级别',    	
+	`starlevel` TINYINT NOT NULL COMMENT '岗位星级要求',
+	`comment` VARCHAR(200) NULL COMMENT '岗位注释',
+	`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '岗位删除标记',
+	PRIMARY KEY (`id`));
 	#向岗位表插入数据
 	BEGIN;
 	INSERT INTO `yikang`.`job` VALUES
-	(909087628018647044, '岗位1', 909087628018647041, 'A岗位1', 0),
-	(909087628018647045, '岗位2', 909087628018647042, 'B岗位2', 0),
-	(909087628018647046, '岗位3', 909087628018647043, 'C岗位3', 0),
-	(909087628018647047, '岗位4', 909087628018647041, 'A岗位4', 0),
-	(909087628018647048, '岗位5', 909087628018647042, 'B岗位5', 0),
-	(909087628018647049, '岗位6', 909087628018647043, 'C岗位6', 0),
-	(909087628018647050, '岗位7', 909087628018647041, 'A岗位7', 0),
-	(909087628018647051, '岗位8', 909087628018647042, 'B岗位8', 0),
-	(909087628018647052, '岗位9', 909087628018647043, 'C岗位9', 0);
+	(909087628018647044, '岗位1', 909087628018647041, 1, 'A岗位1', 0),
+	(909087628018647045, '岗位2', 909087628018647042, 1, 'B岗位2', 0),
+	(909087628018647046, '岗位3', 909087628018647043, 1, 'C岗位3', 0),
+	(909087628018647047, '岗位4', 909087628018647041, 1, 'A岗位4', 0),
+	(909087628018647048, '岗位5', 909087628018647042, 1, 'B岗位5', 0),
+	(909087628018647049, '岗位6', 909087628018647043, 1, 'C岗位6', 0),
+	(909087628018647050, '岗位7', 909087628018647041, 1, 'A岗位7', 0),
+	(909087628018647051, '岗位8', 909087628018647042, 1, 'B岗位8', 0),
+	(909087628018647052, '岗位9', 909087628018647043, 1, 'C岗位9', 0);
 	COMMIT;	
 
 
     #岗位级别
 	DROP TABLE IF EXISTS `yikang`.`joblevel`;
 	CREATE TABLE `yikang`.`joblevel` (
-		`id` bigint(20) NOT NULL COMMENT '岗位级别表主键',
+		`id` BIGINT(20) NOT NULL COMMENT '岗位级别表主键',
 		`name` VARCHAR(50) NOT NULL COMMENT '岗位级别名称',
 		`comment` VARCHAR(200) NULL COMMENT '岗位级别注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '岗位级别删除标记',
@@ -142,9 +152,9 @@
 	#生产型号
 	DROP TABLE IF EXISTS `yikang`.`productcode`;
 	CREATE TABLE `yikang`.`productcode` (
-		`id` bigint(20) NOT NULL  COMMENT '生产型号表主键',
-        `workshop_id` bigint(20) NOT NULL COMMENT '生产车间ID',
-        `productfamily_id` bigint(20) NOT NULL COMMENT '生产家族ID',
+		`id` BIGINT(20) NOT NULL  COMMENT '生产型号表主键',
+        `workshop_id` BIGINT(20) NOT NULL COMMENT '生产车间ID',
+        `productfamily_id` BIGINT(20) NOT NULL COMMENT '生产家族ID',
 		`productcode` VARCHAR(50) NOT NULL COMMENT '生产型号',
 		`target` INT NOT NULL COMMENT '计划每小时生产数量',
 		`EU` VARCHAR(50) NOT NULL COMMENT '',
@@ -174,9 +184,9 @@
 	#批次号
     DROP TABLE IF EXISTS `yikang`.`batchno`;
     CREATE TABLE `yikang`.`batchno` (
-		`id` bigint(20) NOT NULL COMMENT '批次号主键',
+		`id` BIGINT(20) NOT NULL COMMENT '批次号主键',
         `name` VARCHAR(50) NOT NULL COMMENT '批次号名称',
-		`productcode_id` bigint(20) NOT NULL  COMMENT '生产型号ID',
+		`productcode_id` BIGINT(20) NOT NULL  COMMENT '生产型号ID',
 		`target` INT NOT NULL COMMENT '批次生产目标个数',
 		`state`	INT NOT NULL COMMENT '批次生产状态：0 新建,1生产中,2已完成',
         `comment` VARCHAR(200) NULL COMMENT '批次注释',
@@ -201,7 +211,7 @@
     #停机原因类别
 	DROP TABLE IF EXISTS `yikang`.`mode`;
     CREATE TABLE `yikang`.`mode`(
-    	`id` bigint(20) NOT NULL COMMENT '停机原因类别表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '停机原因类别表主键',
     	`name` VARCHAR(50) NOT NULL COMMENT '停机原因类别名称',
 		`comment` VARCHAR(200) NULL COMMENT '停机原因类别备注信息',
 		`delflag` TINYINT NOT NULL DEFAULT 0  COMMENT '停机原因类别删除标记',
@@ -217,9 +227,9 @@
     #停机原因
 	DROP TABLE IF EXISTS `yikang`.`reason`;
     CREATE TABLE `yikang`.`reason`(
-    	`id` bigint(20) NOT NULL COMMENT '停机原因表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '停机原因表主键',
     	`name` VARCHAR(50) NOT NULL COMMENT '停机原因名称',
-    	`mode_id` bigint(20) NOT NULL COMMENT '停机原因类别ID',    	
+    	`mode_id` BIGINT(20) NOT NULL COMMENT '停机原因类别ID',    	
 		`comment` VARCHAR(200) NULL COMMENT '停机原因注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '停机原因删除标记',
 		PRIMARY KEY (`id`));
@@ -240,11 +250,11 @@
 	#操作员
 	DROP TABLE IF EXISTS `yikang`.`operator`;
     CREATE TABLE `yikang`.`operator`(
-    	`id` bigint(20) NOT NULL COMMENT '操作员表主键',
+    	`id` BIGINT(20) NOT NULL COMMENT '操作员表主键',
         `workid` VARCHAR(50) NOT NULL COMMENT '操作员工号',
     	`name` VARCHAR(50) NOT NULL COMMENT '操作员名称',
     	`avatar` VARCHAR(100) NULL COMMENT '操作员头像图片路径',
-    	`shift_id` bigint(20) NOT NULL COMMENT '班次ID',
+    	`shift_id` BIGINT(20) NOT NULL COMMENT '班次ID',
 		`comment` VARCHAR(200) NULL COMMENT '操作员注释',
 		`delflag` TINYINT NOT NULL DEFAULT 0 COMMENT '操作员删除标记',
 		PRIMARY KEY (`id`));
@@ -338,7 +348,7 @@
     #班组管理
 	DROP TABLE IF EXISTS `yikang`.`shift`;
     CREATE TABLE `yikang`.`shift`(
-    	`id` bigint(20) NOT NULL  COMMENT '班组表主键',
+    	`id` BIGINT(20) NOT NULL  COMMENT '班组表主键',
     	`name` VARCHAR(50) NOT NULL COMMENT '班组名称',
     	`owner` VARCHAR(50) NOT NULL COMMENT '班组管理员姓名',
 		`comment` VARCHAR(200) NULL COMMENT '班组备注',
@@ -355,9 +365,9 @@
     #人员工作明细
 	DROP TABLE IF EXISTS `yikang`.`operator_workdetail`;
     CREATE TABLE `yikang`.`operator_workdetail`(
-    	`id` bigint(20) NOT NULL COMMENT '主键',
-    	`operator_id` bigint(20) NOT NULL COMMENT '操作员ID',
-    	`seat_id` bigint(20) NOT NULL COMMENT '坐席ID',
+    	`id` BIGINT(20) NOT NULL COMMENT '主键',
+    	`operator_id` BIGINT(20) NOT NULL COMMENT '操作员ID',
+    	`seat_id` BIGINT(20) NOT NULL COMMENT '坐席ID',
     	`starttime` DATETIME NOT NULL COMMENT '开始时间',
     	`endtime` DATETIME NOT NULL COMMENT '结束时间',
 		PRIMARY KEY (`id`));
@@ -365,9 +375,9 @@
     #补贴管理
 	DROP TABLE IF EXISTS `yikang`.`subsidy`;
 	CREATE TABLE `yikang`.`subsidy` (
-		`id` bigint(20) NOT NULL COMMENT '主键',
+		`id` BIGINT(20) NOT NULL COMMENT '主键',
 		`type` TINYINT NOT NULL COMMENT '补贴类型：0：星级补贴，1：月岗位补贴，2：小时岗位补贴',
-		`joblevel_id` bigint(20) NOT NULL COMMENT '班组表主键',
+		`joblevel_id` BIGINT(20) NOT NULL COMMENT '班组表主键',
 		`startlevel` INT NOT NULL COMMENT '星级',
 		`subsidy` DECIMAL(10,2) NOT NULL COMMENT '补贴值',
 		`comment` VARCHAR(200) NULL COMMENT '备注',		
@@ -376,10 +386,10 @@
 	#生产信息
 	DROP TABLE IF EXISTS `yikang`.`porductlog`;
 	CREATE TABLE `yikang`.`porductlog` (
-		`id` bigint(20) NOT NULL COMMENT '生产信息日志表主键',
-		`line_id` bigint(20) NOT NULL COMMENT '生产线ID',
-		`shift_id` bigint(20) NOT NULL COMMENT '班次ID',
-		`batchno_id` bigint(20) NOT NULL COMMENT '批次号ID',
+		`id` BIGINT(20) NOT NULL COMMENT '生产信息日志表主键',
+		`line_id` BIGINT(20) NOT NULL COMMENT '生产线ID',
+		`shift_id` BIGINT(20) NOT NULL COMMENT '班次ID',
+		`batchno_id` BIGINT(20) NOT NULL COMMENT '批次号ID',
     	`starttime` DATETIME NOT NULL COMMENT '开始时间',
     	`endtime` DATETIME NOT NULL COMMENT '截止时间',		
 		`done` INT NOT NULL COMMENT '已完成数量',
@@ -392,12 +402,12 @@
 	#故障信息
 	DROP TABLE IF EXISTS `yikang`.`stopreasonlog`;
 	CREATE TABLE `yikang`.`stopreasonlog` (
-		`id` bigint(20) NOT NULL COMMENT '故障信息日志表主键',
-		`line_id` bigint(20) NOT NULL COMMENT '班次ID',
-		`shift_id` bigint(20) NOT NULL COMMENT '停机原因表主键',
+		`id` BIGINT(20) NOT NULL COMMENT '故障信息日志表主键',
+		`line_id` BIGINT(20) NOT NULL COMMENT '班次ID',
+		`shift_id` BIGINT(20) NOT NULL COMMENT '停机原因表主键',
     	`starttime` DATETIME NOT NULL COMMENT '开始时间',
     	`endtime` DATETIME NOT NULL COMMENT '结束时间',			
-		`reason_id` bigint(20) NOT NULL COMMENT '原因ID',
+		`reason_id` BIGINT(20) NOT NULL COMMENT '原因ID',
         `comment` VARCHAR(200) NULL COMMENT '备注',	
 		`delflag` TINYINT NOT NULL  DEFAULT 0 COMMENT '删除标记',	
 		PRIMARY KEY (`id`));

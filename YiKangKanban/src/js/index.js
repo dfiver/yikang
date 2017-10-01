@@ -39,6 +39,7 @@ import GAPReport from './components/GAPReport';
 import LineScreen from './components/LineScreen';
 import Login from './components/Login';
 import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
+import LineScreenLineSelect from './components/LineScreenLineSelect';
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -71,6 +72,8 @@ class YiKangRouter extends React.Component {
                     <Route path="/login" component={Login} ></Route>{/*登陆页面*/}
                     <PrivateRoute path="/linescreen/:linid" comp={LineScreen}></PrivateRoute>{/*屏显看板*/}
 
+                    <PrivateRoute path="/linescreen/line/:lineId" comp={LineScreen}></PrivateRoute>{/*屏显看板*/}
+                    <PrivateRoute path="/linescreen/select/linescreen" comp={LineScreenLineSelect}></PrivateRoute>{/*生产线选择*/}                
                     <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
                     <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
