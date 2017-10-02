@@ -169,7 +169,7 @@ export default class OperationList extends React.Component{
                        <tbody>
                        {
                            this.state.detailList.map((detail, index)=>(
-                               <tr>
+                               <tr key={index}>
                                    <td>{detail.operator.workid}</td>
                                    <td>{detail.operator.name}</td>
                                    <td>{detail.workdetail.starttime}</td>
