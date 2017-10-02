@@ -11,4 +11,65 @@
 		<result column="endtime" property="endtime" />
 	</resultMap>
 
+	<resultMap id="DetailResultMap" type="com.yikang.springboot.vo.WorkDetailVo">
+		<association property="operator" javaType="com.yikang.springboot.entity.Operator">
+			<id column="wd_opid" property="id" />
+			<result column="op_name" property="name"/>
+		</association>
+		<association property="workdetail" javaType="com.yikang.springboot.entity.OperatorWorkdetail">
+			<id column="wd_id" property="id" />
+			<result column="wd_starttime" property="starttime"/>
+			<result column="wd_endtime" property="endtime"/>
+		</association>
+		<association property="seat" javaType="com.yikang.springboot.entity.Lineseat">
+			<id column="st_id" property="id" />
+			<result column="st_name" property="name"/>
+		</association>
+		<association property="job" javaType="com.yikang.springboot.entity.Job">
+			<id column="st_jobid" property="id" />
+		</association>
+		<association property="line" javaType="com.yikang.springboot.entity.Line">
+			<id column="line_id" property="id"/>
+			<result column="ln_name" property="name"/>
+		</association>
+	</resultMap>
+
+	<select id="queryWorkDetailList" resultMap="DetailResultMap" parameterType="com.yikang.springboot.qo.WorkDetailQO">
+		SELECT
+		op.`name` AS op_name,
+		wd.`operator_id` AS wd_opid,
+		wd.`starttime` AS wd_starttime,
+		wd.`endtime` AS wd_endtime,
+		wd.`id` AS wd_id,
+		st.`name` AS st_name,
+		line.`name` AS ln_name,
+		st.`job_id` AS st_jobid,
+		st.`id` AS st_id,
+		line.`id` AS line_id
+		FROM
+		operator_workdetail wd
+		JOIN lineseat st ON wd.seat_id = st.id
+		JOIN line ON line.id = st.line_id
+		JOIN operator op ON op.id = wd.operator_id
+		WHERE
+		1 = 1
+		<if test="workid!=null and workid != ''">
+			and op.workid like CONCAT('%',#{workid},'%')
+		</if>
+		<if test="opname!=null and opname != ''">
+			and op.name like CONCAT('%',#{opname},'%')
+		</if>
+		<if test="startTime!=null">
+			and pl.starttime &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null">
+			and pl.endTime &lt;= #{endTime}
+		</if>
+		<if test="lineId != null">
+			and line.id = #{lineId}
+		</if>
+		<if test="seatId != null">
+			and st.`id` = #{seatId}
+		</if>
+	</select>
 </mapper>
