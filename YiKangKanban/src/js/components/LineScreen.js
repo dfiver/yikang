@@ -9,7 +9,7 @@ import {
     CommonRow,
     CommonCell
 } from './DataTable/ListTable';
-//import IECharts from 'react-echarts-v3';
+import GAPChart from './GAPChart';
 
 
 export default class LineScreen extends React.Component {
@@ -93,34 +93,6 @@ export default class LineScreen extends React.Component {
             }],
 
             product_itemlist:[],
-
-            chartOption: {
-                title: {
-                    text: '故障类别比例表'
-                },
-                color: ['#3398DB'],
-                tooltip: {
-                    trigger: 'axis',
-                    formatter: '{b}: {c}%<br/>点击查看明细',
-                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                xAxis: {
-                    data: ["故障类别1", "故障类别2", "故障类别3", "故障类别4", "故障类别5", "故障类别6"]
-                },
-                yAxis: {
-                    axisLabel: {
-                        formatter: '{value} %'
-                    }
-                },
-                series: [{
-                    name: '百分比',
-                    type: 'bar',
-                    barWidth: '50%',
-                    data: [5, 20, 36, 10, 10, 20]
-                }]
-            },
         }
         this.onEvents = {
             'click': function(params) {
@@ -129,30 +101,6 @@ export default class LineScreen extends React.Component {
             }
         };
     }
-
-
-//不用的是时候将其解绑
-    componentWillUnmount() {
-        this.interval && clearInterval(this.interval);
-    }
-
-    componentWillMount() {
-        console.log("CommitProductAndStopReason will mount!");
-        this.init_currentDateTime();
-        this.inter_refresh_line();
-        this.inter_refresh_shift();
-
-        if(!this.timer) {
-            this.interval = setInterval(
-                () => {
-                    this.query_productlist();
-                    console.log('隔了秒执行了这个提示！');
-                },
-                10000
-            );
-        }
-    };
-
 
     init_currentDateTime() {
         let date = new Date();
@@ -265,6 +213,28 @@ export default class LineScreen extends React.Component {
         })
     }
 
+    componentWillMount() {
+        console.log("CommitProductAndStopReason will mount!");
+        this.init_currentDateTime();
+        this.inter_refresh_line();
+        this.inter_refresh_shift();
+
+        if(!this.timer) {
+            this.interval = setInterval(
+                () => {
+                    this.query_productlist();
+                    console.log('隔了秒执行了这个提示！');
+                },
+                10000
+            );
+        }
+    };
+    
+    //不用的是时候将其解绑
+    componentWillUnmount() {
+        this.interval && clearInterval(this.interval);
+    }
+
     render() {
         return (
         <div>
@@ -315,7 +285,8 @@ export default class LineScreen extends React.Component {
                         <div style={{float:'left', width:'100%'}}>
                             <div style={{ marginLeft:'740px'}}>
                                 <div class="container-fluid">
-                                    <div class="row" style={{height:'620px', backgroundColor:'red'}}>
+                                    <div class="row">
+                                        <GAPChart/>
                                     </div>
                                 </div>
                             </div>
