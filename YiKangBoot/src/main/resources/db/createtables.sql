@@ -423,6 +423,9 @@
 		`comment` VARCHAR(64) NULL COMMENT '备注',
     PRIMARY KEY (`id`)
   );
+		BEGIN;
+		INSERT INTO `user` VALUES ('913769646898827265', 'admin', 'admin', '123456', '913439581480722433', 'admin');
+		COMMIT;
 
   #角色名
   DROP TABLE IF EXISTS `yikang`.`role`;
@@ -433,8 +436,12 @@
 		`permission` VARCHAR(100) NULL COMMENT '权限串',
     PRIMARY KEY (`id`)
   );
+	BEGIN;
+	INSERT INTO `role` VALUES ('913439581480722433', '管理员', '系统管理员', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19');
+	INSERT INTO `role` VALUES ('913668857429794818', '财务人员', '财务人员', '13,14,15');
+	COMMIT;
 
-  #角色映射表
+		#角色映射表
   DROP TABLE IF EXISTS `yikang`.`role_permission`;
   CREATE TABLE `yikang`.`role_permission`(
     `id` bigint(20) NOT NULL COMMENT '角色映射表',
