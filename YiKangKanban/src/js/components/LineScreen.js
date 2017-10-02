@@ -219,11 +219,10 @@ export default class LineScreen extends React.Component {
         this.inter_refresh_line();
         this.inter_refresh_shift();
 
-        if(!this.timer) {
+        if(!this.interval) {
             this.interval = setInterval(
                 () => {
                     this.query_productlist();
-                    console.log('隔了秒执行了这个提示！');
                 },
                 10000
             );
@@ -286,7 +285,7 @@ export default class LineScreen extends React.Component {
                             <div style={{ marginLeft:'740px'}}>
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <GAPChart/>
+                                        <GAPChart lineId={this.state.lineId}/>
                                     </div>
                                 </div>
                             </div>

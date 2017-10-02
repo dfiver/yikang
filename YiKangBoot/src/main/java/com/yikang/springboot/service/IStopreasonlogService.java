@@ -1,6 +1,7 @@
 package com.yikang.springboot.service;
 
 import com.yikang.springboot.entity.Stopreasonlog;
+import com.yikang.springboot.vo.StopreaonlogTimeDO;
 import com.yikang.springboot.vo.StopreaonlogWithModeVO;
 
 import java.util.List;
@@ -19,5 +20,7 @@ import com.baomidou.mybatisplus.service.IService;
 public interface IStopreasonlogService extends IVOService<Stopreasonlog> {
 
 	List<StopreaonlogWithModeVO> queryByCondition(Map<String, Object> cMap);
+
+	List<StopreaonlogTimeDO> selectSumsecGroupbyReason(Map<String, Object> cMap);
 	
 }

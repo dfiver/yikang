@@ -11,7 +11,7 @@
 		<result column="delflag" property="delflag" />
 	</resultMap>
 
-	<resultMap id="ViewResultMap" type="com.yikang.springboot.entity.Reason">
+	<resultMap id="ViewResultMap" type="com.yikang.springboot.vo.ReasonVO">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="mode_id" property="modeId" />
