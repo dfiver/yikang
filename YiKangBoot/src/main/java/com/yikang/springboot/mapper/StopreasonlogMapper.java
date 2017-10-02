@@ -1,12 +1,12 @@
 package com.yikang.springboot.mapper;
 
-import com.yikang.springboot.entity.Stopreasonlog;
-import com.yikang.springboot.vo.StopreaonlogWithModeVO;
-
 import java.util.List;
 import java.util.Map;
 
 import com.yikang.springboot.common.SuperMapper;
+import com.yikang.springboot.entity.Stopreasonlog;
+import com.yikang.springboot.vo.StopreaonlogTimeDO;
+import com.yikang.springboot.vo.StopreaonlogWithModeVO;
 
 /**
  * <p>
@@ -19,5 +19,7 @@ import com.yikang.springboot.common.SuperMapper;
 public interface StopreasonlogMapper extends SuperMapper<Stopreasonlog> {
 
 	List<StopreaonlogWithModeVO> queryByCondition(Map<String, Object> cMap);
+	
+	List<StopreaonlogTimeDO> selectSumsecGroupbyReason(Map<String, Object> cMap);
 
 }

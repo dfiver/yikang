@@ -84,6 +84,27 @@
 		<if test="endTime!=null">
 			and sl.starttime &lt;= #{endTime}
 		</if>
+	</select>
+	
+	<select id="selectSumsecGroupbyReason" 
+		resultType="com.yikang.springboot.vo.StopreaonlogTimeDO" 
+		parameterType="Map">
+		SELECT 
+			reason_id AS reason_id, 
+			SUM(TIME_TO_SEC(TIMEDIFF(endtime, starttime))) as second
+		FROM 
+		stopreasonlog sl
+		where sl.delflag = 0
+		<if test="beginTime!=null">
+			and sl.starttime &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and sl.starttime &lt;= #{endTime}
+		</if>
+		<if test="lineId!=null">
+			and sl.line_id = #{lineId}
+		</if>
+		GROUP BY reason_id
 	</select>	
 
 </mapper>
