@@ -40,6 +40,7 @@ import LineScreen from './components/LineScreen';
 import Login from './components/Login';
 import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
 import LineScreenLineSelect from './components/LineScreenLineSelect';
+import WorkShopEditPage from "./components/workshop/WorkShopEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -74,6 +75,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/linescreen/select/linescreen" comp={LineScreenLineSelect}></PrivateRoute>{/*生产线选择*/}                
                     <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
                     <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
+                    <PrivateRoute path="/backward/mworkshop/:id" comp={WorkShopEditPage}></PrivateRoute>{/*生产车间管理*/}
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
                     <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
 

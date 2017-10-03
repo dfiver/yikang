@@ -190,7 +190,7 @@ export default class OperatorDetail extends React.Component {
 
 
     onChangeShift(value) {
-        console.og("输入班次：", value);
+        console.log("输入班次：", value);
         this.state.item.shiftId = value;
         this.setState({
             item: this.state.item
