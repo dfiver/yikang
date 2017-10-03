@@ -39,7 +39,13 @@ export default class ProductFamily extends React.Component {
   componentWillMount() {
     console.log("ProductFamily will mount!");
   };
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mproductfamily/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mproductfamily/0');
+    }
   render() {
     return (
       <div class="container">
@@ -52,7 +58,9 @@ export default class ProductFamily extends React.Component {
           <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       emptyitem={this.state.emptyitem}
-                      fetchURL="/data/productfamily/"/>
+                      fetchURL="/data/productfamily/"
+                      onChange={this.onChange.bind(this)}
+                      onAdd={this.onAdd.bind(this)}/>
         </div>
       </div>
     );

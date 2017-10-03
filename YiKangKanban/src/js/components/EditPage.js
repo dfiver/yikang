@@ -6,35 +6,37 @@ import { Row, Col,message,Select } from 'antd';
 import { Form, Input, Button, Radio } from 'antd';
 const FormItem = Form.Item;
 
-export  default class WorkShopEditPage extends React.Component{
+/**
+ * title
+ * url
+ * listurl
+ * cols
+ * id
+ */
+export  default class EditPage extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            id:props.match.params.id,
-            workshop:{},
+            id:props.id,
+            entity:{},
             cols:[],
-            title:"生产车间修改"
+            title:props.title,
+            url:props.url,
+            listurl:props.listurl,
+            precols:props.cols
         }
     }
     componentWillMount(){
         if(this.state.id>0) {
-            fetch("/data/workshop/getbyid?id="+this.state.id)
+            fetch(this.state.url+"/getbyid?id="+this.state.id)
                 .catch(error => console.log("fetch object error:", error))
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
                         this.setState({
                             ...this.state,
-                            cols:[{
-                                label:"生产车间名称",
-                                type:"input",
-                                name:"name"
-                            },{
-                                label:"备注",
-                                type:"input",
-                                name:"comment"
-                            }],
-                            workshop:data.obj
+                            cols:this.state.precols,
+                            entity:data.obj
                         });
                     }else{
                         message.error("未找到对象。");
@@ -43,39 +45,32 @@ export  default class WorkShopEditPage extends React.Component{
         }else{
             this.setState({
                 ...this.state,
-                cols:[{
-                    label:"生产车间名称",
-                    type:"input",
-                    name:"name"
-                },{
-                    label:"备注",
-                    type:"input",
-                    name:"comment"
-                }],
-                workshop:{}
+                cols:this.state.precols,
+                entity:{}
             });
         }
     }
     submitForm(){
-        console.log("props:" , this.props);
-        fetch("/data/workshop/save",{
+        console.log("compnents:", this);
+        fetch(this.state.url+"/save",{
             method:"POST",
             headers:{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body:JSON.stringify(this.state.workshop)
+            body:JSON.stringify(this.state.entity)
         }).catch(error => console.log("fetch object error:", error))
             .then(res => res.json()).then(data => {
-                if (data.success) {
-                    this.props.history.push('/backward/workshop');
-                } else {
-                    message.error("保存失败。");
-                }
-            });
+            if (data.success) {
+                message.success("保存成功");
+                this.context.router.history.push(this.state.listurl);
+            } else {
+                message.error("保存失败。");
+            }
+        });
     }
     handleChange(col,value){
-        this.state.workshop[col.name]=value;
+        this.state.entity[col.name]=value;
     }
     render(){
         const formItemLayout =  {
@@ -101,7 +96,7 @@ export  default class WorkShopEditPage extends React.Component{
                                 this.state.cols.map((col,index)=>(
                                     <FormItem  label={col.label} key={index} {...formItemLayout}>
                                         {
-                                            Object.is(col.type,"input")?<Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.workshop[col.name]}/>:null
+                                            Object.is(col.type,"input")?<Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:null
                                         }
                                     </FormItem>
                                 ))
@@ -114,10 +109,14 @@ export  default class WorkShopEditPage extends React.Component{
                 </Row>
                 <Row gutter={16}>
                     <Col span={14} offset={1}>
-                        <Link to="/backward/workshop">返回列表</Link>
+                        <Link to={this.state.listurl}>返回列表</Link>
                     </Col>
                 </Row>
             </div>
         )
     }
 }
+
+EditPage.contextTypes = {
+    router: React.PropTypes.object
+};
