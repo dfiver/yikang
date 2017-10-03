@@ -18,7 +18,7 @@ export  default class FamilyEditPage extends React.Component{
             name:"comment"
         }];
         return (
-            <EditPage title="生产家族" id={this.props.match.params.id} url="/data/productfamily" listurl="/backward/productfamily" cols={cols}/>
+            <EditPage title="产品家族编辑" id={this.props.match.params.id} url="/data/productfamily" listurl="/backward/productfamily" cols={cols}/>
         )
     }
 }

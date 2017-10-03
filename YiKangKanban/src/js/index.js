@@ -42,6 +42,7 @@ import CommitProductAndStopReasonLineSelect from './components/CommitProductAndS
 import LineScreenLineSelect from './components/LineScreenLineSelect';
 import WorkShopEditPage from "./components/workshop/WorkShopEditPage";
 import FamilyEditPage from "./components/productfamily/FamilyEditPage";
+import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -85,6 +86,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/job" comp={Job}></PrivateRoute>{/*岗位管理*/}
 
                     <PrivateRoute path="/backward/productcode" comp={ProductCode}></PrivateRoute>{/*生产型号管理*/}
+                    <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
                     <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}

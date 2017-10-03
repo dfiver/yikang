@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Row, Col,message,Select } from 'antd';
+const { Option } = Select;
 
 import { Form, Input, Button, Radio } from 'antd';
 const FormItem = Form.Item;
@@ -12,6 +13,7 @@ const FormItem = Form.Item;
  * listurl
  * cols
  * id
+ * selectionSource
  */
 export  default class EditPage extends React.Component{
     constructor(props){
@@ -23,10 +25,30 @@ export  default class EditPage extends React.Component{
             title:props.title,
             url:props.url,
             listurl:props.listurl,
-            precols:props.cols
+            precols:props.cols,
+            selectionSource:props.selectionSource
         }
     }
     componentWillMount(){
+        console.log("precols",this.state.precols);
+        this.state.precols.forEach((col)=>{
+            col["loading"]=false;
+            if(typeof this.state.selectionSource!='undefined' &&typeof this.state.selectionSource[col.name] != 'undefined'){
+                col["loading"]=true;
+                fetch(this.state.selectionSource[col.name].url)
+                    .catch(error => console.log("fetch object error:", error))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            col["loading"]=false;
+                            this.state.selectionSource[col.name].source=data.obj;
+                            this.setState(this.state);
+                        }else{
+                            message.error("未找到对象。");
+                        }
+                    });
+            }
+        });
         if(this.state.id>0) {
             fetch(this.state.url+"/getbyid?id="+this.state.id)
                 .catch(error => console.log("fetch object error:", error))
@@ -70,6 +92,7 @@ export  default class EditPage extends React.Component{
         });
     }
     handleChange(col,value){
+        console.log(col,value);
         this.state.entity[col.name]=value;
     }
     render(){
@@ -94,9 +117,19 @@ export  default class EditPage extends React.Component{
                         <Form layout="horizontal">
                             {
                                 this.state.cols.map((col,index)=>(
+                                    col["loading"]?null:
                                     <FormItem  label={col.label} key={index} {...formItemLayout}>
                                         {
-                                            Object.is(col.type,"input")?<Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:null
+                                            Object.is(col.type,"input")?
+                                                <Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:
+                                            Object.is(col.type,"select")?
+                                                <Select onChange={(value)=>this.handleChange(col,value)} defaultValue={this.state.entity[col.name]}>
+                                                    {
+                                                        this.state.selectionSource[col.name].source.map((option,index)=>(
+                                                            <Option key={index} value={option.key}>{option.value}</Option>
+                                                        ))
+                                                    }
+                                                </Select>:null
                                         }
                                     </FormItem>
                                 ))
