@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseEditableDataTable from './BaseEditableDataTable';
-import { browserHistory } from 'react-router'
 
 export default class WorkShop extends React.Component {
   constructor() {
