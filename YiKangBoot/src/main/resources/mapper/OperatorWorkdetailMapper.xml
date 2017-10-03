@@ -15,6 +15,7 @@
 		<association property="operator" javaType="com.yikang.springboot.entity.Operator">
 			<id column="wd_opid" property="id" />
 			<result column="op_name" property="name"/>
+			<result column="op_workid" property="workid"/>
 		</association>
 		<association property="workdetail" javaType="com.yikang.springboot.entity.OperatorWorkdetail">
 			<id column="wd_id" property="id" />
@@ -36,6 +37,7 @@
 
 	<select id="queryWorkDetailList" resultMap="DetailResultMap" parameterType="com.yikang.springboot.qo.WorkDetailQO">
 		SELECT
+		op.`workid` as op_workid,
 		op.`name` AS op_name,
 		wd.`operator_id` AS wd_opid,
 		wd.`starttime` AS wd_starttime,

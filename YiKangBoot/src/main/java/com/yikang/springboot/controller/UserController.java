@@ -37,9 +37,18 @@ public class UserController extends BaseController<User,IUserService> {
     @RequestMapping("login")
     @ResponseBody
     public JsonResult login(@RequestBody User entity){
+        if(entity.getUsername().trim().length()<=0){
+            return renderError("用户名不能为空。");
+        }
+        if(entity.getPasswd().trim().length()<=0){
+            return renderError("密码不能为空。");
+        }
         EntityWrapper ew = new EntityWrapper<User>();
         ew.setEntity(entity);
         User u = service.selectOne(ew);
+        if(u==null){
+            return renderError("用户名或者密码错误。");
+        }
         Role role = roleService.selectById(u.getRoleId());
         Map<String,Object> result = new HashMap<>();
         result.put("user",u);

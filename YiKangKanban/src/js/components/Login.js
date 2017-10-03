@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import FetchList from './FetchList';
 import {Redirect} from 'react-router-dom';
 import {getStringForUnicode,getUnicode} from './Unicode';
+import {message} from 'antd';
 
 class Login extends React.Component {
     constructor(props){
@@ -14,12 +15,12 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
-    getInitialState() {
-    }
-
     handleSubmit(event) {
         event.preventDefault();
+        if(this.refs.user.value==null || this.refs.user.value=="" ){
+            message.warn("必须输入用户名");
+            return;
+        }
         fetch("/data/user/login", {
             method: 'POST',
             headers: {
@@ -34,6 +35,8 @@ class Login extends React.Component {
                 sessionStorage.token = true;
                 sessionStorage.perm = JSON.stringify(getUnicode(data.obj.role.permission));
                 this.setState({ redirectToReferrer: true })
+            }else{
+                message.error(data.msg);
             }
         });
     }
