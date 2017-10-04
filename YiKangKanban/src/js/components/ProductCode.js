@@ -60,6 +60,11 @@ export default class ProductCode extends React.Component {
                 },
                 width: 1
             }, {
+                name: 'cycletime',
+                nickName: 'Cycle Time',
+                type: 'text',
+                width: 1
+            }, {
                 name: 'EU',
                 nickName: 'EU',
                 type: 'text',
@@ -67,8 +72,8 @@ export default class ProductCode extends React.Component {
             }, {
                 name: 'comment',
                 nickName: '生产线备注',
-                type: 'textarea',
-                width: 2
+                type: 'text',
+                width: 1
             }],
             itemlist: [{
                 workshopname: {
@@ -114,6 +119,7 @@ export default class ProductCode extends React.Component {
                 workshopname: '',
                 familyname: '',
                 productcode: '',
+                cycletime: '',
                 EU: '',
                 target: '',
                 comment: ''
@@ -164,6 +170,7 @@ export default class ProductCode extends React.Component {
             productfamilyId: viewItem.familyname.key,
             productcode: viewItem.productcode,
             eu: viewItem.EU,
+            cycletime:viewItem.cycletime,
             target: viewItem.target,
             comment: viewItem.comment,
         }
@@ -175,12 +182,20 @@ export default class ProductCode extends React.Component {
             workshopname: entity.workshop,
             familyname: entity.productfamily,
             productcode: entity.productcode,
+            cycletime: entity.cycletime,
             EU: entity.eu,
             target: entity.target,
             comment: entity.comment
         }
     }
 
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mproductcode/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mproductcode/0');
+    }
     render() {
         return (
             <div class="container">
@@ -196,7 +211,9 @@ export default class ProductCode extends React.Component {
                               emptyitem={this.state.emptyitem}
                               viewToEntity = {this.viewToEntity}
                               entityToView = {this.entityToView}
-                              fetchURL ={"/data/productcode"}/>                              
+                              fetchURL ={"/data/productcode"}
+                              onChange={this.onChange.bind(this)}
+                              onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
         );

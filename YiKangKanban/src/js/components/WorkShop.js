@@ -38,7 +38,13 @@ export default class WorkShop extends React.Component {
       }
     }
   }
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mworkshop/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mworkshop/0');
+    }
   render() {
     return (
       <div class="container">
@@ -51,7 +57,9 @@ export default class WorkShop extends React.Component {
           <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       emptyitem={this.state.emptyitem}
-                      fetchURL={"/data/workshop"}/>
+                      fetchURL={"/data/workshop"}
+                      onChange={this.onChange.bind(this)}
+                      onAdd={this.onAdd.bind(this)}/>
         </div>
       </div>
     );

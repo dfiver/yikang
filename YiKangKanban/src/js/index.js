@@ -40,6 +40,9 @@ import LineScreen from './components/LineScreen';
 import Login from './components/Login';
 import CommitProductAndStopReasonLineSelect from './components/CommitProductAndStopReasonLineSelect';
 import LineScreenLineSelect from './components/LineScreenLineSelect';
+import WorkShopEditPage from "./components/workshop/WorkShopEditPage";
+import FamilyEditPage from "./components/productfamily/FamilyEditPage";
+import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -74,13 +77,16 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/linescreen/select/linescreen" comp={LineScreenLineSelect}></PrivateRoute>{/*生产线选择*/}                
                     <PrivateRoute path="/backward" comp={NavHeader}></PrivateRoute> {/*首页：报表页面*/}
                     <PrivateRoute path="/backward/workshop" comp={WorkShop}></PrivateRoute>{/*生产车间管理*/}
+                    <PrivateRoute path="/backward/mworkshop/:id" comp={WorkShopEditPage}></PrivateRoute>{/*生产车间编辑页面*/}
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
+                    <PrivateRoute path="/backward/mproductfamily/:id" comp={FamilyEditPage}></PrivateRoute>{/*产品家族编辑页面*/}
                     <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
 
                     <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
                     <PrivateRoute path="/backward/job" comp={Job}></PrivateRoute>{/*岗位管理*/}
 
                     <PrivateRoute path="/backward/productcode" comp={ProductCode}></PrivateRoute>{/*生产型号管理*/}
+                    <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
                     <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}

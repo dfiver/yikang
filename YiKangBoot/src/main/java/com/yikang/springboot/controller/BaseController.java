@@ -1,5 +1,6 @@
 package com.yikang.springboot.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,11 @@ public class BaseController<T extends SuperEntity<T>, Service extends IVOService
 		return (entity.insertOrUpdate()?renderSuccess():renderError())
 				.setObj(getAll());
 	}
-	
+
+    @RequestMapping("getbyid")
+    @ResponseBody
+    public JsonResult queryById(Long id){
+        return (id!=null?renderSuccess(service.selectById(id)):renderError());
+    }
 
 }

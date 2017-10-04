@@ -9,6 +9,7 @@
 		<result column="productfamily_id" property="productfamilyId" />
 		<result column="productcode" property="productcode" />
 		<result column="target" property="target" />
+		<result column="cycletime" property="cycletime" />
 		<result column="EU" property="eu" />
 		<result column="comment" property="comment" />
 		<result column="delflag" property="delflag" />
@@ -20,6 +21,7 @@
 		<result column="productfamily_id" property="productfamilyId" />
 		<result column="productcode" property="productcode" />
 		<result column="target" property="target" />
+		<result column="cycletime" property="cycletime" />
 		<result column="EU" property="eu" />
 		<result column="comment" property="comment" />
 		<result column="delflag" property="delflag" />
@@ -35,7 +37,7 @@
 	
 	<select id="getListViewList" resultMap="ViewResultMap">
 		select 
-			p.id, p.productcode, p.target, p.comment, p.delflag, p.eu, 
+			p.id, p.productcode, p.target,p.cycletime, p.comment, p.delflag, p.eu,
 			w.id as workshop_id, w.name as workshop_name,
 			f.id as productfamily_id, f.name as productfamily_name
 		from productcode p left join workshop w on p.workshop_id = w.id

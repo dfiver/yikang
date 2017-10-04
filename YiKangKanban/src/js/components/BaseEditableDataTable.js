@@ -5,7 +5,7 @@ import {
   BaseDataTableHeader,
   BaseDataTableEditableRow
 } from './DataTable/DataTable.js';
-
+import {message} from 'antd';
 import FetchList from './FetchList';
 
 /**
@@ -150,9 +150,13 @@ export default class BaseEditableDataTable extends React.Component {
 
 
   onAdd(index) {
+
     if (this.props.unaddable) {
       this.onMessage("alert", this.props.unaddableMessage || "不能新增");
     } else {
+        if(this.props.onAdd){
+            return this.props.onAdd(index);
+        }
       let tempItem = Object.assign({}, this.props.emptyitem);
 
       console.log("新建的记录：", tempItem);
@@ -184,6 +188,10 @@ export default class BaseEditableDataTable extends React.Component {
   }
 
   onChange(index) {
+    if(this.props.onChange){
+      var item = this.state.itemlist[index];
+      return this.props.onChange(item);
+    }
     console.log("修改：", index);
     this.setState({
       state: "change",
@@ -278,27 +286,36 @@ export default class BaseEditableDataTable extends React.Component {
     })
   }
 
-  onMessage(type, message) {
-    if (this.state.messages[type]) {
-      let messages = Object.assign({}, this.state.messages);
-      ++messages[type].show;
-      messages[type].message = message;
-
-      this.setState({
-        messages: messages
-      });
-      setTimeout(function() {
-        if (messages[type].show) {
-          let timeoutmessages = Object.assign({}, this.state.messages);
-          --timeoutmessages[type].show;
-          this.setState({
-            messages: timeoutmessages
-          })
-        }
-      }.bind(this), 2000);
-    } else {
-      console.log("无法识别的消息类型");
-    }
+  onMessage(type, msg) {
+      if (Object.is(type,"success")) {
+          message.success(msg);
+      }
+      if (Object.is(type,"error")) {
+          message.error(msg);
+      }
+      if (Object.is(type,"alert")) {
+          message.warn(msg);
+      }
+    // if (this.state.messages[type]) {
+    //   let messages = Object.assign({}, this.state.messages);
+    //   ++messages[type].show;
+    //   messages[type].message = message;
+    //
+    //   this.setState({
+    //     messages: messages
+    //   });
+    //   setTimeout(function() {
+    //     if (messages[type].show) {
+    //       let timeoutmessages = Object.assign({}, this.state.messages);
+    //       --timeoutmessages[type].show;
+    //       this.setState({
+    //         messages: timeoutmessages
+    //       })
+    //     }
+    //   }.bind(this), 2000);
+    // } else {
+    //   console.log("无法识别的消息类型");
+    // }
   }
 
 

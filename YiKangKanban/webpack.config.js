@@ -18,7 +18,7 @@ module.exports = {
 			loader: 'babel-loader',
 			query: {
 				presets: ['stage-3','react'],
-				plugins: ['react-html-attrs'],
+				plugins: ['react-html-attrs',["import", { libraryName: "antd", style: "css" }]],
 			}
 		}, {
 			test: /\.css?$/,
