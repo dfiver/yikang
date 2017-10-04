@@ -61,37 +61,6 @@ export default class LineScreen extends React.Component {
                 nickName:'返工',
                 width:'80px',
             }],
-
-            product_feakheaderlist:[{
-                name:'period',
-                nickName: ".",
-                width:'180px',
-            },{
-                name:'productcode',
-                nickName:' ',
-                width:'120px',
-            },{
-                name:'batchno',
-                nickName:' ',
-                width:'100px',
-            },{
-                name:'target',
-                nickName:' ',
-                width:'80px',
-            },{
-                name:'done',
-                nickName:' ',
-                width:'80px',
-            },{
-                name:'crap',
-                nickName:' ',
-                width:'80px',
-            },{
-                name:'rework',
-                nickName:' ',
-                width:'80px',
-            }],
-
             product_itemlist:[],
         }
         this.onEvents = {
@@ -238,60 +207,61 @@ export default class LineScreen extends React.Component {
         return (
         <div>
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <h3>{this.state.line?this.state.line.name:''}</h3>
-                    </div>
-                    <div class="col-xs-2">
-                        <h3>日期:<span>{this.state.currentDate}</span></h3>
-                    </div>
-                    <div class="col-xs-1">
-                        <h3 style={{textAlign:'right'}}>班次:</h3>
-                    </div>
-                    <div class="col-xs-1">
-                        <h3>
-                            <select class="form-control" style={{fontSize:'large'}}
-                                value={this.state.shift?this.state.shift.key:''}
-                                onChange={(event)=>this.onShiftSelectChange(event.target.value)}>
-                            {this.state.shiftSelection.map((item,index)=>(
-                                <option key={index} value={item.key}>{item.value}</option>
-                                ))}
-                            </select>
-                        </h3>
-                    </div>
-                    <div class="col-xs-offset-1 col-xs-3">
-                        <h3>生产编号：<span>{this.state.currentProductCode}</span></h3>
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <h2>{this.state.line?this.state.line.name:''}</h2>
+                        </div>
+                        <div class="col-xs-2">
+                            <h2>日期:<span>{this.state.currentDate}</span></h2>
+                        </div>
+                        <div class="col-xs-1">
+                            <h2 style={{textAlign:'right'}}>班次:</h2>
+                        </div>
+                        <div class="col-xs-1">
+                            <h2>
+                                <select class="form-control" style={{fontSize:'large'}}
+                                    value={this.state.shift?this.state.shift.key:''}
+                                    onChange={(event)=>this.onShiftSelectChange(event.target.value)}>
+                                {this.state.shiftSelection.map((item,index)=>(
+                                    <option key={index} value={item.key}>{item.value}</option>
+                                    ))}
+                                </select>
+                            </h2>
+                        </div>
+                        <div class="col-xs-offset-1 col-xs-3">
+                            <h2>生产编号：<span>{this.state.currentProductCode}</span></h2>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div style={{width:'100%'}}>
-                        <div style={{width:'730px', float:'left', marginRight:"-730px"}}>
-                            <div class="panel panel-default">
-                                <h5>生产情况报表</h5>
-                                <div class="panel-body productionlist_panelbody">
-                                    <div style={{overflow:'hidden',
-                                                height:'38px'}}>
-                                        <ListTable headerlist={this.state.product_feakheaderlist}
-                                                itemlist={[]}/>
-                                    </div> 
-                                    <div class = "productionlist_body" >
-                                        <ListTable headerlist={this.state.product_headerlist}
-                                                itemlist={this.state.product_itemlist}/>
-                                    </div>    
+                <div class="page-body">
+                    <div class="row">                
+                        <div style={{width:'100%'}}>
+                            <div style={{width:'730px', float:'left', marginLeft:'10px', marginRight:"-740px"}}>
+                                <div class="panel panel-default">
+                                    <h4 style={{marginLeft:'10px'}}>生产情况报表</h4>
+                                    <ListTable headerlist={this.state.product_headerlist}
+                                                    itemlist={[]}/>
+                                    <div class="panel-body productionlist_panelbody">
+                                        <div class = "productionlist_body" >
+                                            <ListTable headerlist={this.state.product_headerlist}
+                                                    itemlist={this.state.product_itemlist}/>
+                                        </div>    
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style={{float:'left', width:'100%'}}>
-                            <div style={{ marginLeft:'740px'}}>
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <GAPChart lineId={this.state.lineId}/>
+                            <div style={{float:'left', width:'100%'}}>
+                                <div style={{ marginLeft:'750px'}}>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <GAPChart lineId={this.state.lineId}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>                    
+                </div>
             </div>
             {this.state.lineId?
             <nav class="navbar navbar-default navbar-fixed-bottom">

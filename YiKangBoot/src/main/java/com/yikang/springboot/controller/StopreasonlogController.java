@@ -28,6 +28,7 @@ import com.yikang.springboot.entity.Mode;
 import com.yikang.springboot.entity.Reason;
 import com.yikang.springboot.entity.Stopreasonlog;
 import com.yikang.springboot.qo.ProductAndStopQueryQO;
+import com.yikang.springboot.qo.ResonReportQO;
 import com.yikang.springboot.service.IModeService;
 import com.yikang.springboot.service.IReasonService;
 import com.yikang.springboot.service.IStopreasonlogService;
@@ -143,27 +144,51 @@ public class StopreasonlogController extends BaseController<Stopreasonlog, IStop
 	@RequestMapping("/querysum/today")
 	@ResponseBody
 	JsonResult querySumToday(@RequestParam Long lineId) {
-		List<Mode> modeList = (List<Mode>) modeService.getListViewList();
-		List<ReasonVO> reasonList = (List<ReasonVO>) resonService.getListViewList();
+		return calculateSumData(lineId, new Date(), new Date());
+	}
+	
+	@RequestMapping("/querysum")
+	@ResponseBody
+	JsonResult querySum(@RequestBody ResonReportQO condition) {
+		return calculateSumData(condition.getLineId(), 
+				condition.getBeginDate(), 
+				condition.getEndDate());
+	}
 
-		//计算当天日期
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date beginTime = calendar.getTime();
-		calendar.add(Calendar.DAY_OF_MONTH, 1);
-		Date endTime = calendar.getTime();
-		
-		//查询得到秒数
+	private JsonResult calculateSumData(Long lineId, Date beginDate, Date endDate) {
+
+
 		Map<String, Object> cMap = new HashMap<String, Object>();
-		cMap.put("beginTime", beginTime);
-		cMap.put("endTime", endTime);
+		//计算开始时期
+		Calendar calendar = Calendar.getInstance();
+		if(beginDate != null) {
+			calendar.setTime(beginDate);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			Date beginTime = calendar.getTime();
+			cMap.put("beginTime", beginTime);			
+		}
+		
+		//结算截至日期
+		if(endDate != null) {
+			calendar.setTime(endDate);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);		
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			Date endTime = calendar.getTime();
+			cMap.put("endTime", endTime);			
+		}
+				
 		cMap.put("lineId", lineId);
 		List<StopreaonlogTimeDO> sumSecList = this.service.selectSumsecGroupbyReason(cMap);
 		
+		//获得原因和原因类别基础数据
+		List<Mode> modeList = (List<Mode>) modeService.getListViewList();
+		List<ReasonVO> reasonList = (List<ReasonVO>) resonService.getListViewList();
 		//创建统计数据结构
 		Map<Long, String> modeNameMap = new HashMap<Long, String>();
 		Map<Long, String> reasonNameMap = new HashMap<Long, String>();
@@ -228,6 +253,5 @@ public class StopreasonlogController extends BaseController<Stopreasonlog, IStop
 		resultMap.put("reasonListMap", reasonListMap);
 		
 		return renderSuccess().setObj(resultMap);
-		
 	}
 }

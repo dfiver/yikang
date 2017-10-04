@@ -36,7 +36,7 @@ h2.tutheader {
 .operator-info_job{
 	margin-top: 10px;
 	text-align: center;
-	font-size: 18px;
+	font-size: 14px;
 }
 .operator-info_image {
 	width: 72px; 
@@ -49,9 +49,8 @@ h2.tutheader {
 
 .operator-info_name{
 	text-align: center;
-	font-size: 16px;
+	font-size: 14px;
 	padding: 0 5px;
-	font-weight: bold;
 }
 .operator-info_name_default{
 	color: #337ab7;
@@ -70,14 +69,14 @@ h2.tutheader {
 	padding: 0px;	
 }
 .productionlist_body{
-	max-height: 460px;
+	max-height: 700px;
 	overflow-y: scroll;
 	margin-right: -20px;
 	margin-top: -40px;
 }
 
 .linelist_body{
-	max-height: 460px;
+	max-height: 700px;
 	overflow-y: scroll;
 	margin-right: -20px;	
 }

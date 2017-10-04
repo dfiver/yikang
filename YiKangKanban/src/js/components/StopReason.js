@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseEditableDataTable from './BaseEditableDataTable';
+import FetchList from './FetchList';
 
 
 export default class StopReason extends React.Component {
   constructor() {
     super();
     this.state = {
+      inited: false,
       dataTypeName: '停机原因管理',
       headerlist: [{
         name: 'mode',
@@ -24,7 +26,7 @@ export default class StopReason extends React.Component {
           value: '类别3',
         }]
       }, {
-        name: 'stopreason',
+        name: 'name',
         nickName: '停机原因',
         type: 'text',
         addAttr: {
@@ -38,28 +40,7 @@ export default class StopReason extends React.Component {
         type: 'textarea',
         width: 4
       }],
-      itemlist: [{
-        mode: {
-          key: '1',
-          value: '类别1'
-        },
-        stopreason: '原因1',
-        comment: '停机原因1备注'
-      }, {
-        mode: {
-          key: '2',
-          value: '类别2'
-        },
-        stopreason: '原因2',
-        comment: '停机原因2备注'
-      }, {
-        mode: {
-          key: '3',
-          value: '类别3'
-        },
-        stopreason: '原因3',
-        comment: '停机原因3备注'
-      }],
+      itemlist: [],
       emptyitem: {
         mode: '',
         stopreason: '',
@@ -69,11 +50,28 @@ export default class StopReason extends React.Component {
   }
 
   componentWillMount() {
-    console.log("StopReason will mount!");
+    console.log("Reason will mount!");
+    new FetchList().fetchList("/data/mode/options", (datalist)=>{
+      let headerlist = [].concat(this.state.headerlist);
+      headerlist[0].selectoptions = datalist;
+      this.setState(
+          headerlist:headerlist
+        )
+    })
   };
 
+  reason_viewToEntity(viewitem){
+    console.log(viewitem);
+      return{
+        id: viewitem.id,
+        modeId: viewitem.mode.key,
+        name: viewitem.name,
+        comment: viewitem.comment,
+      }
+  }
+
   render() {
-    return (
+    return (  
       <div class="container">
                 <div class="row">
                     <div class="page-header">
@@ -84,9 +82,11 @@ export default class StopReason extends React.Component {
                   <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                               headerlist={this.state.headerlist}
                               itemlist={this.state.itemlist}
-                              emptyitem={this.state.emptyitem}/>
+                              emptyitem={this.state.emptyitem}
+                              viewToEntity={this.reason_viewToEntity}
+                              fetchURL={"/data/reason"}/>
                 </div>
             </div>
-    );
+     );
   }
 }

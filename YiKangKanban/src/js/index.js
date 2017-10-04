@@ -97,7 +97,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/commitproductandstopreaon/:lineId" comp={CommitProductAndStopReason}></PrivateRoute>{/*生产信息采集*/}
                     <PrivateRoute path="/backward/commitProductandstopreasonlineselect" comp={CommitProductAndStopReasonLineSelect}></PrivateRoute>{/*生产信息采集*/}                    
                     <PrivateRoute path="/backward/productandstopreport" comp={ProductAndStopReport}></PrivateRoute>{/*生产和停机信息列表*/}
-                    <PrivateRoute path="/backward/gapreoprt" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
+                    <PrivateRoute path="/backward/gapreport" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
                 </div>
             </Router>
         )
