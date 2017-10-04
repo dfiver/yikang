@@ -393,6 +393,31 @@ export default class ProductAndStopReport extends React.Component {
         this.query_stoplist();
     }
 
+    onExport(event){
+        event.preventDefault();
+        console.log("导出全部");
+        let _fetchUrl = '/data/report/productandstop';
+        fetch(_fetchUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.clearUpCondition(this.state.selectConditions))
+            })
+            .catch(error => {
+                console.log("query stopreasonInfo error!", error);
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    let uuid = data.obj;
+                    window.location.href = "/data/report/download/"+uuid+"/report.xls"
+                }
+            })        
+    }
+
+
     render() {
         return (
             <div class="container">
@@ -520,7 +545,7 @@ export default class ProductAndStopReport extends React.Component {
 
                 <div class = "row">
                     <div class="col-xs-12">
-                        <button class="btn btn-success pull-right">导出全部</button>
+                        <button class="btn btn-success pull-right" onClick={this.onExport.bind(this)}>导出全部</button>
                     </div>
                 </div>
                 <div class = "row">

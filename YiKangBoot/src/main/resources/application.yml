@@ -54,4 +54,7 @@ logging:
 yikang:
     upload:
         path:
-            image: D:/workspace/yikang 
+            image: D:/workspace/yikang/avatar 
+    report:
+        path:
+            temp: D:/workspace/yikang/report
