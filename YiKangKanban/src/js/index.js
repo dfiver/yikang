@@ -43,6 +43,8 @@ import LineScreenLineSelect from './components/LineScreenLineSelect';
 import WorkShopEditPage from "./components/workshop/WorkShopEditPage";
 import FamilyEditPage from "./components/productfamily/FamilyEditPage";
 import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
+import JobLevelEditPage from "./components/joblevel/JobLevelEditPage";
+import JobEditPage from "./components/joblevel/JobEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -83,7 +85,9 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
 
                     <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
+                    <PrivateRoute path="/backward/mjoblevelandskilllevel/:id" comp={JobLevelEditPage}></PrivateRoute>{/*岗位级别及技能星级设置*/}
                     <PrivateRoute path="/backward/job" comp={Job}></PrivateRoute>{/*岗位管理*/}
+                    <PrivateRoute path="/backward/mjob/:id" comp={JobEditPage}></PrivateRoute>{/*岗位管理*/}
 
                     <PrivateRoute path="/backward/productcode" comp={ProductCode}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}

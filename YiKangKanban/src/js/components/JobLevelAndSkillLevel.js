@@ -36,7 +36,13 @@ export default class JobLevelAndSkillLevel extends React.Component {
             }
         }
     }
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mjoblevelandskilllevel/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mjoblevelandskilllevel/0');
+    }
     render() {
         return (
             <div>
@@ -56,7 +62,9 @@ export default class JobLevelAndSkillLevel extends React.Component {
                                 <BaseEditableDataTable dataTypeName={this.state.jobLevelDataType}
                                           headerlist={this.state.headerlist}
                                           emptyitem={this.state.emptyitem}
-                                          fetchURL="/data/joblevel"/>
+                                          fetchURL="/data/joblevel"
+                                                       onChange={this.onChange.bind(this)}
+                                                       onAdd={this.onAdd.bind(this)}/>
                             </div>
                         </div>
                     </div>

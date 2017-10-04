@@ -17,7 +17,7 @@ export default class Job extends React.Component {
                 name: 'joblevel',
                 nickName: '岗位类别',
                 type: "select",
-                width: 3,
+                width: 2,
                 selectoptions: [{
                     key: '1',
                     value: 'A'
@@ -29,10 +29,15 @@ export default class Job extends React.Component {
                     value: 'C'
                 }]
             }, {
+                name: 'starlevel',
+                nickName: '岗位星级',
+                type: 'text',
+                width: 2
+            }, {
                 name: 'comment',
                 nickName: '岗位备注',
                 type: 'textarea',
-                width: 4
+                width: 3
             }],
             itemlist: [{
                 jobname: '生产岗位1',
@@ -84,15 +89,23 @@ export default class Job extends React.Component {
         return {
             id: viewItem.id,
             joblevelId: viewItem.joblevel.key,
+            starlevel:viewItem.starlevel,
             name: viewItem.jobname,
             comment: viewItem.comment,
         }
     }
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mjob/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mjob/0');
+    }
     entityToView(entity) {
         return {
             id: entity.id,
             joblevel: entity.joblevel,
+            starlevel: entity.starlevel,
             jobname: entity.name,
             comment: entity.comment
         }
@@ -112,7 +125,9 @@ export default class Job extends React.Component {
                               emptyitem={this.state.emptyitem}
                               viewToEntity = {this.viewToEntity}
                               entityToView = {this.entityToView}
-                              fetchURL ={"/data/job"}/>
+                              fetchURL ={"/data/job"}
+                                         onChange={this.onChange.bind(this)}
+                                         onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
         );
