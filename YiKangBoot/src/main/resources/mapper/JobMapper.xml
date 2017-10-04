@@ -7,6 +7,7 @@
 		<id column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="joblevel_id" property="joblevelId" />
+		<result column="starlevel" property="starlevel" />
 		<result column="comment" property="comment" />
 		<result column="delflag" property="delflag" />
 	</resultMap>
@@ -15,6 +16,7 @@
 		<id column="id" property="id" />
 		<result column="name" property="name" />
 		<result column="joblevel_id" property="joblevelId" />
+		<result column="starlevel" property="starlevel" />
 		<result column="comment" property="comment" />
 		<result column="delflag" property="delflag" />		
 		<association property="joblevel" javaType="com.yikang.springboot.common.result.KeyValue">
@@ -25,7 +27,7 @@
 	
 	<select id="getListViewList" resultMap="ViewResultMap">
 		select 
-			j.id, j.name, j.comment, j.delflag,
+			j.id, j.name, j.starlevel, j.comment, j.delflag,
 			l.id as joblevel_id, l.name as joblevel_name
 		from job j left join joblevel l on j.joblevel_id = l.id
 		where j.delflag = 0;

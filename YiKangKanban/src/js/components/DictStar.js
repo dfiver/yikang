@@ -1,24 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {message} from 'antd';
 
 export default class DictStar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: {
-                alert: {
-                    show: 0,
-                    message: 'alert信息'
-                },
-                error: {
-                    show: 0,
-                    message: 'error信息'
-                },
-                success: {
-                    show: 0,
-                    message: 'success信息'
-                }
-            },
             starLevelDataType: '星级设置',
             starLevel: {
                 value: 5,
@@ -36,7 +23,7 @@ export default class DictStar extends React.Component {
                 fetch("/data/dict/star/save?num=" + this.state.starLevel.tempValue)
                     .catch(error => {
                         console.log("changes starlevel error", error);
-                        this.onMessage("error", "修改最高星级失败");
+                        message.error("修改最高星级失败");
                     })
                     .then(res => res.json())
                     .then(data => {
@@ -48,9 +35,9 @@ export default class DictStar extends React.Component {
                                     changing: false
                                 }
                             });
-                            this.onMessage("success", "修改最高星级成功");
+                            message.success("修改最高星级成功");
                         } else {
-                            this.onMessage("error", "修改最高星级失败");
+                            message.error("修改最高星级失败");
                         }
                     })
             }
@@ -100,29 +87,6 @@ export default class DictStar extends React.Component {
         }.bind(this);
     }
 
-    onMessage(type, message) {
-        if (this.state.messages[type]) {
-            let messages = Object.assign({}, this.state.messages);
-            ++messages[type].show;
-            messages[type].message = message;
-
-            this.setState({
-                messages: messages
-            });
-            setTimeout(function() {
-                if (messages[type].show) {
-                    let timeoutmessages = Object.assign({}, this.state.messages);
-                    --timeoutmessages[type].show;
-                    this.setState({
-                        messages: timeoutmessages
-                    })
-                }
-            }.bind(this), 2000);
-        } else {
-            console.log("无法识别的消息类型");
-        }
-    }
-
     componentWillMount() {
         fetch("/data/dict/star")
             .catch(error => {
@@ -143,87 +107,59 @@ export default class DictStar extends React.Component {
     }
 
     render() {
-        let successMessage;
-        let errorMessage;
-        let alertMessage;
-
-        if (this.state.messages["success"].show) {
-            successMessage =
-                <div class="alert alert-success" role="alert">
-                      {this.state.messages["success"].message}
-                    </div>
-        }
-        if (this.state.messages["error"].show) {
-            errorMessage =
-                <div class="alert alert-danger" role="alert">
-                        {this.state.messages["error"].message}
-                    </div>
-        }
-        if (this.state.messages["alert"].show) {
-            alertMessage =
-                <div class="alert alert-warning" role="alert">
-                        {this.state.messages["alert"].message}
-                    </div>
-        }
-
         let starGraph = [];
         for (let i = 0; i < this.state.starLevel.value; ++i) {
-            starGraph[i] = <span key={i} class="glyphicon glyphicon-star"></span>
+            starGraph[i] = <span key={i} className="glyphicon glyphicon-star"></span>
         }
 
         return (
-            <div class="container">
-                <div class="row" style={{margin:'10px, 0'}}>
-                {successMessage}
-                {errorMessage}
-                {alertMessage}
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+            <div className="container">
+                <div className="row">
+                    <div className="col-xs-12">
+                        <div className="panel panel-default">
+                            <div className="panel-heading">
                                 <h3>星级设置</h3>
                             </div>
-                            <div class="panel-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xs-2 col-xs-offset-2" style={{fontSize:'20px'}}>
-                                            <label for="startNum" class="control-label">最高星级:</label>
+                            <div className="panel-body">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-xs-2 col-xs-offset-2" style={{fontSize:'20px'}}>
+                                            <label for="startNum" className="control-label">最高星级:</label>
                                         </div>
-                                        <div class="col-xs-5" style={{display:this.state.starLevel.changing?'block':'none'}}> 
-                                            <div class="form-group">
-                                                <form id="starform" data-toggle="validator" role="form">                                                
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-xs-6">
-                                                                <input type="text" name="starNum" class="form-control" 
+                                        <div className="col-xs-5" style={{display:this.state.starLevel.changing?'block':'none'}}>
+                                            <div className="form-group">
+                                                <form id="starform" data-toggle="validator" role="form">
+                                                    <div className="container-fluid">
+                                                        <div className="row">
+                                                            <div className="col-xs-6">
+                                                                <input type="text" name="starNum" className="form-control"
                                                                         placeholder="请输入1~9中的一位数字"
-                                                                        required 
+                                                                        required
                                                                         pattern="[1-9]"
-                                                                        value={this.state.starLevel.tempValue}
+                                                                        // defaultValue={this.state.starLevel.tempValue}
                                                                         onChange={this.onTempStarChange}
                                                                         />
-                                                                <div class="help-block with-errors"></div>
+                                                                <div className="help-block with-errors"></div>
                                                             </div>
-                                                            <div class="col-xs-6">                                                    
-                                                                <a href="#" class="btn btn-default pull-right" onClick={this.resetStar}>
-                                                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                                            <div className="col-xs-6">
+                                                                <a href="#" className="btn btn-default pull-right" onClick={this.resetStar}>
+                                                                    <span className="glyphicon glyphicon-remove-circle"></span>
                                                                     &nbsp;取消
-                                                                </a> 
-                                                                <button type="submit" class = "btn btn-success pull-right">
-                                                                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                                                                </a>
+                                                                <button type="submit" className = "btn btn-success pull-right">
+                                                                    <span className="glyphicon glyphicon-floppy-disk"></span>
                                                                     &nbsp;保存
                                                                 </button>
                                                             </div>
-                                                        </div>    
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                         <div style={{display:this.state.starLevel.changing? 'none':'block' }}>
-                                            <div class="col-xs-3"> 
-                                                <div class="container-fluid">
-                                                    <div class="row">
+                                            <div className="col-xs-3">
+                                                <div className="container-fluid">
+                                                    <div className="row">
                                                         <p style={{fontSize:'18px', textAlign:'center'}}>{this.state.starLevel.value}</p>
                                                         <p style={{color:'orange', textAlign:'center'}}>
                                                             {starGraph}
@@ -231,9 +167,9 @@ export default class DictStar extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-2">
-                                                <button class="btn btn-primary pull-right" onClick={this.onBeginChange}>
-                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                            <div className="col-xs-2">
+                                                <button className="btn btn-primary pull-right" onClick={this.onBeginChange}>
+                                                    <span className="glyphicon glyphicon-pencil"></span>
                                                     &nbsp; 修改
                                                 </button>
                                             </div>
