@@ -26,7 +26,7 @@ import com.yikang.springboot.vo.LineseatVO;
  */
 @Controller
 @RequestMapping("/data/lineseat")
-public class LineseatController extends BaseController<Lineseat, ILineseatService> {
+public class LineseatController extends OptionalDataController<Lineseat, ILineseatService> {
 
 	/**
 	 * 获取某条产线的坐席数量

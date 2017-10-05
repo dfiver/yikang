@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { DatePicker } from 'antd';
+import moment from 'moment';
+import FetchList from './FetchList';
+import dateformater from 'dateformater';    
+
+const { MonthPicker } = DatePicker;
 
 /**
 设计说明：
@@ -12,72 +18,95 @@ export default class Pay extends React.Component {
         super(props);
         this.state = {
             dataTypeName: '薪资管理',
-            payQuery:{
-                title: '薪资查询',
+            queryTitle: '薪资查询',
+            conditioninited: false,
+            tableinited: false,
+            jobOptions: [],
+            payQuery:{              
                 employeeId: '',
                 employeeName: '',
-                years:{
-                    selected:2017,
-                    options:[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019]
-                },
-                months:{
-                    selected:8,
-                    options:['01','02','03','04','05','06','07','08','09','10','11','12']
-                }
+                currentMonth: '',
             },
             payList:{
-                items:[{
-                    employeeId: '001',
-                    employeeName: '张三',
-                    levelHours: {
-                            A: 162,
-                            B: 39,
-                            C: 45
-                        },
-                    mainHourLevel: 'A',
-                    jobSubsidiesOptionA: 1000.00,
-                    jobSubsidiesOptionB: 1101.00,
-                    starSubsidies: 90.00,
-                    totalSubsidiesA: 1090.00,
-                    totalSubsidiesB: 1191.00                    
-                    },{
-                    employeeId: '002',
-                    employeeName: '李四',
-                    levelHours: {
-                            A: 0,
-                            B: 190,
-                            C: 67
-                        },
-                    mainHourLevel: 'B',
-                    jobSubsidiesOptionA: 800.00,
-                    jobSubsidiesOptionB: 899.00,
-                    starSubsidies: 150.00,
-                    totalSubsidiesA: 950.00,
-                    totalSubsidiesB: 1049.00
-                    },{
-                    employeeId: '003',
-                    employeeName: '王五',
-                    levelHours: {
-                            A: 0,
-                            B: 178,
-                            C: 96
-                        },
-                    mainHourLevel: 'B',
-                    jobSubsidiesOptionA: 800.00,
-                    jobSubsidiesOptionB: 1300.00,
-                    starSubsidies: 140.00,
-                    totalSubsidiesA: 950.00,
-                    totalSubsidiesB: 1440.00                        
-                    }
-                ],
-                sumTotalSubsidiesA:2990.00,
-                sumTotalSubsidiesB:3680.00
+                items:[],
+                sumTotalSubsidies:[0.00, 0.00]
             }
         };
     }
 
+    onMonthChange(date, dateString) {
+        console.log("选择月份：", date, dateString);
+    }
+
+    onOperatorNameChange(event){
+        let payQuery = Object.assign({}, this.state.payQuery, {employeeName: event.target.value});
+        this.setState({
+            payQuery: payQuery
+        })
+
+    }
+
+    onWorkIdChange(event){
+        let payQuery = Object.assign({}, this.state.payQuery, {employeeId: event.target.value});
+        this.setState({
+            payQuery: payQuery
+        })
+    }
+
+    onQueryPayment(event){
+        event.preventDefault();
+        fetch("/data/pay/query", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.state.payQuery)
+        })
+        .catch(error => {
+          console.log("query payment error", error);
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                this.setState({
+                    payList: data.obj
+                })
+            }
+            else{
+                console.log("query payment error", data.msg);
+            }
+        });
+    }
+
+    init_currentDateTime() {
+        let date = new Date();
+        console.log(dateformater.format(date));
+        let currentMonth = dateformater.format(date, 'YYYY-MM');
+        this.setState({
+            conditioninited: true,
+            payQuery: Object.assign({}, this.state.payQuery, {currentMonth: currentMonth})
+        })
+
+        console.log("当前月份：", currentMonth);
+    }
+
+    inter_getJobOptions(){
+        new FetchList().fetchList("/data/joblevel/options", (datalist)=>{
+            this.setState({
+                tableinited: true,
+                jobOptions: datalist,
+            })
+        });
+    }
+
+    componentWillMount(){
+        this.init_currentDateTime();
+        this.inter_getJobOptions();
+    }
 
     render() {
+        moment.locale("zh-cn");
         return (
             <div class="container">
             <div class="row">
@@ -89,64 +118,55 @@ export default class Pay extends React.Component {
                 <div class="col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3>薪资查询</h3>
+                            <h5>{this.state.queryTitle}</h5>
                         </div>
                         <div class="panel-body">
+                            {this.state.conditioninited &&
                             <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="employeeId" class="col-sm-2 control-label">员工工号</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="employeeId" placeholder="请输入工号"
-                                            defaultValue={this.state.employeeId}/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="employeeName" class="col-sm-2 control-label">员工姓名</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="employeeName" placeholder="请输入姓名"
-                                            defaultValue={this.state.employeeName}/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">年份</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" defaultValue={this.state.payQuery.years.selected} placeholder="请选择年份">
-                                            {
-                                                this.state.payQuery.years.options.map((item, index)=>
-                                                    <option key={index} value={item}>{item}</option>
-                                                )
-                                            }
-                                        </select>
-                                    </div>
-                                    <label for="name" class="col-sm-2 control-label">月份</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" defaultValue={this.state.payQuery.months.selected} placeholder="请选择月份">
-                                            {
-                                                this.state.payQuery.months.options.map((item,index) =>
-                                                    <option key={index} value={index}>{item}</option>
-                                                )
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <btn class="btn btn-primary btn-big">薪资查询</btn>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="employeeId" class="col-xs-1 control-label">员工工号</label>
+                                            <div class="col-xs-2">
+                                                <input type="text" class="form-control" id="employeeId" placeholder="请输入工号"
+                                                    value={this.state.payQuery.employeeId}
+                                                    onChange={this.onWorkIdChange.bind(this)}/>
+                                            </div>
+                                            <label for="employeeName" class="col-sm-1 control-label">员工姓名</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="employeeName" placeholder="请输入姓名"
+                                                    value={this.state.payQuery.employeeName}
+                                                    onChange={this.onOperatorNameChange.bind(this)}/>
+                                            </div>
+                                            <label for="name" class="col-sm-1 control-label">月份</label>
+                                            <div class="col-sm-3">
+                                                <MonthPicker defaultValue={moment(this.state.payQuery.currentMonth, "YYYY-MM")} 
+                                                    format={"YYYY-MM"} locale="zh-cn" size={"large"}
+                                                    onChange={this.onMonthChange.bind(this)}/>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <btn class="btn btn-primary" onClick={this.onQueryPayment.bind(this)}>薪资查询</btn>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
+                    {this.state.tableinited &&
                     <table class="table table-striped">
                        <thead>
                           <tr>
                              <th>工号</th>
                              <th>姓名</th>
-                             <th>A级工时</th>
-                             <th>B级工时</th>
-                             <th>C级工时</th>
+                             {this.state.jobOptions.map((item, index)=>(
+                                <th key={index}>{item.value + '工时'}</th>
+                                ))}
                              <th>主岗</th>
                              <th>岗位补贴1</th>
                              <th>岗位补贴2</th>                      
@@ -161,20 +181,20 @@ export default class Pay extends React.Component {
                                 <tr key={index1}>
                                     <td>{item.employeeId}</td>
                                     <td>{item.employeeName}</td>
-                                    {Object.keys(item.levelHours).map((level,index2)=>(
-                                    <td key={index1 + '' + index2}>
-                                        {Object.is(level, item.mainHourLevel)?
-                                            <span class="label label-success">{item.levelHours[level]}</span>:
-                                            <span>{item.levelHours[level]}</span>
-                                        }
+                                    {this.state.jobOptions.map((jobopt, index2)=>(
+                                    <td key={jobopt.key}>{
+                                        Object.is(jobopt.value, item.mainHourLevel)?
+                                        <span class="label label-success">{item.levelHours[jobopt.value]}</span>:
+                                        <span>{item.levelHours[jobopt.value]}</span>                                        
+                                    }
                                     </td>
                                     ))}
                                     <td>{item.mainHourLevel}</td>
-                                    <td>{item.jobSubsidiesOptionA}</td>
-                                    <td>{item.jobSubsidiesOptionB}</td>
+                                    <td>{item.jobSubsidiesOptions[0]}</td>
+                                    <td>{item.jobSubsidiesOptions[1]}</td>
                                     <td>{item.starSubsidies}</td>
-                                    <td>{item.totalSubsidiesA}</td>
-                                    <td>{item.totalSubsidiesB}</td>                        
+                                    <td>{item.totalSubsidies[0]}</td>
+                                    <td>{item.totalSubsidies[1]}</td>                        
                                 </tr>                                               
                                 ))
                         }
@@ -190,11 +210,12 @@ export default class Pay extends React.Component {
                              <td></td>
                              <td></td>
                              <td>合计</td>
-                             <td>{this.state.payList.sumTotalSubsidiesA}</td>
-                             <td>{this.state.payList.sumTotalSubsidiesB}</td>                    
+                             <td>{this.state.payList.sumTotalSubsidies[0]}</td>
+                             <td>{this.state.payList.sumTotalSubsidies[1]}</td>                    
                           </tr>               
                        </tfoot>
                     </table>
+                    }
                 </div>
             </div>
         </div>

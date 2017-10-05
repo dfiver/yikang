@@ -43,7 +43,14 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
      * 星级
      */
 	private Integer starlevel;
+
     /**
+     * 星级评定到期时间
+     */
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+	private Date begin;
+
+	/**
      * 星级评定到期时间
      */
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
@@ -83,6 +90,14 @@ public class OperatorJoblevel extends SuperEntity<OperatorJoblevel> {
 		this.starlevel = starlevel;
 	}
 
+	public Date getBegin() {
+		return begin;
+	}
+
+	public void setBegin(Date begin) {
+		this.begin = begin;
+	}
+	
 	public Date getExpired() {
 		return expired;
 	}

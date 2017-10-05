@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import dateformater from 'dateformater';
+import moment from 'moment';  
+import { DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 
 export default class OperationList extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            conditioninited: false,
+
             lines:[],
             seats:[],
             searchCondition:{
@@ -18,7 +24,22 @@ export default class OperationList extends React.Component{
             detailList:[]
         }
     }
+
+    init_currentDateTime() {
+        let date = new Date();
+        console.log(dateformater.format(date));
+        let currentDate = dateformater.format(date, 'YYYY-MM-DD');
+        this.setState({
+            searchCondition: Object.assign({}, this.state.searchCondition, {startTime: currentDate, endTime: currentDate})
+        })
+
+        console.log("当前日期：", currentDate);
+    }
+
     componentWillMount(){
+
+        this.init_currentDateTime();
+
         //加载产线的list.
         fetch("/data/line/options", {
             method: 'GET',
@@ -39,8 +60,8 @@ export default class OperationList extends React.Component{
             }
         });
 
-        //加载产线的list.
-        fetch("/data/job/options", {
+        //加载工种的list.
+        fetch("/data/lineseat/options", {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -62,6 +83,17 @@ export default class OperationList extends React.Component{
     onItemChange(col,value){
         this.state.searchCondition[col]=value;
     }
+
+    onDurationChange(date, dateString){
+        console.log("时段修改", date, dateString);
+        let searchCondition = Object.assign({}, this.state.searchCondition);
+        searchCondition.startTime = Object.is(dateString[0],"")?null:dateString[0];
+        searchCondition.endTime = Object.is(dateString[1],"")?null:dateString[1];
+        this.setState({
+            searchCondition: searchCondition
+        })
+    }
+
     queryWorkDetailList(e){
         e.preventDefault();
         //加载产线的list.
@@ -87,7 +119,7 @@ export default class OperationList extends React.Component{
     }
 
     //导出按钮
-    onExport(){
+    onExport(e){
         e.preventDefault();
         //加载产线的list.
         fetch("/data/report/operationlist", {
@@ -97,9 +129,12 @@ export default class OperationList extends React.Component{
                 'Content-Type': 'application/json',
             },
             body:JSON.stringify(this.state.searchCondition)
-        }).catch(error => {
-            console.log("load data error:", error);
-        }).then(res => res.json()).then(data=>{
+        })
+        .catch(error => {
+            console.log("export data error:", error);
+        })
+        .then(res => res.json())
+        .then(data=>{
             if (data.success) {
                 if (data.obj != null) {
                     let uuid = data.obj;
@@ -110,6 +145,7 @@ export default class OperationList extends React.Component{
     }
 
 	render(){
+        moment.locale("zh-cn");
 		return (
         <div className="container">
             <div className="row">
@@ -134,19 +170,19 @@ export default class OperationList extends React.Component{
                                     <div className="col-md-2">
                                         <input onChange={(event)=>(this.onItemChange("opname", event.target.value))} type="text" className="form-control" />
                                     </div>
-                                    <label className="col-md-1 control-label">开始时间</label>
-                                    <div className="col-md-2">
-                                        <input onChange={(event)=>(this.onItemChange("startTime", event.target.value))} type="datetime-local" className="form-control"/>
-                                    </div>  
-                                    <label className="col-md-1 control-label">结束时间</label>
-                                    <div className="col-md-2">
-                                        <input onChange={(event)=>(this.onItemChange("endTime", event.target.value))} type="datetime-local" className="form-control"/>
+                                    <label className="col-md-1 control-label">起止时间</label>
+                                    <div className="col-md-3">
+                                        <RangePicker defaultValue={[moment(this.state.searchCondition.startTime, "YYYY-MM-DD"),
+                                                            moment(this.state.searchCondition.startTime, "YYYY-MM-DD")]} 
+                                            format={"YYYY-MM-DD"} locale="zh-cn" size={"large"}
+                                            onChange={this.onDurationChange.bind(this)}/>                                        
                                     </div>                                                          
                                 </div>
                                 <div className="form-group">
                                     <label className="col-md-1 control-label">生产线:</label>
-                                    <div className="col-md-3">
-                                        <select className="form-control" defaultValue="">
+                                    <div className="col-md-2">
+                                        <select className="form-control" defaultValue="" 
+                                            onChange={(event)=>this.onItemChange("lineId", event.target.value)}>
                                             <option  value=""></option>
                                             {
                                                 this.state.lines.map((line, index)=>(
@@ -156,8 +192,9 @@ export default class OperationList extends React.Component{
                                         </select>
                                     </div>
                                     <label htmlFor="firstname" className="col-md-1 control-label">生产工位:</label>
-                                    <div className="col-md-3">
-                                        <select className="form-control" defaultValue="">
+                                    <div className="col-md-2">
+                                        <select className="form-control" defaultValue=""
+                                            onChange={(event)=>this.onItemChange("seatId", event.target.value)}>
                                             <option  value=""></option>
                                             {
                                                 this.state.seats.map((seat, index)=>(

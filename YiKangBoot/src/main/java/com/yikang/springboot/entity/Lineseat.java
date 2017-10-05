@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.yikang.springboot.common.OptionalEntity;
 import com.yikang.springboot.common.SuperEntity;
+import com.yikang.springboot.common.result.KeyValue;
 
 /**
  * <p>
@@ -14,7 +16,7 @@ import com.yikang.springboot.common.SuperEntity;
  * @author Yanghu
  * @since 2017-09-17
  */
-public class Lineseat extends SuperEntity<Lineseat> {
+public class Lineseat extends OptionalEntity<Lineseat> {
 
     private static final long serialVersionUID = 1L;
 
@@ -123,5 +125,13 @@ public class Lineseat extends SuperEntity<Lineseat> {
 			", comment=" + comment +
 			", delflag=" + delflag +
 			"}";
+	}
+
+	@Override
+	public KeyValue option() {
+		KeyValue rlt= new KeyValue();
+		rlt.setKey(id);
+		rlt.setValue(name);
+		return rlt;
 	}
 }

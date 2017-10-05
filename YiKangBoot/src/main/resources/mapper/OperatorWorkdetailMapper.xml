@@ -62,10 +62,10 @@
 			and op.name like CONCAT('%',#{opname},'%')
 		</if>
 		<if test="startTime!=null">
-			and pl.starttime &gt;= #{startTime}
+			and wd.starttime &gt;= #{startTime}
 		</if>
 		<if test="endTime!=null">
-			and pl.endTime &lt;= #{endTime}
+			and wd.endTime &lt;= #{endTime}
 		</if>
 		<if test="lineId != null">
 			and line.id = #{lineId}
@@ -74,4 +74,42 @@
 			and st.`id` = #{seatId}
 		</if>
 	</select>
+	
+	<resultMap id="WorkDetailSumMap" type="com.yikang.springboot.vo.WorkDetailSumDO">
+		<result column="operator_name" property="employeeName" />
+		<result column="workid" property="employeeId" />
+		<result column="operator_id" property="operatorId" />
+		<result column="joblevel_id" property="joblevelId" />
+		<result column="sumsec" property="seumsec" />		
+	</resultMap>
+		
+	<select id="queryPaymentByCondition" resultMap="WorkDetailSumMap">
+		SELECT 
+			o.`name` AS operator_name,
+			o.`workid` AS workid,
+			ow.`operator_id` AS operator_id, 
+			job.`joblevel_id` AS joblevel_id,
+			SUM(TIME_TO_SEC(TIMEDIFF(ow.endtime, ow.starttime))) AS sumsec
+		FROM 
+		operator_workdetail ow 
+		LEFT JOIN operator o ON ow.`operator_id` = o.`id`
+		LEFT JOIN lineseat ls ON ow.`seat_id` = ls.`id`
+		LEFT JOIN job ON ls.`job_id` = job.`id`
+		WHERE
+		o.delflag = 0
+		<if test="employeeId != null and employeeId != ''">
+			AND o.workid like '%${employeeId}%'
+		</if>
+		<if test="employeeName != null and employeeName != ''">
+			AND o.name like '%${employeeName}%'
+		</if>
+		<if test="beginTime!=null">
+			AND ow.starttime &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null">
+			AND ow.starttime &lt;= #{endTime}
+		</if>		
+		GROUP BY operator_id, joblevel_id
+	</select>	
+	
 </mapper>

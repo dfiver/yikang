@@ -190,7 +190,8 @@ public class ReportExportController implements EnvironmentAware{
 	
 	
 	@RequestMapping("/operationlist")
-	JsonResult queryOperationListByCondition(@RequestBody(required=false) WorkDetailQO workDetailqo) {
+	@ResponseBody
+	JsonResult queryOperationListByCondition(@RequestBody WorkDetailQO workDetailqo) {
 		JsonResult rlt = new JsonResult();
 		//获取查询结果
 		List<WorkDetailVo> detailList= workdetailService.queryWorkDetailByQO(workDetailqo);		

@@ -18,6 +18,7 @@
 		<result column="job_id" property="jobId" />
 		<result column="id" property="operatorId" />
 		<result column="starlevel" property="starlevel" />
+		<result column="begin" property="begin" />		
 		<result column="expired" property="expired" />
 		<result column="ol_state" property="state" />
 		<result column="ol_delflag" property="delflag" />
@@ -49,6 +50,7 @@
 			st.name as shift_name,
 			opjl.id as opjl_id,
 			opjl.starlevel as starlevel,
+			opjl.begin as begin,
 			opjl.expired as expired,
 			opjl.delflag as ol_delflag,
 			job.id as job_id,

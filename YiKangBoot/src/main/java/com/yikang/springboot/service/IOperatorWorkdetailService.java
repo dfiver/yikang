@@ -1,11 +1,12 @@
 package com.yikang.springboot.service;
 
-import com.yikang.springboot.entity.OperatorWorkdetail;
-import com.baomidou.mybatisplus.service.IService;
-import com.yikang.springboot.qo.WorkDetailQO;
-import com.yikang.springboot.vo.WorkDetailVo;
-
 import java.util.List;
+import java.util.Map;
+
+import com.yikang.springboot.entity.OperatorWorkdetail;
+import com.yikang.springboot.qo.WorkDetailQO;
+import com.yikang.springboot.vo.WorkDetailSumDO;
+import com.yikang.springboot.vo.WorkDetailVo;
 
 /**
  * <p>
@@ -18,4 +19,6 @@ import java.util.List;
 public interface IOperatorWorkdetailService extends IVOService<OperatorWorkdetail> {
 
     public List<WorkDetailVo> queryWorkDetailByQO(WorkDetailQO qo);
+
+	public List<WorkDetailSumDO> queryPaymentByCondition(Map<String, Object> cMap);
 }

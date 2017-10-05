@@ -8,6 +8,7 @@
 		<result column="operator_id" property="operatorId" />
 		<result column="job_id" property="jobId" />
 		<result column="starlevel" property="starlevel" />
+		<result column="begin" property="begin" />	
 		<result column="expired" property="expired" />
 		<result column="state" property="state" />
 		<result column="delflag" property="delflag" />
@@ -19,6 +20,7 @@
 		<result column="operator_id" property="operatorId" />
 		<result column="job_id" property="jobId" />
 		<result column="starlevel" property="starlevel" />
+		<result column="begin" property="begin" />			
 		<result column="expired" property="expired" />
 		<result column="state" property="state" />
 		<result column="delflag" property="delflag" />

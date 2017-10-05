@@ -13,6 +13,7 @@ import com.yikang.springboot.service.IOperatorWorkdetailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class OperatorWorkdetailController extends BaseController<OperatorWorkdet
 
     @RequestMapping("querydetail")
     @ResponseBody
-    public JsonResult queryDetail(@RequestBody(required=false) WorkDetailQO workDetailqo){
+    public JsonResult queryDetail(@RequestBody WorkDetailQO workDetailqo){
         List<WorkDetailVo> detailList= service.queryWorkDetailByQO(workDetailqo);
         return renderSuccess().setObj(detailList);
     }

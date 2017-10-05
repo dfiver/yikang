@@ -1,6 +1,8 @@
 package com.yikang.springboot.qo;
 
-import java.sql.Timestamp;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Created by wuxia on 2017/10/2.
@@ -8,8 +10,10 @@ import java.sql.Timestamp;
 public class WorkDetailQO{
     private String workid;
     private String opname;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    @JsonFormat(timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date startTime;
+    @JsonFormat(timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date endTime;
     private Long lineId;
     private Long seatId;
 
@@ -29,19 +33,19 @@ public class WorkDetailQO{
             this.opname = opname;
         }
 
-        public Timestamp getStartTime() {
+        public Date getStartTime() {
             return startTime;
         }
 
-        public void setStartTime(Timestamp startTime) {
+        public void setStartTime(Date startTime) {
             this.startTime = startTime;
         }
 
-        public Timestamp getEndTime() {
+        public Date getEndTime() {
             return endTime;
         }
 
-        public void setEndTime(Timestamp endTime) {
+        public void setEndTime(Date endTime) {
             this.endTime = endTime;
         }
 

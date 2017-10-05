@@ -67,7 +67,7 @@ export default class JobStarBonus extends  React.Component{
             },
         })
             .catch(error => {
-                console.log("delete item error", error);
+                console.log("get star dict error", error);
             })
             .then(res => res.json())
             .then(data => {

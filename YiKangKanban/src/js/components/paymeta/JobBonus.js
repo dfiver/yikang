@@ -146,6 +146,7 @@ export default class JobBonus extends React.Component{
             });
     }
     render(){
+        let typeName = Object.is(this.props.type,'month')?"月":"小时";
          var bonushtml = this.state.jobbonus.value.map((e,index)=>{
             return (
                 e.editing?
@@ -173,14 +174,14 @@ export default class JobBonus extends React.Component{
         return(
             <div className="panel panel-default">
                 <div className="panel-heading">
-                    <h5>岗位类别月补贴设置</h5>
+                    <h5>{'岗位类别'+typeName+'补贴设置'}</h5>
                 </div>
                 <div className="panel-body">
                     <table className="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>岗位类别</th>
-                            <th>补贴金额（月）</th>
+                            <th>补贴金额（{typeName}）</th>
                             <th>备注信息</th>
                             <th>操作</th>
                         </tr>
