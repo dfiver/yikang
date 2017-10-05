@@ -11,6 +11,15 @@ export default class StopReason extends React.Component {
       inited: false,
       dataTypeName: '停机原因管理',
       headerlist: [{
+          name: 'name',
+          nickName: '停机原因',
+          type: 'text',
+          addAttr: {
+              required: true,
+              "data-required-error": "需要填写停机原因"
+          },
+          width: 3
+      },{
         name: 'mode',
         nickName: '停机原因类别',
         type: "select",
@@ -25,16 +34,7 @@ export default class StopReason extends React.Component {
           key: '3',
           value: '类别3',
         }]
-      }, {
-        name: 'name',
-        nickName: '停机原因',
-        type: 'text',
-        addAttr: {
-          required: true,
-          "data-required-error": "需要填写停机原因"
-        },
-        width: 3
-      }, {
+      },  {
         name: 'comment',
         nickName: '停机原因备注',
         type: 'textarea',
@@ -55,7 +55,7 @@ export default class StopReason extends React.Component {
       let headerlist = [].concat(this.state.headerlist);
       headerlist[0].selectoptions = datalist;
       this.setState(
-          headerlist:headerlist
+          {headerlist:headerlist}
         )
     })
   };
@@ -69,7 +69,13 @@ export default class StopReason extends React.Component {
         comment: viewitem.comment,
       }
   }
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mstopreason/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mstopreason/0');
+    }
   render() {
     return (  
       <div class="container">
@@ -84,7 +90,9 @@ export default class StopReason extends React.Component {
                               itemlist={this.state.itemlist}
                               emptyitem={this.state.emptyitem}
                               viewToEntity={this.reason_viewToEntity}
-                              fetchURL={"/data/reason"}/>
+                              fetchURL={"/data/reason"}
+                                         onChange={this.onChange.bind(this)}
+                                         onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
      );

@@ -51,6 +51,8 @@ import ShiftEditPage from "./components/shift/ShiftEditPage";
 import LineEditPage from "./components/line/LineEditPage";
 import LineSeat from "./components/seat/LineSeat";
 import LineSeatEditPage from "./components/seat/LineSeatEditPage";
+import ModeEditPage from "./components/stop/ModeEditPage";
+import StopReasonEditPage from "./components/stop/StopReasonEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -103,7 +105,9 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
                     <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
+                    <PrivateRoute path="/backward/mmode/:id" comp={ModeEditPage}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}
+                    <PrivateRoute path="/backward/mstopreason/:id" comp={StopReasonEditPage}></PrivateRoute>{/*停机原因管理*/}
 
                     <PrivateRoute path="/backward/user" comp={User}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/muser/:id" comp={UserEditPage}></PrivateRoute>{/*用户管理*/}
