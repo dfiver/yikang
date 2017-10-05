@@ -17,7 +17,7 @@ export default class User extends React.Component {
                     required: true,
                     "data-required-error": "需要填写用户名"
                 },
-                width: 1
+                width: 2
             }, {
                 name: 'realname',
                 nickName: '真实姓名',
@@ -41,28 +41,17 @@ export default class User extends React.Component {
                     key: '3',
                     value: '财务'
                 }],
-                width: 3
+                width: 2
 
+            }, {
+                name: 'workid',
+                nickName: '员工号',
+                type: 'text',
+                width: 2
             }, {
                 name: 'comment',
                 nickName: '用户备注',
                 type: 'text',
-                width: 2
-            }, {
-                name: 'passwordState',
-                nickName: '密码状态',
-                type: 'reset',
-                switchoptions: [{
-                    state: true,
-                    stateValue: '用户已设置密码',
-                    btnTitle: '恢复初始密码',
-                    enabled: true
-                }, {
-                    state: false,
-                    stateValue: '系统初始密码',
-                    btnTitle: '恢复初始密码',
-                    enabled: false
-                }],
                 width: 2
             }],
             itemlist: [{
@@ -126,6 +115,7 @@ export default class User extends React.Component {
             id:viewItem.id,
             username: viewItem.username,
             name: viewItem.realname,
+            workid: viewItem.workid,
             passwd: '',
             roleId: viewItem.role.key,
             comment: viewItem.comment
@@ -136,6 +126,7 @@ export default class User extends React.Component {
             id:entity.id,
             username: entity.username,
             realname: entity.name,
+            workid: entity.workid,
             passwd: '',
             role:{
                 key: entity.roleId,
@@ -146,7 +137,15 @@ export default class User extends React.Component {
             comment: entity.comment
         }
     }
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/muser/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/muser/0');
+    }
     render() {
+
         return (
             <div class="container">
                 <div class="row">
@@ -161,7 +160,9 @@ export default class User extends React.Component {
                       fetchURL={"/data/user"}
                       viewToEntity = {this.viewToEntity}
                       entityToView = {this.entityToView}
-                      emptyitem={this.state.emptyitem}/>
+                      emptyitem={this.state.emptyitem}
+                                           onChange={this.onChange.bind(this)}
+                                           onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
         );

@@ -419,14 +419,15 @@
   CREATE TABLE `yikang`.`user`(
     `id` bigint(20) NOT NULL COMMENT '用户表主键',
     `username` varchar(20) NOT  NULL  COMMENT '用户名',
-    `name` VARCHAR(20) NOT NULL COMMENT '用户姓名',
+		`name` VARCHAR(20) NOT NULL COMMENT '用户姓名',
+		`workid` VARCHAR(50) NOT NULL COMMENT '员工工号',
     `passwd` VARCHAR(12) NOT NULL COMMENT '密码',
     `role_id` bigint(20) NOT NULL COMMENT '角色id',
 		`comment` VARCHAR(64) NULL COMMENT '备注',
     PRIMARY KEY (`id`)
   );
 		BEGIN;
-		INSERT INTO `user` VALUES ('913769646898827265', 'admin', 'admin', '123456', '913439581480722433', 'admin');
+		INSERT INTO `user` VALUES ('913769646898827265', 'admin', 'admin', 'X4285','123456', '913439581480722433', 'admin');
 		COMMIT;
 
   #角色名

@@ -10,6 +10,15 @@ export default class Line extends React.Component {
         this.state = {
             dataTypeName: '生产线管理',
             headerlist: [{
+                name: 'linename',
+                nickName: '生产线名称',
+                type: 'text',
+                addAttr: {
+                    required: true,
+                    "data-required-error": "需要填写生产线名称"
+                },
+                width: 2
+            }, {
                 name: 'workshopname',
                 nickName: '生产车间名称',
                 type: "select",
@@ -24,15 +33,6 @@ export default class Line extends React.Component {
                     key: '3',
                     value: '生产车间3',
                 }]
-            }, {
-                name: 'linename',
-                nickName: '生产线名称',
-                type: 'text',
-                addAttr: {
-                    required: true,
-                    "data-required-error": "需要填写生产线名称"
-                },
-                width: 2
             }, {
                 name: 'count',
                 nickName: '工位数',
@@ -190,30 +190,15 @@ export default class Line extends React.Component {
         }
     }
 
-    viewToSeatEntity(viewItem) {
-        return {
-            id: viewItem.id,
-            //lineId: viewItem.line.key, lineId界面上没有，服务端根据参数补充进去的
-            jobId: viewItem.job.key,
-            serise: viewItem.index,
-            name: viewItem.name,
-            comment: viewItem.comment,
-        }
+
+
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mline/'+id);
     }
-
-    seatEntityToView(entity) {
-        return {
-            id: entity.id,
-            line: entity.line,
-            job: entity.job,
-            index: entity.serise,
-            name: entity.name,
-            comment: entity.comment
-        }
+    onAdd(){
+        this.props.history.push('/backward/mline/0');
     }
-
-
-
     render() {
         return (
             <div class="container">
@@ -223,40 +208,14 @@ export default class Line extends React.Component {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h5>生产线列表</h5>
-                        </div>
-                        <div class="panel-body">
                             <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                                   headerlist={this.state.headerlist}
                                   emptyitem={this.state.emptyitem}
                                   viewToEntity = {this.viewToLineEntity}
                                   entityToView = {this.lineEntityToView}
                                   fetchURL ={"/data/line"}
-                                  onClick={this.onClick}/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h5>生产线{this.state.currentLine?this.state.currentLine.linename:null}工位表</h5>
-                        </div>
-                        <div class="panel-body">
-                        {this.state.currentLine?
-                        <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
-                              headerlist={this.state.seatheadlist}
-                              emptyitem={this.state.seatemptyitem}
-                              viewToEntity = {this.viewToSeatEntity}
-                              entityToView = {this.seatEntityToView}
-                              fetchURL ={"/data/lineseat/"+this.state.currentLine.id}
-                              refreshHandler = {this.onReciveRefreshHandler}/>
-                        :
-                        null                        
-                        }
-                        </div>
-                    </div>
+                                                   onChange={this.onChange.bind(this)}
+                                                   onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
         );

@@ -34,7 +34,13 @@ export default class Mode extends React.Component {
   componentWillMount() {
     console.log("BaseEditableDataTable will mount!");
   };
-
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mmode/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mmode/0');
+    }
   render() {
     return (
       <div class="container">
@@ -48,7 +54,9 @@ export default class Mode extends React.Component {
                       headerlist={this.state.headerlist}
                       itemlist={this.state.itemlist}
                       emptyitem={this.state.emptyitem}
-                      fetchURL={"/data/mode"}/>
+                      fetchURL={"/data/mode"}
+                                 onChange={this.onChange.bind(this)}
+                                 onAdd={this.onAdd.bind(this)}/>
         </div>
       </div>
     );

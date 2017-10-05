@@ -4,21 +4,17 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.yikang.springboot.common.OptionalEntity;
 import com.yikang.springboot.common.SuperEntity;
-import com.yikang.springboot.common.result.KeyValue;
-
-import javax.swing.text.html.Option;
 
 /**
  * <p>
  * 
  * </p>
  *
- * @author Yanghu
- * @since 2017-09-28
+ * @author WuHonglin
+ * @since 2017-10-05
  */
-public class User extends OptionalEntity<User> {
+public class User extends SuperEntity<User> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +30,10 @@ public class User extends OptionalEntity<User> {
      * 用户姓名
      */
 	private String name;
+    /**
+     * 员工工号
+     */
+	private String workid;
     /**
      * 密码
      */
@@ -73,6 +73,14 @@ public class User extends OptionalEntity<User> {
 		this.name = name;
 	}
 
+	public String getWorkid() {
+		return workid;
+	}
+
+	public void setWorkid(String workid) {
+		this.workid = workid;
+	}
+
 	public String getPasswd() {
 		return passwd;
 	}
@@ -108,17 +116,10 @@ public class User extends OptionalEntity<User> {
 			"id=" + id +
 			", username=" + username +
 			", name=" + name +
+			", workid=" + workid +
 			", passwd=" + passwd +
 			", roleId=" + roleId +
 			", comment=" + comment +
 			"}";
-	}
-
-	@Override
-	public KeyValue option() {
-		KeyValue kv = new KeyValue();
-		kv.setKey(this.getId());
-		kv.setValue(this.getName());
-		return kv;
 	}
 }

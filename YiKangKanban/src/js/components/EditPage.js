@@ -1,12 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
-import { Row, Col,message,Select } from 'antd';
-const { Option } = Select;
-
-import { Form, Input, Button, Radio } from 'antd';
-const FormItem = Form.Item;
-
 /**
  * title
  * url
@@ -15,6 +6,16 @@ const FormItem = Form.Item;
  * id
  * selectionSource
  */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
+import { Row, Col,message,Select,InputNumber } from 'antd';
+const { Option } = Select;
+
+import { Form, Input, Button, Radio, Popconfirm } from 'antd';
+import BaseEditableDataTable from "./BaseEditableDataTable";
+const FormItem = Form.Item;
+
 export  default class EditPage extends React.Component{
     constructor(props){
         super(props);
@@ -65,11 +66,17 @@ export  default class EditPage extends React.Component{
                     }
                 });
         }else{
-            this.setState({
+            let temp = {
                 ...this.state,
                 cols:this.state.precols,
                 entity:{}
+            };
+            this.state.precols.forEach((col)=>{
+                if(typeof col.defaultValue!='undefined'){
+                    temp.entity[col.name]=col.defaultValue;
+                }
             });
+            this.setState(temp);
         }
     }
     submitForm(){
@@ -122,14 +129,27 @@ export  default class EditPage extends React.Component{
                                         {
                                             Object.is(col.type,"input")?
                                                 <Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:
-                                            Object.is(col.type,"select")?
-                                                <Select onChange={(value)=>this.handleChange(col,value)} defaultValue={this.state.entity[col.name]}>
-                                                    {
-                                                        this.state.selectionSource[col.name].source.map((option,index)=>(
-                                                            <Option key={index} value={option.key}>{option.value}</Option>
-                                                        ))
-                                                    }
-                                                </Select>:null
+                                                Object.is(col.type,"number")?
+                                                    <InputNumber onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:
+                                                Object.is(col.type,"select")?
+                                                    <Select disabled={col.disable || false} onChange={(value)=>this.handleChange(col,value)} defaultValue={col.defaultValue || this.state.entity[col.name]}>
+                                                        {
+                                                            this.state.selectionSource[col.name].source.map((option,index)=>(
+                                                                <Option key={index} value={option.key}>{option.value}</Option>
+                                                            ))
+                                                        }
+                                                    </Select>:
+                                                    Object.is(col.type,"password")?
+                                                        <Popconfirm  title="确认重置吗？" onConfirm={(event)=>{
+                                                            this.handleChange(col,123456);
+                                                            this.submitForm();
+                                                        }} okText="确认" cancelText="取消">
+                                                            <Button >{col.label}</Button>
+                                                        </Popconfirm>:
+                                                        Object.is(col.type,"link")?
+                                                                <Button onClick={()=>{
+                                                                    this.context.router.history.push(col.url+"/"+this.state.id);
+                                                                }}>{col.label}</Button>:null
                                         }
                                     </FormItem>
                                 ))

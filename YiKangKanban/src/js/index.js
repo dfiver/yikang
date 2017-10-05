@@ -45,8 +45,14 @@ import FamilyEditPage from "./components/productfamily/FamilyEditPage";
 import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
 import JobLevelEditPage from "./components/joblevel/JobLevelEditPage";
 import JobEditPage from "./components/joblevel/JobEditPage";
+import UserEditPage from "./components/user/UserEditPage";
 import Shift from "./components/Shift";
 import ShiftEditPage from "./components/shift/ShiftEditPage";
+import LineEditPage from "./components/line/LineEditPage";
+import LineSeat from "./components/seat/LineSeat";
+import LineSeatEditPage from "./components/seat/LineSeatEditPage";
+import ModeEditPage from "./components/stop/ModeEditPage";
+import StopReasonEditPage from "./components/stop/StopReasonEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -85,6 +91,10 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
                     <PrivateRoute path="/backward/mproductfamily/:id" comp={FamilyEditPage}></PrivateRoute>{/*产品家族编辑页面*/}
                     <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
+                    <PrivateRoute path="/backward/mline/:id" comp={LineEditPage}></PrivateRoute>{/*生产线管理*/}
+
+                    <PrivateRoute path="/backward/lineseat/:lineid" comp={LineSeat}></PrivateRoute>{/*生产线的工位管理*/}
+                    <PrivateRoute path="/backward/mlineseat/:lineid/:id" comp={LineSeatEditPage}></PrivateRoute>{/*生产线的工位管理*/}
 
                     <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
                     <PrivateRoute path="/backward/mjoblevelandskilllevel/:id" comp={JobLevelEditPage}></PrivateRoute>{/*岗位级别及技能星级设置*/}
@@ -95,13 +105,16 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
                     <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
+                    <PrivateRoute path="/backward/mmode/:id" comp={ModeEditPage}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}
+                    <PrivateRoute path="/backward/mstopreason/:id" comp={StopReasonEditPage}></PrivateRoute>{/*停机原因管理*/}
 
                     <PrivateRoute path="/backward/user" comp={User}></PrivateRoute>{/*用户管理*/}
+                    <PrivateRoute path="/backward/muser/:id" comp={UserEditPage}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/roleandpower" comp={RoleAndPower}></PrivateRoute>{/*角色权限管理*/}
 
                     <PrivateRoute path="/backward/shift" comp={Shift}></PrivateRoute>{/*班组管理*/}
-                    <PrivateRoute path="/backward/mshift/:id" comp={ShiftEditPage}></PrivateRoute>{/*班组管理*/}                        
+                    <PrivateRoute path="/backward/mshift/:id" comp={ShiftEditPage}></PrivateRoute>{/*班组管理*/}
 
                     <PrivateRoute path="/backward/operator" comp={Operator}></PrivateRoute>{/*操作人员管理*/}
                     <PrivateRoute path="/backward/operatordetail/:id" comp={OperatorDetail}></PrivateRoute>{/*操作人员明细*/}
