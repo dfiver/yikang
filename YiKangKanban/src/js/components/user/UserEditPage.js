@@ -27,6 +27,10 @@ export default class UserEditPage extends React.Component{
             label:"备注",
             type:"input",
             name:"comment"
+        },{
+            label:"重置密码",
+            type:"password",
+            name:"passwd"
         }];
         const selectionSource={
             roleId:{

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col,message,Select } from 'antd';
 const { Option } = Select;
 
-import { Form, Input, Button, Radio } from 'antd';
+import { Form, Input, Button, Radio, Popconfirm } from 'antd';
 const FormItem = Form.Item;
 
 /**
@@ -122,14 +122,21 @@ export  default class EditPage extends React.Component{
                                         {
                                             Object.is(col.type,"input")?
                                                 <Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:
-                                            Object.is(col.type,"select")?
-                                                <Select onChange={(value)=>this.handleChange(col,value)} defaultValue={this.state.entity[col.name]}>
-                                                    {
-                                                        this.state.selectionSource[col.name].source.map((option,index)=>(
-                                                            <Option key={index} value={option.key}>{option.value}</Option>
-                                                        ))
-                                                    }
-                                                </Select>:null
+                                                Object.is(col.type,"select")?
+                                                    <Select onChange={(value)=>this.handleChange(col,value)} defaultValue={this.state.entity[col.name]}>
+                                                        {
+                                                            this.state.selectionSource[col.name].source.map((option,index)=>(
+                                                                <Option key={index} value={option.key}>{option.value}</Option>
+                                                            ))
+                                                        }
+                                                    </Select>:
+                                                    Object.is(col.type,"password")?
+                                                        <Popconfirm  title="确认重置吗？" onConfirm={(event)=>{
+                                                            this.handleChange(col,123456);
+                                                            this.submitForm();
+                                                        }} okText="确认" cancelText="取消">
+                                                            <Button >{col.label}</Button>
+                                                        </Popconfirm>:null
                                         }
                                     </FormItem>
                                 ))
