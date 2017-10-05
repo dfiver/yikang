@@ -45,6 +45,7 @@ import FamilyEditPage from "./components/productfamily/FamilyEditPage";
 import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
 import JobLevelEditPage from "./components/joblevel/JobLevelEditPage";
 import JobEditPage from "./components/joblevel/JobEditPage";
+import UserEditPage from "./components/user/UserEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -96,6 +97,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}
 
                     <PrivateRoute path="/backward/user" comp={User}></PrivateRoute>{/*用户管理*/}
+                    <PrivateRoute path="/backward/muser/:id" comp={UserEditPage}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/roleandpower" comp={RoleAndPower}></PrivateRoute>{/*角色权限管理*/}
 
                     <PrivateRoute path="/backward/operator" comp={Operator}></PrivateRoute>{/*操作人员管理*/}

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {Popconfirm} from 'antd';
 /**
 headerlist
 item
@@ -382,10 +382,12 @@ export class BaseDataTableRow extends React.Component {
       }
       <td style={{verticalAlign:"middle"}}>
         {this.props.disdelable?"":
-        <button class="btn btn-sm btn-danger pull-right" onClick={this.props.onRemove}>
-          <span class="glyphicon glyphicon-trash"></span>
-          &nbsp;删除
-        </button> 
+            <Popconfirm title="确定要删除吗？" onConfirm={this.props.onRemove} okText="确定" cancelText="取消">
+              <button class="btn btn-sm btn-danger pull-right">
+                <span class="glyphicon glyphicon-trash"></span>
+                &nbsp;删除
+              </button>
+            </Popconfirm>
         }
         {this.props.diseditable?"":
         <button class = "btn btn-sm btn-primary pull-right" onClick={this.props.onChange}>
