@@ -32,10 +32,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.common.utils.BeanToMapUtil;
 import com.yikang.springboot.qo.ProductAndStopQueryQO;
+import com.yikang.springboot.qo.WorkDetailQO;
+import com.yikang.springboot.service.IOperatorWorkdetailService;
 import com.yikang.springboot.service.IPorductlogService;
 import com.yikang.springboot.service.IStopreasonlogService;
 import com.yikang.springboot.vo.ProductlogWithProducecodeVO;
 import com.yikang.springboot.vo.StopreaonlogWithModeVO;
+import com.yikang.springboot.vo.WorkDetailVo;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -52,6 +55,9 @@ public class ReportExportController implements EnvironmentAware{
 	
 	@Autowired
 	IStopreasonlogService reasonLogService;
+	
+	@Autowired
+	IOperatorWorkdetailService workdetailService;
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	private String TEMP_REPORT_PAH;
@@ -75,7 +81,7 @@ public class ReportExportController implements EnvironmentAware{
 	
 	@RequestMapping("/productandstop")
 	@ResponseBody
-	JsonResult queryByCondition(@RequestBody ProductAndStopQueryQO condition){
+	JsonResult queryPrudoctAndSopByCondition(@RequestBody ProductAndStopQueryQO condition){
 		JsonResult rlt = new JsonResult();
 		Map<String, Object> conditionMap = new HashMap<String, Object>();
 		
@@ -154,6 +160,78 @@ public class ReportExportController implements EnvironmentAware{
 				sheetReason.addCell(new Label(2, j, line));
 				sheetReason.addCell(new Label(3, j, reason));
 				sheetReason.addCell(new Label(4, j, mode));
+				++j;
+			}
+			workbook.write();
+		}
+		catch(IOException | WriteException e) {
+			e.printStackTrace();
+			rlt.setSuccess(false);
+			rlt.setMsg(e.getMessage());
+			return rlt;
+		}
+		finally {
+			if(workbook != null) {
+				try {
+					workbook.close();
+				}catch(IOException | WriteException e) {
+					e.printStackTrace();
+					rlt.setSuccess(false);
+					rlt.setMsg(e.getMessage());
+					return rlt;					
+				}
+				workbook = null;
+			}
+		}
+		rlt.setSuccess(true);
+		rlt.setObj(tempFileName);
+		return rlt;
+	}
+	
+	
+	@RequestMapping("/operationlist")
+	JsonResult queryOperationListByCondition(@RequestBody(required=false) WorkDetailQO workDetailqo) {
+		JsonResult rlt = new JsonResult();
+		//获取查询结果
+		List<WorkDetailVo> detailList= workdetailService.queryWorkDetailByQO(workDetailqo);		
+		//创建文件
+		String tempFileName = UUID.randomUUID().toString();
+		File path = new File(TEMP_REPORT_PAH, tempFileName);
+		path.mkdir();
+		File file =new File(path.getPath(), "report.xls");
+		
+		WritableWorkbook workbook = null;
+		try {
+			workbook = Workbook.createWorkbook(file);
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			int i = 0 ,j = 0;	//i是列，j是行
+			
+			WritableSheet sheetWorkdetail = workbook.createSheet("product", 0);
+			
+			String[] titleWorkdetail = new String[] {"人员编号", "人员姓名", "开始时间", "结束时间", "生产线", "岗位名称", "工作时长"};
+
+			for(;i<titleWorkdetail.length; ++i) {
+				sheetWorkdetail.addCell(new Label(i, 0, titleWorkdetail[i]));
+			}
+			++j;
+			
+			for(WorkDetailVo workdetail: detailList) {
+				String workid= workdetail.getOperator().getWorkid();
+				String workername = workdetail.getOperator().getName();
+				String starttime = sf.format(workdetail.getWorkdetail().getStarttime());
+				String endtime = sf.format(workdetail.getWorkdetail().getEndtime());
+				String line = (String) workdetail.getLine().getName();
+				String jobname = workdetail.getSeat().getName();
+				String duration = workdetail.getDuration().toString();
+				
+				sheetWorkdetail.addCell(new Label(0, j, workid));
+				sheetWorkdetail.addCell(new Label(1, j, workername));
+				sheetWorkdetail.addCell(new Label(2, j, starttime));
+				sheetWorkdetail.addCell(new Label(3, j, endtime));
+				sheetWorkdetail.addCell(new Label(4, j, line));
+				sheetWorkdetail.addCell(new Label(5, j, jobname));
+				sheetWorkdetail.addCell(new Label(6, j, duration));
+
 				++j;
 			}
 			workbook.write();

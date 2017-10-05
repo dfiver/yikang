@@ -12,19 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yikang.springboot.common.result.JsonResult;
-import com.yikang.springboot.entity.Batchno;
+import com.yikang.springboot.entity.Operator;
+import com.yikang.springboot.entity.OperatorWorkdetail;
 import com.yikang.springboot.entity.Porductlog;
 import com.yikang.springboot.entity.Shift;
 import com.yikang.springboot.entity.Stopreasonlog;
 import com.yikang.springboot.entity.Workshop;
 import com.yikang.springboot.service.IBatchnoService;
 import com.yikang.springboot.service.ILineService;
+import com.yikang.springboot.service.ILineseatService;
+import com.yikang.springboot.service.IOperatorService;
 import com.yikang.springboot.service.IPorductlogService;
 import com.yikang.springboot.service.IReasonService;
 import com.yikang.springboot.service.IShiftService;
 import com.yikang.springboot.service.IWorkshopService;
 import com.yikang.springboot.vo.BatchnoVO;
 import com.yikang.springboot.vo.LineVO;
+import com.yikang.springboot.vo.LineseatVO;
 import com.yikang.springboot.vo.ReasonVO;
 
 @Controller
@@ -47,6 +51,12 @@ public class SimulateTestController {
 	
 	@Autowired
 	IWorkshopService workshopService;
+	
+	@Autowired
+	ILineseatService seatService;
+	
+	@Autowired
+	IOperatorService operatorService;
 	
 	@RequestMapping("/test/simulatedata/productlog")
 	@ResponseBody
@@ -140,6 +150,42 @@ public class SimulateTestController {
 		JsonResult rlt = new JsonResult();
 		rlt.setSuccess(true);
 		rlt.setMsg("故障日志数据制造完毕");
+		return rlt;		
+	}
+	
+	@RequestMapping("/test/simulatedata/workdetail")
+	@ResponseBody
+	 JsonResult simulateworkdetail() {
+		List<LineseatVO> seatList = (List<LineseatVO>) seatService.getListViewList();
+		List<Operator> operatorlist = (List<Operator>) operatorService.getListViewList();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Long beginTimeStamp = calendar.getTime().getTime();
+		int period = 3600*1000;
+		
+		int index=0;
+		for(int i=0; i<24; ++i) {
+			for(LineseatVO seat: seatList) {
+				OperatorWorkdetail workDetail = new OperatorWorkdetail(); 
+				workDetail.setSeatId(seat.getId());
+				//由于目前操作员数据较少，这里直接循环指定操作员上班了，未考虑是否具备岗位资格，也未考虑是否已在其他岗位上班
+				workDetail.setOperatorId(operatorlist.get(index%operatorlist.size()).getId());
+				workDetail.setStarttime(new Date(beginTimeStamp));
+				workDetail.setEndtime(new Date(beginTimeStamp+period));
+				workDetail.insert();
+				++index;
+			}
+			beginTimeStamp += period;
+		}
+		
+		JsonResult rlt = new JsonResult();
+		rlt.setSuccess(true);
+		rlt.setMsg("工作明细数据制造完毕， 由于目前操作员数据较少，这里直接循环指定操作员上班了，未考虑是否具备岗位资格，也未考虑是否已在其他岗位上班。");
 		return rlt;		
 	}
 }

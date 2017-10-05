@@ -33,6 +33,12 @@ public class OperatorWorkdetailServiceImpl extends ServiceImpl<OperatorWorkdetai
 
 	@Override
 	public List<WorkDetailVo> queryWorkDetailByQO(WorkDetailQO qo) {
-		return this.baseMapper.queryWorkDetailList(qo);
+		List<WorkDetailVo> rltlist = this.baseMapper.queryWorkDetailList(qo);
+		for(WorkDetailVo workdetail: rltlist) {
+			int durationMinute = (int) ((workdetail.getWorkdetail().getEndtime().getTime() -
+					workdetail.getWorkdetail().getStarttime().getTime())/(60*1000));
+			workdetail.setDuration(durationMinute);
+		}
+		return rltlist;
 	}
 }
