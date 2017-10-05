@@ -48,6 +48,9 @@ import JobEditPage from "./components/joblevel/JobEditPage";
 import UserEditPage from "./components/user/UserEditPage";
 import Shift from "./components/Shift";
 import ShiftEditPage from "./components/shift/ShiftEditPage";
+import LineEditPage from "./components/line/LineEditPage";
+import LineSeat from "./components/seat/LineSeat";
+import LineSeatEditPage from "./components/seat/LineSeatEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -86,6 +89,10 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/productfamily" comp={ProductFamily}></PrivateRoute>{/*产品家族管理*/}
                     <PrivateRoute path="/backward/mproductfamily/:id" comp={FamilyEditPage}></PrivateRoute>{/*产品家族编辑页面*/}
                     <PrivateRoute path="/backward/line" comp={Line}></PrivateRoute>{/*生产线管理*/}
+                    <PrivateRoute path="/backward/mline/:id" comp={LineEditPage}></PrivateRoute>{/*生产线管理*/}
+
+                    <PrivateRoute path="/backward/lineseat/:lineid" comp={LineSeat}></PrivateRoute>{/*生产线的工位管理*/}
+                    <PrivateRoute path="/backward/mlineseat/:lineid/:id" comp={LineSeatEditPage}></PrivateRoute>{/*生产线的工位管理*/}
 
                     <PrivateRoute path="/backward/joblevelandskilllevel" comp={JobLevelAndSkillLevel}></PrivateRoute>{/*岗位级别及技能星级设置*/}
                     <PrivateRoute path="/backward/mjoblevelandskilllevel/:id" comp={JobLevelEditPage}></PrivateRoute>{/*岗位级别及技能星级设置*/}
