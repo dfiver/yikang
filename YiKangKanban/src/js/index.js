@@ -46,6 +46,8 @@ import ProductCodeEditPage from "./components/productcode/ProductCodeEditPage";
 import JobLevelEditPage from "./components/joblevel/JobLevelEditPage";
 import JobEditPage from "./components/joblevel/JobEditPage";
 import UserEditPage from "./components/user/UserEditPage";
+import Shift from "./components/Shift";
+import ShiftEditPage from "./components/shift/ShiftEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -100,6 +102,9 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/muser/:id" comp={UserEditPage}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/roleandpower" comp={RoleAndPower}></PrivateRoute>{/*角色权限管理*/}
 
+                    <PrivateRoute path="/backward/shift" comp={Shift}></PrivateRoute>{/*班组管理*/}
+                    <PrivateRoute path="/backward/mshift/:id" comp={ShiftEditPage}></PrivateRoute>{/*班组管理*/}
+
                     <PrivateRoute path="/backward/operator" comp={Operator}></PrivateRoute>{/*操作人员管理*/}
                     <PrivateRoute path="/backward/operatordetail/:id" comp={OperatorDetail}></PrivateRoute>{/*操作人员明细*/}
                     <PrivateRoute path="/backward/operationList" comp={OperationList}></PrivateRoute>{/*人员工作明细清单*/}
@@ -109,7 +114,7 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/commitproductandstopreaon/:lineId" comp={CommitProductAndStopReason}></PrivateRoute>{/*生产信息采集*/}
                     <PrivateRoute path="/backward/commitProductandstopreasonlineselect" comp={CommitProductAndStopReasonLineSelect}></PrivateRoute>{/*生产信息采集*/}                    
                     <PrivateRoute path="/backward/productandstopreport" comp={ProductAndStopReport}></PrivateRoute>{/*生产和停机信息列表*/}
-                    <PrivateRoute path="/backward/gapreoprt" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
+                    <PrivateRoute path="/backward/gapreport" comp={GAPReport}></PrivateRoute>{/*GAP图表*/}
                 </div>
             </Router>
         )

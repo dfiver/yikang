@@ -85,6 +85,30 @@ export default class OperationList extends React.Component{
             }
         });
     }
+
+    //导出按钮
+    onExport(){
+        e.preventDefault();
+        //加载产线的list.
+        fetch("/data/report/operationlist", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(this.state.searchCondition)
+        }).catch(error => {
+            console.log("load data error:", error);
+        }).then(res => res.json()).then(data=>{
+            if (data.success) {
+                if (data.obj != null) {
+                    let uuid = data.obj;
+                    window.location.href = "/data/report/download/"+uuid+"/report.xls"
+                }
+            }
+        });        
+    }
+
 	render(){
 		return (
         <div className="container">
@@ -163,7 +187,7 @@ export default class OperationList extends React.Component{
                              <th>结束时间</th>
                              <th>生产线</th>
                              <th>岗位名称</th>
-                             <th>工作时长</th>
+                             <th>时长(分钟)</th>
                           </tr>
                        </thead>
                        <tbody>
@@ -175,8 +199,8 @@ export default class OperationList extends React.Component{
                                    <td>{detail.workdetail.starttime}</td>
                                    <td>{detail.workdetail.endtime}</td>
                                    <td>{detail.line.name}</td>
-                                   <td>{detail.job.name}</td>
-                                   <td>4</td>
+                                   <td>{detail.seat.name}</td>
+                                   <td>{detail.duration}</td>
                                </tr>
                            ))
                        }
@@ -186,7 +210,7 @@ export default class OperationList extends React.Component{
             </div>
             <div className="row">
                 <div className="col-md-12">
-                    <button className="btn btn-success btn-lg pull-right">导出全部</button>
+                    <button className="btn btn-success pull-right" onClick={this.onExport.bind(this)}>导出全部</button>
                 </div>
             </div>
         </div>

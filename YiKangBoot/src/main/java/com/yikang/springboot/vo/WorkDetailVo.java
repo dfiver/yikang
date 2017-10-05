@@ -11,6 +11,7 @@ public class WorkDetailVo {
     private Lineseat seat;
     private Job job;
     private Line line;
+    private Integer duration;	//分钟
 
     public Line getLine() {
         return line;
@@ -51,4 +52,12 @@ public class WorkDetailVo {
     public void setJob(Job job) {
         this.job = job;
     }
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
 }

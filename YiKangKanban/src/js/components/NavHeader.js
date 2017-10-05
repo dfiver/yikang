@@ -63,11 +63,11 @@ export default class NavHeader extends React.Component {
 							<PermLink to="/backward/user" id="10">用户</PermLink>
 							<PermLink to="/backward/roleandpower" id="11">角色权限</PermLink>
 							<PermLink to="/backward/operator" id="12">操作人员</PermLink>
-                            <PermLink to="/backward/operatordetail/909087628027035659">操作人员明细(临时的)</PermLink>
+                            <PermLink to="/backward/shift" id="13">班组管理</PermLink>
 							<li class="divider"/>
-							<PermLink to="/backward/paymeta" id="13">补贴数据设置</PermLink>
-							<PermLink to="/backward/pay" id="14">薪资</PermLink>
-							<PermLink to="/backward/operationlist" id="15">人员工作明细清单</PermLink>
+							<PermLink to="/backward/paymeta" id="14">补贴数据设置</PermLink>
+							<PermLink to="/backward/pay" id="15">薪资</PermLink>
+							<PermLink to="/backward/operationlist" id="16">人员工作明细清单</PermLink>
 						</ul>
 					</li>
 					<li>

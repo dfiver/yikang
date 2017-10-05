@@ -12,30 +12,6 @@ export default class GAPChart extends React.Component{
     constructor(props){
         super(props);
         this.state ={
-            // modeDataList: [
-            //       {name: '节假日', minute: 20, percent: 3.0},
-            //       {name: '停水', minute: 30,  percent: 4.5},
-            //       {name: '断电', minute: 15,  percent: 2.2},
-            //       {name: '设备检修', minute: 120, percent: 18.3},
-            //       {name: '原料不足', minute: 140, percent: 21.3},
-            //       {name: '人员不足', minute: 80, percent: 12.2},
-            //       {name: '暂无任务', minute: 250, percent: 38.1},
-            // ],
-            // reasonListMap:{
-            //     '节假日':[
-            //       {name: '春节', minute: 20, percent: 3.0},
-            //       {name: '劳动节', minute: 30,  percent: 4.5},
-            //       {name: '端午节', minute: 15,  percent: 2.2},
-            //       {name: '清明节', minute: 120, percent: 18.3},
-            //       {name: '中秋节', minute: 140, percent: 21.3},
-            //       {name: '国庆节', minute: 80, percent: 12.2},
-            //       {name: '元旦', minute: 250, percent: 38.1},
-            //     ],
-            //     '停水':[
-            //       {name: '停水', minute: 20, percent: 100.0},                
-            //     ],
-            // },
-
             modeDataList:[{name: '', minute: 0, percent: 0},],
             reasonListMap:{'':[{name: '', minute: 0, percent: 0}]},
 
@@ -104,8 +80,8 @@ export default class GAPChart extends React.Component{
 
 	render(){
         return(
-        <div>
-            <ComposedChart width={this.state.chartWidth} height={620} data={this.state.modeDataList}
+        <div ref="chartContainer">
+            <ComposedChart width={this.state.chartWidth} height={700} data={this.state.modeDataList}
                     margin={{top: 5, right: 30, left: 20, bottom: 5}}>
                 <XAxis dataKey="name"/>
                 <YAxis/>
@@ -128,7 +104,7 @@ export default class GAPChart extends React.Component{
             </ComposedChart>
 
             {/*模态窗口*/}
-            <div ref="chartContainer">
+            <div>
                 <Modal show={this.state.isModalOpen}
                     onHide={this.closeReasonModal.bind(this)}
                     bsSize={"large"}>

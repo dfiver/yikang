@@ -23,16 +23,7 @@ export default class Mode extends React.Component {
         type: 'textarea',
         width: 7
       }],
-      itemlist: [{
-        name: '停机原因类别1',
-        comment: '停机原因类别1备注'
-      }, {
-        name: '停机原因类别2',
-        comment: '停机原因类别2备注'
-      }, {
-        name: '停机原因类别3',
-        comment: '停机原因类别3备注'
-      }],
+      itemlist: [],
       emptyitem: {
         name: '',
         comment: ''
@@ -56,7 +47,8 @@ export default class Mode extends React.Component {
           <BaseEditableDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       itemlist={this.state.itemlist}
-                      emptyitem={this.state.emptyitem}/>
+                      emptyitem={this.state.emptyitem}
+                      fetchURL={"/data/mode"}/>
         </div>
       </div>
     );

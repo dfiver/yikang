@@ -6,6 +6,7 @@ import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yikang.springboot.common.SuperEntity;
 
 /**
@@ -38,10 +39,12 @@ public class OperatorWorkdetail extends SuperEntity<OperatorWorkdetail> {
     /**
      * 开始时间
      */
+	@JsonFormat(timezone = "GMT+8", pattern="yyy-MM-dd HH:mm")
 	private Date starttime;
     /**
      * 结束时间
      */
+	@JsonFormat(timezone = "GMT+8", pattern="yyy-MM-dd HH:mm")	
 	private Date endtime;
 
 
