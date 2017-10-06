@@ -1,6 +1,7 @@
 package com.yikang.springboot;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -20,16 +21,16 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 
 @Configuration
-public class MyWebAppConfigurer extends WebMvcConfigurerAdapter { 
+public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 
-//	@Override 
-//	public void addInterceptors(InterceptorRegistry registry) { 
-//    // 多个拦截器组成一个拦截器链 
-//    //registry.addInterceptor(new LoginInterceptor ()).addPathPatterns("/rest/**"); 
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//    // 多个拦截器组成一个拦截器链
+//    //registry.addInterceptor(new LoginInterceptor ()).addPathPatterns("/rest/**");
 //    //registry.addInterceptor(new LoginInterceptor2 ()).addPathPatterns("/rest/**");
-//    super.addInterceptors(registry); 
+//    super.addInterceptors(registry);
 //  }
-	
+
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -44,15 +45,17 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
         converters.add(jackson2HttpMessageConverter);
     }
-	
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		File file = new File(System.getProperty("user.dir"));
-		String frontLocation = file.getParent() + System.getProperty("file.separator") + "YiKangKanban" + System.getProperty("file.separator");
-		File path = new File(frontLocation);
-		String fronLocationURI = path.toURI().toString();
-		registry.addResourceHandler("/**")
-	    	.addResourceLocations(fronLocationURI);
-	    super.addResourceHandlers(registry);
-	}
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        URL u = MyWebAppConfigurer.class.getResource("/");
+        File file = new File(u.getPath());
+        file = file.getParentFile().getParentFile();
+        String frontLocation = file.getParent() + System.getProperty("file.separator") + "YiKangKanban" + System.getProperty("file.separator");
+        File path = new File(frontLocation);
+        String fronLocationURI = path.toURI().toString();
+        registry.addResourceHandler("/**")
+                .addResourceLocations(fronLocationURI);
+        super.addResourceHandlers(registry);
+    }
 }

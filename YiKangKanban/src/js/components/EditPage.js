@@ -29,7 +29,9 @@ export  default class EditPage extends React.Component{
             url:props.url,
             listurl:props.listurl,
             precols:props.cols,
-            selectionSource:props.selectionSource
+            selectionSource:props.selectionSource,
+            haveSubmit: (typeof props.haveSubmit =='undefined'?true:props.haveSubmit),
+            haveListLink: (typeof props.haveListLink =='undefined'?true:props.haveListLink)
         }
     }
     componentWillMount(){
@@ -174,22 +176,32 @@ export  default class EditPage extends React.Component{
                                                                             <div key={index}><Checkbox  value={option.key}>{option.value}</Checkbox></div>
                                                                         ))
                                                                     }
-                                                                </CheckboxGroup>:null
+                                                                </CheckboxGroup>:
+                                                                Object.is(col.type,"readonly")?
+                                                                    <div>{this.state.entity[col.name]}</div>:
+                                                                    Object.is(col.type,"passwordinput")?
+                                                                        <Input onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={"******"}/>:null
                                         }
                                     </FormItem>
                                 ))
                             }
-                            <FormItem {...buttonItemLayout}>
-                                <Button onClick={this.submitForm.bind(this)} type="primary">提交</Button>
-                            </FormItem>
+                            {
+                                this.state.haveSubmit?
+                                <FormItem {...buttonItemLayout}>
+                                    <Button onClick={this.submitForm.bind(this)} type="primary">提交</Button>
+                                </FormItem>:null
+                            }
                         </Form>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={14} offset={1}>
-                        <Link to={this.state.listurl}>返回列表</Link>
-                    </Col>
-                </Row>
+                {
+                    this.state.haveListLink ?
+                        <Row gutter={16}>
+                            <Col span={14} offset={1}>
+                                <Link to={this.state.listurl}>返回列表</Link>
+                            </Col>
+                        </Row>:null
+                }
             </div>
         )
     }

@@ -5,6 +5,7 @@ import {
     Redirect
 } from 'react-router-dom';
 import {getStringForUnicode,getUnicode} from './Unicode';
+import {Button} from 'antd';
 
 
 const PermLink = function (props) {
@@ -16,9 +17,16 @@ export default class NavHeader extends React.Component {
 	constructor(props){
 		super(props);
 		this.handleLogout=this.handleLogout.bind(this);
+		this.handleUserInfo=this.handleUserInfo.bind(this);
+	}
+    handleUserInfo(){
+		this.props.history.push('/backward/self');
+        // this.context.router.history.push('/backward/self');
 	}
 	handleLogout(){
         sessionStorage.removeItem('token');
+        sessionStorage.removeItem('perm');
+        sessionStorage.removeItem('uid');
 	}
 	render() {
 		const logined = !!sessionStorage.token;
@@ -28,43 +36,40 @@ export default class NavHeader extends React.Component {
 			);
 		}
 		return (
-			<nav class="navbar navbar-inverse">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a href="/" class="navbar-brand">益康</a>
+			<nav className="navbar navbar-inverse">
+			<div className="container-fluid">
+				<div className="navbar-header">
+					<a href="/" className="navbar-brand">益康</a>
 				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						{/*<button type="button" class="btn btn-primary btn-sm"></button>*/}
-						<span class="glyphicon glyphicon-user"></span>用户
-					</li>
-					<li><a href="#" onClick={this.handleLogout}><span class="glyphicon glyphicon-log-in"></span> 退出</a></li>
+				<ul className="nav navbar-nav navbar-right">
+					<li><a href="#" onClick={this.handleUserInfo}><span className="glyphicon glyphicon-user"></span>用户</a></li>
+					<li><a href="#" onClick={this.handleLogout}><span className="glyphicon glyphicon-log-in"></span> 退出</a></li>
 			    </ul>
-				<ul class="nav navbar-nav">
-					<li class="dropdown" >
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<ul className="nav navbar-nav">
+					<li className="dropdown" >
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">
 							基础数据管理
-							<b class="caret"></b>
+							<b className="caret"></b>
 						</a>
-						<ul class="dropdown-menu">
+						<ul className="dropdown-menu">
 							<PermLink to="/backward/workshop" id="1">生产车间</PermLink>
 							<PermLink to="/backward/productfamily" id="2">产品家族</PermLink>
 							<PermLink to="/backward/line" id="3">生产线</PermLink>
-							<li class="divider"/>
+							<li className="divider"/>
 							<PermLink to="/backward/job" id="4">岗位类别</PermLink>
 							<PermLink to="/backward/joblevelandskilllevel" id="5">岗位级别及技能级别</PermLink>
-							<li class="divider"/>
+							<li className="divider"/>
 							<PermLink to="/backward/productcode" id="6">生产型号</PermLink>
 							<PermLink to="/backward/batchno" id="7">批次号</PermLink>
-							<li class="divider"/>
+							<li className="divider"/>
 							<PermLink to="/backward/mode" id="8">停机原因类别</PermLink>
 							<PermLink to="/backward/stopreason" id="9">停机原因</PermLink>
-							<li class="divider"/>
+							<li className="divider"/>
 							<PermLink to="/backward/user" id="10">用户</PermLink>
 							<PermLink to="/backward/roleandpower" id="11">角色权限</PermLink>
 							<PermLink to="/backward/operator" id="12">操作人员</PermLink>
                             <PermLink to="/backward/shift" id="13">班组管理</PermLink>
-							<li class="divider"/>
+							<li className="divider"/>
 							<PermLink to="/backward/paymeta" id="14">补贴数据设置</PermLink>
 							<PermLink to="/backward/pay" id="15">薪资</PermLink>
 							<PermLink to="/backward/operationlist" id="16">人员工作明细清单</PermLink>
@@ -77,11 +82,11 @@ export default class NavHeader extends React.Component {
 						<Link to="/linescreen/select/linescreen">屏显看板</Link>						
 					</li>
 					<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">
 							报表展示
-							<b class="caret"></b>
+							<b className="caret"></b>
 						</a>
-						<ul class="dropdown-menu">
+						<ul className="dropdown-menu">
 							<PermLink to="/backward/productandstopreport" id="18">生产和停机信息列表</PermLink>
 							<PermLink to="/backward/gapreport" id="19">GAP图表</PermLink>
 						</ul>
@@ -92,3 +97,6 @@ export default class NavHeader extends React.Component {
 		);
 	}
 }
+// NavHeader.contextTypes = {
+//     router: React.PropTypes.object
+// };

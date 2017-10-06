@@ -54,6 +54,7 @@ import LineSeatEditPage from "./components/seat/LineSeatEditPage";
 import ModeEditPage from "./components/stop/ModeEditPage";
 import StopReasonEditPage from "./components/stop/StopReasonEditPage";
 import RoleAndPowerEditPage from "./components/user/RoleAndPowerEditPage";
+import SelfEditPage from "./components/user/SelfEditPage";
 
 const PrivateRoute = (p) => ( < Route {...p
     }
@@ -112,6 +113,7 @@ class YiKangRouter extends React.Component {
 
                     <PrivateRoute path="/backward/user" comp={User}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/muser/:id" comp={UserEditPage}></PrivateRoute>{/*用户管理*/}
+                    <PrivateRoute path="/backward/self" comp={SelfEditPage}></PrivateRoute>{/*用户管理*/}
                     <PrivateRoute path="/backward/roleandpower" comp={RoleAndPower}></PrivateRoute>{/*角色权限管理*/}
                     <PrivateRoute path="/backward/mroleandpower/:id" comp={RoleAndPowerEditPage}></PrivateRoute>{/*角色权限管理*/}
 
