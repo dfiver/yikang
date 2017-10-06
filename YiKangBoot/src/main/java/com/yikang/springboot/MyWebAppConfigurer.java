@@ -45,10 +45,14 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
         converters.add(jackson2HttpMessageConverter);
     }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        File file = new File(System.getProperty("user.dir"));
+        String frontLocation = file.getParent() + System.getProperty("file.separator") + "YiKangKanban" + System.getProperty("file.separator");
+        File path = new File(frontLocation);
+        String fronLocationURI = path.toURI().toString();
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:D:/01_ProjectRepository/01_Projects/09_2017_Yikang/04.code/yikang_git/YiKangKanban/");
+                .addResourceLocations(fronLocationURI);
         super.addResourceHandlers(registry);
-	}
+    }
 }
