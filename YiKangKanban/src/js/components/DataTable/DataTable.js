@@ -354,7 +354,8 @@ export class BaseDataTableRow extends React.Component {
 
   render() {
     return (
-      <tr onClick={(event)=>(this.onClick(event))}>
+      <tr onClick={(event)=>(this.onClick(event))} 
+        class={this.props.item.removed?'danger':this.props.item.changed?'warning':''}>
       {
         this.props.headerlist.map((headerItem, columIndex) => (
           <td key={columIndex} style={{verticalAlign:"middle", textAlign: "center"}}>{

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.entity.Operator;
+import com.yikang.springboot.qo.OperatorDetailAndStarLevelQO;
 import com.yikang.springboot.service.IOperatorService;
 import com.yikang.springboot.vo.OperatorVO;
 
@@ -42,14 +43,12 @@ public class OperatorController extends BaseController<Operator, IOperatorServic
 	
 	@RequestMapping("/detail/save")
 	@ResponseBody
-	JsonResult saveOperator(@RequestBody Operator operator){
-		boolean rlt = service.insertOrUpdate(operator);
-		if(rlt){
-			return renderSuccess(operator);
-		}
-		else{
-			return renderError().setObj(operator);
-		}
+	JsonResult saveOperatorAndStarLevel(@RequestBody OperatorDetailAndStarLevelQO operatorQO){
+		boolean rlt = service.saveOperatorAndStarLevel(operatorQO);
+		JsonResult jsonResult = new JsonResult();
+		jsonResult.setSuccess(rlt);
+		jsonResult.setObj(operatorQO.getItem().getId());
+		return jsonResult;
 	}
 	
 	@RequestMapping("/detail/get")
