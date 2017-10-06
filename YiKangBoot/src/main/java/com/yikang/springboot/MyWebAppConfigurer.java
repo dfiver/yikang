@@ -1,6 +1,7 @@
 package com.yikang.springboot;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -47,7 +48,9 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        File file = new File(System.getProperty("user.dir"));
+        URL u = MyWebAppConfigurer.class.getResource("/");
+        File file = new File(u.getPath());
+        file = file.getParentFile().getParentFile();
         String frontLocation = file.getParent() + System.getProperty("file.separator") + "YiKangKanban" + System.getProperty("file.separator");
         File path = new File(frontLocation);
         String fronLocationURI = path.toURI().toString();
