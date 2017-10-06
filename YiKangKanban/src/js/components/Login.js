@@ -34,6 +34,7 @@ class Login extends React.Component {
             if (data.success) {
                 sessionStorage.token = true;
                 sessionStorage.perm = JSON.stringify(getUnicode(data.obj.role.permission));
+                sessionStorage.uid = data.obj.user.id;
                 this.setState({ redirectToReferrer: true })
             }else{
                 message.error(data.msg);
