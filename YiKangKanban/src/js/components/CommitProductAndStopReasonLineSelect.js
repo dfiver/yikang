@@ -73,7 +73,7 @@ export default class CommitProductAndStopReasonLineSelect extends React.Componen
     onClick(index) {
         let lineId = this.state.itemlist[index].id;
         console.log("lineId:" + lineId);
-        window.location.href = "/backward/commitproductandstopreaon/" + lineId;
+        this.props.history.push("/backward/commitproductandstopreaon/" + lineId);
     }
 
     render() {

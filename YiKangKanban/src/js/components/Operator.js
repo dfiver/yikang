@@ -13,11 +13,10 @@ export default class Operator extends React.Component {
                 name: 'avatar',
                 nickName: '照片',
                 type: 'image',
-                imageHeight: '75px',
+                imageHeight: '60px',
                 imageWidth: '60px',
                 width: 2,
                 searchable: false,
-
             }, {
                 name: 'name',
                 nickName: '姓名',
@@ -37,76 +36,22 @@ export default class Operator extends React.Component {
                 type: 'text',
                 width: 3,
                 searchable: true,
-            }, {
-                name: 'starlist',
-                nickName: '星级',
-                type: 'starlist',
-                width: 2,
-                searchable: false
             }],
             itemlist: [{
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'A',
-                comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
+                comment: '操作员A备注'
             }, {
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'B',
                 comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
             }, {
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'C',
                 comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
             }],
         };
 
@@ -119,23 +64,12 @@ export default class Operator extends React.Component {
     }
 
     entityToView(entity) {
-        let starlist = [];
-        if (entity.levels) {
-            entity.levels.map((level, index) => {
-                starlist[index] = {
-                    key: level.job.value,
-                    value: level.starlevel
-                }
-            })
-        }
-
         return {
             id: entity.id,
             name: entity.name,
             avatar: entity.avatar,
             comment: entity.comment,
             shift: entity.shift,
-            starlist: starlist,
         }
     }
 
@@ -166,27 +100,15 @@ export default class Operator extends React.Component {
             }));
     }
 
-    onFilterItemChange(index, value) {
-        this.condition[this.state.headerlist[index].name] = value;
-        console.log("人员过滤选择：", index, value, this.condition);
-
-        if (!this.state.queryState) {
-            this.state.queryState = true;
-            setTimeout(function() {
-                this.inter_refreshItems();
-                this.state.queryState = false;
-            }.bind(this), 500);
-        }
-    }
 
     onChange(index) {
         console.log("点击" + index + "的修改按钮");
         let id = this.state.itemlist[index].id;
-        window.location.href = "/backward/operatordetail/" + id;
+        this.props.history.push('/backward/operatordetail/'+id);
     }
     onAdd() {
         console.log("点击新增按钮");
-        window.location.href = "/backward/operatordetail/0";
+        this.props.history.push('/backward/operatordetail/0');
     }
 
     render() {
@@ -201,7 +123,6 @@ export default class Operator extends React.Component {
                     <BaseSimpleDataTable dataTypeName={this.state.dataTypeName}
                       headerlist={this.state.headerlist}
                       itemlist={this.state.itemlist}
-                      onFilterItemChange={this.onFilterItemChange.bind(this)}
                       onChange={this.onChange.bind(this)}
                       onAdd={this.onAdd.bind(this)}/>
                 </div>

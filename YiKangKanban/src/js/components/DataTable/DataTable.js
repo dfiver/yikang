@@ -354,7 +354,8 @@ export class BaseDataTableRow extends React.Component {
 
   render() {
     return (
-      <tr onClick={(event)=>(this.onClick(event))}>
+      <tr onClick={(event)=>(this.onClick(event))} 
+        class={this.props.item.removed?'danger':this.props.item.changed?'warning':''}>
       {
         this.props.headerlist.map((headerItem, columIndex) => (
           <td key={columIndex} style={{verticalAlign:"middle", textAlign: "center"}}>{
@@ -371,8 +372,6 @@ export class BaseDataTableRow extends React.Component {
         headerItem.switchoptions[0].stateValue: headerItem.switchoptions[1].stateValue):
             Object.is(headerItem.type, 'star')?
             <StarTableCell key={columIndex} starNum={this.props.item[headerItem.name]}/>:
-            Object.is(headerItem.type, 'starlist')?
-            <StarList starlist={this.props.item[headerItem.name]}/>:
             Object.is(headerItem.type, 'image')?
                 <img src={this.props.item[headerItem.name]} height={headerItem.imageHeight}
                         width={headerItem.imageWidth}/>:
@@ -411,26 +410,6 @@ export class StarTableCell extends React.Component {
       <span>
         {stars}
       </span>
-    )
-  }
-}
-
-export class StarList extends React.Component {
-  render() {
-    this.props.starlist.map((item, index) => {
-      console.log("index:" + index + "item:" + item);
-    });
-    return (
-      <table>
-          <tbody>
-            {this.props.starlist.map((item, index)=>(
-                <tr key={index}>
-                    <td>{item.key}</td>
-                    <td><StarTableCell starNum={item.value}/></td>
-                </tr>                
-            ))}
-          </tbody>
-      </table>
     )
   }
 }

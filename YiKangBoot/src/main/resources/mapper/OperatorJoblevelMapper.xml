@@ -34,7 +34,8 @@
 		select oj.*, job.name as job_name
 		from operator_joblevel oj
 		left join job on oj.job_id = job.id
-		where oj.operator_id = #{operatorId}
+		where oj.delflag = 0 
+		and oj.operator_id = #{operatorId}
 	</select>
 
 </mapper>

@@ -119,30 +119,7 @@ export default class BaseSimpleDataTable extends React.Component {
         
           <table class="table table-striped table-hover">
              <thead>
-                <BaseDataTableHeader headerlist={this.props.headerlist} onAdd={this.onAdd.bind(this)}/>
-                    <tr>
-                      {
-                        this.props.headerlist.map((headerItem, columIndex) => (
-                          <td key={columIndex} class ={"col-md-"+headerItem.width}>
-                          {headerItem.searchable?
-                            Object.is(headerItem.type, "select")?
-                            <select class="form-control" onChange={(event)=>this.props.onFilterItemChange(columIndex, event.target.value)}>
-                              <option value=""></option>
-                              {
-                                headerItem.selectoptions.map((option, index)=>(
-                                  <option key={index} value={option.key}>{option.value}</option>
-                                ))
-                              }
-                            </select>
-                            :
-                            <input type="text" class="form-control" name={headerItem.nickName} onChange={(event)=>this.props.onFilterItemChange(columIndex, event.target.value)}></input>
-                            :
-                            <input type="text" class="form-control" disabled></input>
-                          }
-                          </td>
-                          ))
-                      }
-                    </tr>                
+                <BaseDataTableHeader headerlist={this.props.headerlist} onAdd={this.onAdd.bind(this)}/>                
              </thead>
              <tbody>
                {htmlitemlist}

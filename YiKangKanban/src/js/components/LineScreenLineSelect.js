@@ -73,7 +73,7 @@ export default class LineScreenLineSelect extends React.Component {
     onClick(index) {
         let lineId = this.state.itemlist[index].id;
         console.log("lineId:" + lineId);
-        window.location.href = "/linescreen/line/" + lineId;
+        this.props.history.push("/linescreen/line/" + lineId);
     }
 
     render() {
