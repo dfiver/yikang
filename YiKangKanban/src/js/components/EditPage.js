@@ -9,8 +9,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Row, Col,message,Select,InputNumber } from 'antd';
+import { Checkbox,  Row, Col,message,Select,InputNumber } from 'antd';
 const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
+
 
 import { Form, Input, Button, Radio, Popconfirm } from 'antd';
 import BaseEditableDataTable from "./BaseEditableDataTable";
@@ -56,6 +58,13 @@ export  default class EditPage extends React.Component{
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        this.state.precols.forEach((col)=>{
+                            if(Object.is(col.type,"checkbox")){
+                                if(typeof data.obj[col.name] != 'undefined'){
+                                    data.obj[col.name]=data.obj[col.name].split(",");
+                                }
+                            }
+                        });
                         this.setState({
                             ...this.state,
                             cols:this.state.precols,
@@ -80,14 +89,22 @@ export  default class EditPage extends React.Component{
         }
     }
     submitForm(){
-        console.log("compnents:", this);
+        let tempEntity = Object.assign({},this.state.entity);
+        this.state.cols.forEach((col,index)=>{
+            if(Object.is(col.type,"checkbox")){
+                let tempArr=tempEntity[col.name];
+                var sortedArr = tempArr.sort((a, b) => (parseInt(a) > parseInt(b) ? 1 : -1));
+                tempEntity[col.name]=sortedArr.join(",");
+            }
+        });
+        console.log("Log entity compare:",tempEntity,this.state.entity);
         fetch(this.state.url+"/save",{
             method:"POST",
             headers:{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body:JSON.stringify(this.state.entity)
+            body:JSON.stringify(tempEntity)
         }).catch(error => console.log("fetch object error:", error))
             .then(res => res.json()).then(data => {
             if (data.success) {
@@ -147,9 +164,17 @@ export  default class EditPage extends React.Component{
                                                             <Button >{col.label}</Button>
                                                         </Popconfirm>:
                                                         Object.is(col.type,"link")?
-                                                                <Button onClick={()=>{
-                                                                    this.context.router.history.push(col.url+"/"+this.state.id);
-                                                                }}>{col.label}</Button>:null
+                                                            <Button onClick={()=>{
+                                                                this.context.router.history.push(col.url+"/"+this.state.id);
+                                                            }}>{col.label}</Button>:
+                                                            Object.is(col.type,"checkbox")?
+                                                                <CheckboxGroup defaultValue={this.state.entity[col.name]?this.state.entity[col.name]:[]} onChange={(values)=>{this.handleChange(col,values)}}>
+                                                                    {
+                                                                        this.state.selectionSource[col.name].source.map((option,index)=>(
+                                                                            <div key={index}><Checkbox  value={option.key}>{option.value}</Checkbox></div>
+                                                                        ))
+                                                                    }
+                                                                </CheckboxGroup>:null
                                         }
                                     </FormItem>
                                 ))

@@ -150,6 +150,13 @@ export default class RoleAndPower extends React.Component {
             comment: entity.comment
         }
     }
+    onChange(item){
+        let id = item.id;
+        this.props.history.push('/backward/mroleandpower/'+id);
+    }
+    onAdd(){
+        this.props.history.push('/backward/mroleandpower/0');
+    }
     render() {
         return (
             <div class="container">
@@ -165,7 +172,9 @@ export default class RoleAndPower extends React.Component {
                       fetchURL={"/data/role"}
                       viewToEntity = {this.viewToEntity}
                       entityToView = {this.entityToView}
-                      emptyitem={this.state.emptyitem}/>
+                      emptyitem={this.state.emptyitem}
+                                           onChange={this.onChange.bind(this)}
+                                           onAdd={this.onAdd.bind(this)}/>
                 </div>
             </div>
         );
