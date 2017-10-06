@@ -47,7 +47,7 @@ public class PorductlogController extends BaseController<Porductlog, IPorductlog
 	
 	@Override
 	public JsonResult save(@RequestBody Porductlog entity){
-		if(checkUnique(entity)){
+		if(!checkUnique(entity)){
 			return renderError().setMsg("该时段数据已存在");
 		}
 		

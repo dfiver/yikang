@@ -15,7 +15,7 @@ import com.yikang.springboot.common.result.JsonResult;
 import com.yikang.springboot.entity.Operator;
 import com.yikang.springboot.qo.OperatorDetailAndStarLevelQO;
 import com.yikang.springboot.service.IOperatorService;
-import com.yikang.springboot.vo.OperatorVO;
+import com.yikang.springboot.vo.OperatorListVO;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ public class OperatorController extends BaseController<Operator, IOperatorServic
 		conditions.put("name", name);
 		conditions.put("shift", shift);
 		conditions.put("comment", comment);
-		List<OperatorVO> oprList = service.getOperatorByCondition(conditions);
+		List<OperatorListVO> oprList = service.getOperatorByCondition(conditions);
 		return renderSuccess(oprList);
 	}
 	

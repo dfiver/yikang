@@ -269,7 +269,7 @@ public class PayController {
 		if(conditions.getEmployeeName() != null) {
 			cMap.put("name", conditions.getEmployeeName());
 		}
-		List<OperatorVO> operators = operatorService.getOperatorByCondition(cMap);
+		List<OperatorVO> operators = operatorService.getOperatorAndStarByCondition(cMap);
 		for(OperatorVO operator: operators) {
 			List<Float> starbonuslist = new ArrayList<Float>();
 			for(OperatorJoblevelVO joblevel: operator.getLevels()) {

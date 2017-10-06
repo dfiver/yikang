@@ -43,7 +43,7 @@
 		<collection property="levels"  ofType="com.yikang.springboot.vo.OperatorJoblevelVO" javaType="ArrayList" resultMap="OperatorLevelMap"/>
 	</resultMap>
 
-	<select id="getOperatorWithCondtion" resultMap="OperatorMap" parameterType="Map">
+	<select id="getOperatorAndStarWithCondtion" resultMap="OperatorMap" parameterType="Map">
 		select op.id, op.workid, op.name as name , op.avatar as avatar, 
 			op.shift_id as shift_id, op.comment as comment,
 			op.delflag as delfag,
@@ -60,6 +60,47 @@
 			left join operator_joblevel opjl on op.id = opjl.operator_id
 			left join job job on opjl.job_id = job.id
 		where op.delflag = 0 and job.delflag = 0 and opjl.delflag = 0
+		<if test="workid != null and workid != ''">
+			and op.name like '%${workid}%'
+		</if>
+		<if test="name != null and name != ''">
+			and op.name like '%${name}%'
+		</if>
+		<if test="shift != null and shift != 0">
+			and op.shift_id = #{shift}
+		</if>
+		<if test="comment != null and comment != ''">
+			and op.comment like '%${comment}%'
+		</if>
+	</select>
+	
+	
+	<resultMap id="OperatorListMap" type="com.yikang.springboot.vo.OperatorListVO">
+		<id column="id" property="id" />
+		<result column="workid" property="workid" />		
+		<result column="name" property="name" />
+		<result column="avatar" property="avatar" />
+		<result column="shift_id" property="shiftId" />
+		<result column="comment" property="comment" />
+		<result column="delflag" property="delflag" />
+		<association property="shift" javaType="com.yikang.springboot.common.result.KeyValue">
+			<result column="shift_id" property="key" />
+			<result column="shift_name" property="value" />
+		</association>
+	</resultMap>
+	<select id="getOperatorWithCondtion" resultMap="OperatorListMap" parameterType="Map">
+		select 
+			op.id, 
+			op.workid, 
+			op.name as name , 
+			op.avatar as avatar, 
+			op.shift_id as shift_id, 
+			op.comment as comment,
+			op.delflag as delfag,
+			st.name as shift_name
+			from operator op
+			left join shift st on op.shift_id = st.id
+		where op.delflag = 0
 		<if test="workid != null and workid != ''">
 			and op.name like '%${workid}%'
 		</if>

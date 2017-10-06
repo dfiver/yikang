@@ -2,6 +2,7 @@ package com.yikang.springboot.service;
 
 import com.yikang.springboot.entity.Operator;
 import com.yikang.springboot.qo.OperatorDetailAndStarLevelQO;
+import com.yikang.springboot.vo.OperatorListVO;
 import com.yikang.springboot.vo.OperatorVO;
 
 import java.util.List;
@@ -19,8 +20,12 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IOperatorService extends IVOService<Operator> {
 
-	List<OperatorVO> getOperatorByCondition(Map<String, Object> conditions);
+	List<OperatorListVO> getOperatorByCondition(Map<String, Object> conditions);
+	
+	List<OperatorVO> getOperatorAndStarByCondition(Map<String, Object> conditions);
 
 	boolean saveOperatorAndStarLevel(OperatorDetailAndStarLevelQO operatorQO);
+
+	
 	
 }

@@ -14,6 +14,7 @@ import com.yikang.springboot.mapper.OperatorMapper;
 import com.yikang.springboot.qo.OperatorDetailAndStarLevelQO;
 import com.yikang.springboot.qo.OperatorJoblevelQO;
 import com.yikang.springboot.service.IOperatorService;
+import com.yikang.springboot.vo.OperatorListVO;
 import com.yikang.springboot.vo.OperatorVO;
 
 /**
@@ -32,11 +33,16 @@ public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> i
 	}
 
 	@Override
-	public List<OperatorVO> getOperatorByCondition(Map<String, Object> conditions) {
-		List<OperatorVO> rlt = baseMapper.getOperatorWithCondtion(conditions);
+	public List<OperatorVO> getOperatorAndStarByCondition(Map<String, Object> conditions) {
+		List<OperatorVO> rlt = baseMapper.getOperatorAndStarWithCondtion(conditions);
 		return rlt;
 	}
 
+	@Override
+	public List<OperatorListVO> getOperatorByCondition(Map<String, Object> conditions) {
+		return baseMapper.getOperatorWithCondtion(conditions);
+	}
+	
 	@Override
 	@Transactional
 	public boolean saveOperatorAndStarLevel(OperatorDetailAndStarLevelQO operatorQO) {
@@ -58,4 +64,5 @@ public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> i
 		}
 		return true;
 	}
+
 }

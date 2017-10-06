@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.yikang.springboot.common.SuperMapper;
 import com.yikang.springboot.entity.Operator;
+import com.yikang.springboot.vo.OperatorListVO;
 import com.yikang.springboot.vo.OperatorVO;
 
 /**
@@ -16,5 +17,7 @@ import com.yikang.springboot.vo.OperatorVO;
  * @since 2017-09-17
  */
 public interface OperatorMapper extends SuperMapper<Operator> {
-	List<OperatorVO> getOperatorWithCondtion(Map<String, Object> condition);
+	List<OperatorVO> getOperatorAndStarWithCondtion(Map<String, Object> condition);
+
+	List<OperatorListVO> getOperatorWithCondtion(Map<String, Object> conditions);
 }

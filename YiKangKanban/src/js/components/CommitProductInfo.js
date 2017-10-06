@@ -160,6 +160,9 @@ export default class CommitProductInfo extends React.Component {
         let date = entity.productlog.starttime.split(' ')[0];
         let beginTimeValue = entity.productlog.starttime.split(' ')[1];
         let endTimeValue = entity.productlog.endtime.split(' ')[1];
+        if(Object.is(endTimeValue, "00:00")){
+            endTimeValue = "24:00";
+        }
         let beginTime;
         let endTime;
         this.state.timeOptions.map((timeItem, index) => {
