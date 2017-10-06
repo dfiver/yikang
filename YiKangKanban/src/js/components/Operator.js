@@ -17,7 +17,6 @@ export default class Operator extends React.Component {
                 imageWidth: '60px',
                 width: 2,
                 searchable: false,
-
             }, {
                 name: 'name',
                 nickName: '姓名',
@@ -37,76 +36,22 @@ export default class Operator extends React.Component {
                 type: 'text',
                 width: 3,
                 searchable: true,
-            }, {
-                name: 'starlist',
-                nickName: '星级',
-                type: 'starlist',
-                width: 2,
-                searchable: false
             }],
             itemlist: [{
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'A',
-                comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
+                comment: '操作员A备注'
             }, {
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'B',
                 comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
             }, {
                 avatar: '/images/20170802020028.jpg',
                 name: '操作员A',
                 shift: 'C',
                 comment: '操作员A备注',
-                starlist: [{
-                    key: '能力1',
-                    value: 5
-                }, {
-                    key: '能力2',
-                    value: 4
-                }, {
-                    key: '能力3',
-                    value: 4
-                }, {
-                    key: '能力4',
-                    value: 3
-                }, {
-                    key: '能力5',
-                    value: 5
-                }]
             }],
         };
 
@@ -119,23 +64,12 @@ export default class Operator extends React.Component {
     }
 
     entityToView(entity) {
-        let starlist = [];
-        if (entity.levels) {
-            entity.levels.map((level, index) => {
-                starlist[index] = {
-                    key: level.job.value,
-                    value: level.starlevel
-                }
-            })
-        }
-
         return {
             id: entity.id,
             name: entity.name,
             avatar: entity.avatar,
             comment: entity.comment,
             shift: entity.shift,
-            starlist: starlist,
         }
     }
 
