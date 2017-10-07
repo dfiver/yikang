@@ -11,7 +11,9 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.yikang.springboot.common.result.KeyValue;
 import com.yikang.springboot.entity.Batchno;
 import com.yikang.springboot.mapper.BatchnoMapper;
+import com.yikang.springboot.qo.BatchnoQO;
 import com.yikang.springboot.service.IBatchnoService;
+import com.yikang.springboot.vo.BatchnoVO;
 
 
 /**
@@ -31,8 +33,8 @@ public class BatchnoServiceImpl extends ServiceImpl<BatchnoMapper, Batchno> impl
 	}
 
 	@Override
-	public Object getBatchNoWithCondition(Map<String, Object> conditions) {
-		return this.baseMapper.getBatchNoWithCondition(conditions);
+	public List<BatchnoVO> getBatchNoWithCondition(BatchnoQO qo) {
+		return this.baseMapper.getBatchNoWithCondition(qo);
 	}
 
 	@Override

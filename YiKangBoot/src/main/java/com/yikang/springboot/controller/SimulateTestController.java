@@ -18,6 +18,7 @@ import com.yikang.springboot.entity.Porductlog;
 import com.yikang.springboot.entity.Shift;
 import com.yikang.springboot.entity.Stopreasonlog;
 import com.yikang.springboot.entity.Workshop;
+import com.yikang.springboot.qo.BatchnoQO;
 import com.yikang.springboot.service.IBatchnoService;
 import com.yikang.springboot.service.ILineService;
 import com.yikang.springboot.service.ILineseatService;
@@ -64,7 +65,7 @@ public class SimulateTestController {
 		List<LineVO> lineList = (List<LineVO>) lineService.getListViewList();
 		List<Shift> shiftList = (List<Shift>) shiftService.getListViewList();
 		List<Workshop> workshopList = (List<Workshop>) workshopService.getListViewList();
-		List<BatchnoVO> batchnoList = (List<BatchnoVO>)batchnoService.getBatchNoWithCondition(new HashMap<String,Object>());
+		List<BatchnoVO> batchnoList = (List<BatchnoVO>)batchnoService.getBatchNoWithCondition(new BatchnoQO());
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());

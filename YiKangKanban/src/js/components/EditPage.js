@@ -18,6 +18,11 @@ import { Form, Input, Button, Radio, Popconfirm } from 'antd';
 import BaseEditableDataTable from "./BaseEditableDataTable";
 const FormItem = Form.Item;
 
+
+/**
+*outerSelectionSource 
+*onSelectItemChange
+*/
 export  default class EditPage extends React.Component{
     constructor(props){
         super(props);
@@ -98,6 +103,9 @@ export  default class EditPage extends React.Component{
                 var sortedArr = tempArr.sort((a, b) => (parseInt(a) > parseInt(b) ? 1 : -1));
                 tempEntity[col.name]=sortedArr.join(",");
             }
+            if(col.transient){
+                delete tempEntity[col.name];
+            }
         });
         console.log("Log entity compare:",tempEntity,this.state.entity);
         fetch(this.state.url+"/save",{
@@ -121,6 +129,17 @@ export  default class EditPage extends React.Component{
         console.log(col,value);
         this.state.entity[col.name]=value;
     }
+
+    handleSelectChange(col, value){
+        if(col.name in this.state.selectionSource){
+            this.handleChange(col, value);
+        }
+        else if(col.name in this.props.outerSelectionSource){
+            this.props.onOuterSelectChange(col.name, value);
+            this.handleChange(col, value);
+        }
+    }
+
     render(){
         const formItemLayout =  {
             labelCol: { span: 4 },
@@ -129,6 +148,7 @@ export  default class EditPage extends React.Component{
         const buttonItemLayout =  {
             wrapperCol: { span: 14, offset: 4 },
         } ;
+        console.log("this.props.outerSelectionSource", this.props.outerSelectionSource);
         return(
             <div>
                 <Row gutter={16}>
@@ -151,11 +171,17 @@ export  default class EditPage extends React.Component{
                                                 Object.is(col.type,"number")?
                                                     <InputNumber onChange={(event)=>this.handleChange(col,event.target.value)} defaultValue={this.state.entity[col.name]}/>:
                                                 Object.is(col.type,"select")?
-                                                    <Select disabled={col.disable || false} onChange={(value)=>this.handleChange(col,value)} defaultValue={col.defaultValue || this.state.entity[col.name]}>
+                                                    <Select disabled={col.disable || false} onChange={(value)=>this.handleSelectChange(col,value)} defaultValue={(this.state.entity[col.name]?this.state.entity[col.name].toString():null) || col.defaultValue }>
                                                         {
+                                                            (col.name in this.state.selectionSource)?
                                                             this.state.selectionSource[col.name].source.map((option,index)=>(
                                                                 <Option key={index} value={option.key}>{option.value}</Option>
-                                                            ))
+                                                            )):
+                                                                (col.name in this.props.outerSelectionSource)?
+                                                                this.props.outerSelectionSource[col.name].map((option, index)=>(
+                                                                    <Option key={index} value={option.key}>{option.value}</Option>
+                                                                ))
+                                                                :''
                                                         }
                                                     </Select>:
                                                     Object.is(col.type,"password")?

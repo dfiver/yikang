@@ -24,6 +24,7 @@ import JobLevelAndSkillLevel from './components/JobLevelAndSkillLevel';
 import Job from './components/Job';
 import ProductCode from './components/ProductCode';
 import BatchNo from './components/BatchNo';
+import BatchnoEditPage from './components/batchno/BatchnoEditPage';
 import Mode from './components/Mode';
 import StopReason from './components/StopReason';
 import User from './components/User';
@@ -106,6 +107,8 @@ class YiKangRouter extends React.Component {
                     <PrivateRoute path="/backward/productcode" comp={ProductCode}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/mproductcode/:id" comp={ProductCodeEditPage}></PrivateRoute>{/*生产型号管理*/}
                     <PrivateRoute path="/backward/batchno" comp={BatchNo}></PrivateRoute>{/*批次号管理*/}
+                    <PrivateRoute path="/backward/mbatchno/:id" comp={BatchnoEditPage}></PrivateRoute>{/*批次号管理*/}
+
                     <PrivateRoute path="/backward/mode" comp={Mode}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/mmode/:id" comp={ModeEditPage}></PrivateRoute>{/*停机原因类别管理*/}
                     <PrivateRoute path="/backward/stopreason" comp={StopReason}></PrivateRoute>{/*停机原因管理*/}
